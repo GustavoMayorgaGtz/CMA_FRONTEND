@@ -1,0 +1,72 @@
+<div class="primary-container">
+
+    <div class="tieldmap-sequence">
+       
+            <div class="tieldmap" #tieldmap (mousemove)="getPosition($event, tieldmap)" (mouseleave)="endAllEvents()"
+            (mouseup)="endAllEvents()">
+            <canvas #canvas [ngStyle]="setTieldmapSequence(canvas)" width="700" height="700">
+            </canvas>
+                <!-- <span class="Loading" style="margin: auto; display:flex; justify-content: center; align-items: center; width: 100%; height: 100%;"> Cargando...</span> -->
+                <span class="Loading"
+                    style="margin: auto; display:flex; justify-content: center; align-items: center; width: 100%; height: 100%;"
+                    *ngIf="shadow_container.length === 0"> No hay herramientas creadas.</span>
+                <div class="shadow" *ngFor="let shadow of shadow_container; let idShadow = index;" #shadow_container
+                    [ngStyle]="setChanges(shadow_container, idShadow, tieldmap)">
+                    <app-line-chart *ngIf="shadow.type === 'linechart'" [idlinechart]=shadow.id></app-line-chart>
+                    <div class="resize" (mousedown)="enableResizeShadow(idShadow)" (mouseup)="endResizeShadow()">
+                        <img src="./assets/resize-makeme.svg" draggable="false">
+                    </div>
+                    <div class="move" (mousedown)="enableMoveShadow(idShadow)" (mouseup)="endMoveShadow()">
+                        <img src="./assets/move-makeme.svg" draggable="false">
+                    </div>
+                    <div class="connection_right" (click)="setPoint(connection_right)" #connection_right>
+
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="menu">
+        <div class="toggle-button-menu">
+            <img src="./assets/graphs/expand.svg" alt="">
+        </div>
+        <div class="menu-content">
+            <div class="title">
+                Herraminetas de secuencia
+            </div>
+            <hr>
+            <div class="content-type-graphs">
+                <div class="box-graph" (click)="set_menu_tool = 2">
+                    <!-- <img src="./assets/graphs/line_chart.svg" alt="line chart" class="image_contet"> -->
+                    <div class="title-content">
+                        <div class="title">Entrada</div>
+                    </div>
+                </div>
+                <div class="box-graph">
+                    <!-- <img src="./assets/graphs/bar_chart.svg" alt="line chart" class="image_contet"> -->
+                    <div class="title-content">
+                        <div class="title">Condicion</div>
+                    </div>
+                </div>
+                <div class="box-graph">
+                    <!-- <img src="./assets/graphs/traffic.svg" alt="line chart" class="image_contet"> -->
+                    <div class="title-content">
+                        <div class="title">Trigger</div>
+                    </div>
+                </div>
+                <div class="box-graph">
+                    <!-- <img src="./assets/graphs/gauge.svg" alt="line chart" class="image_contet"> -->
+                    <div class="title-content">
+                        <div class="title">Asignacion</div>
+                    </div>
+                </div>
+                <div class="box-graph">
+                    <!-- <img src="./assets/graphs/text.svg" alt="line chart" class="image_contet"> -->
+                    <div class="title-content">
+                        <div class="title">Alerta</div>
+                    </div>
+                </div>
+                <div class="separador" style="margin-bottom: 50px; width: 100%; "></div>
+            </div>
+        </div>
+    </div>
+</div>

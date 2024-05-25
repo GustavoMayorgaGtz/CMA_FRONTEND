@@ -1,0 +1,210 @@
+<div class="main">
+    <div class="title">
+        Alertas
+    </div>
+
+    <div class="crearVariable">
+        <div class="informacion">
+            <div class="icono-informacion">
+                <img src="./assets/info.png" alt="icono de informacion">
+            </div>
+            <div class="content">
+                Las alertas pueden ayudarte a informarte de los eventos que necesitas en tus procesos industriales o
+                corporativos.
+            </div>
+        </div>
+        <hr>
+        <div class="menuVar">
+            <div class="options">
+                <div class="option" *ngIf="menu != 1" (click)="setMenu = 1">Alertas</div>
+                <div class="option selected" *ngIf="menu == 1">Alertas</div>
+                <div class="option" *ngIf="menu != 2" (click)="setMenu = 2">Crear alerta</div>
+                <div class="option selected" *ngIf="menu == 2">Crear alerta</div>
+                <div class="option" *ngIf="menu != 3" (click)="setMenu = 3">Eventos</div>
+                <div class="option selected" *ngIf="menu == 3">Eventos</div>
+            </div>
+            <div class="contentFormularioCreateVar">
+                <!-- ---------------------- -->
+                <div class="Alertas" *ngIf="menu == 1">
+                    Ver alertas creadas
+                    <br>
+                    <br>
+                    <div class="opciones">
+                        <div class="opciones-title">
+                            Busqueda y filtro de variables
+                        </div>
+                        <div class="search">
+                            <input type="text" placeholder="Nombre de variable">
+                            <div class="search-btn">
+                                <img src="./assets/search.png" alt="search">
+                            </div>
+
+                        </div>
+                        <select>
+                            <option disabled selected>Selección por tipo de alerta</option>
+                            <option>Alerta SMS</option>
+                            <option>Alerta Whatsapp</option>
+                            <option>Alerta Correo electronico</option>
+                            <option>Alerta Endpoint</option>
+                        </select>
+
+                    </div>
+                    <div class="content">
+                        <div class="alerta" *ngFor="let alertaSMS of allAlertasSMS; let idx = index">
+                            <div class="top">
+                                {{alertaSMS.name}}
+                            </div>
+                            <div class="body">
+                              <div class="nombre_var" *ngFor="let variable of allVarsCopy" style="grid-column: 1;">
+                                <div class="nombre" *ngIf="variable.idvar == alertaSMS.var_evaluation_id">
+                                    {{variable.name}}
+                                </div>
+                                <div  *ngIf="variable.idvar == alertaSMS.var_evaluation_id" class="switch" [ngSwitch]="alertaSMS.method_evaluation" style="grid-column: 2;">
+                                    <div class="option" *ngSwitchCase="'menor que x'"><</div>
+                                    <div class="option" *ngSwitchCase="'mayor que x'">></div>
+                                    <div class="option" *ngSwitchCase="'entre x y y'">><</div>
+                                    <div class="option" *ngSwitchCase="'fuera de x y y'"><></div>
+                                </div>
+                                <div class="variable" *ngIf="variable.idvar == alertaSMS.var_evaluation_id"
+                                >
+                                    {{alertaSMS.equal}}
+                                </div>
+                              </div>
+                            </div>
+                            <!-- {{alertaSMS.method_evaluation}}
+                            {{alertaSMS.description}} -->
+                            
+                        </div>
+                    </div>
+                    <!-- <div class="noContent">
+                        No hay alertas creadas
+                    </div> -->
+                </div>
+                <div class="CrearAlerta" *ngIf="menu == 2">
+                    Crear alerta
+                    <!-- Nombre de variable -->
+                    <div class="campo">
+                        <label for="">Nombre de alerta</label>
+                        <input type="text" #nombre>
+                    </div>
+                    <div class="campo">
+                        <label for="">Descripcion de alerta</label>
+                        <input type="text" #descripcion placeholder="Descripcion de la funcionalidad de esta alerta.">
+                    </div>
+                    <div class="campo">
+                        <label for="">Mensaje a mostrar</label>
+                        <input type="text" #mensaje placeholder="Mensaje que se va a enviar por medio de sms">
+                    </div>
+                    <div class="campo-phone">
+                        <label for="">Numeros de telefono</label>
+                        <!-- DATOS -->
+                        <div class="datos">
+                            <div class="contenedor_datos">
+                                <div class="campo-data">
+                                    <div class="data" *ngFor="let numero of numeros; let idx = index">
+                                        <input type="text" class="key" placeholder="código de país " #key
+                                            (keydown)="modifyNumber(key.value, phone.value, idx)"
+                                            (blur)="modifyNumber(key.value, phone.value, idx)">
+                                        <input type="text" class="data" placeholder="Número telefónico" #phone
+                                            (keydown)="modifyNumber(key.value, phone.value, idx)"
+                                            (blur)="modifyNumber(key.value, phone.value, idx)">
+                                        <div class="container-img-quit" (click)="quitPhone(idx)">
+                                            <img src="./assets/close.png" alt="quit" class="quit">
+                                        </div>
+                                    </div>
+                                    <div class="addMore" (click)="addNumber()">Añadir campo</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="campo-variable">
+                        <label for="">Variable a evaluar: 
+                            <span *ngIf="idxVariableSelected !== null"
+                                style="font-weight: bold; padding: 5px; border-radius: 5px; background-color: rgb(70, 138, 202); color: white;">
+                                {{(idxVariableSelected !== null)? allVarsCopy[idxVariableSelected].name: ""}}
+                            </span> 
+                            <div class="btn-quit" *ngIf="idxVariableSelected !== null" (click)="quitIdVariableSelected()">
+                                <img src="./assets/close.png" alt="quit" class="quit">
+                            </div>
+                        </label>
+                        <div class="contenedor_busqueda" *ngIf="idxVariableSelected === null">
+                            <div class="busqueda">
+                                <input type="text" name="search" id="search" #search>
+                                <div class="contenedor_img_busqueda" (click)="searchByName(search.value)">
+                                    <img src="./assets/search.png" alt="busqueda">
+                                </div>
+                            </div>
+                            <select #typeVarSearch (change)="searchByType(typeVarSearch.value)">
+                                <option disabled selected>Selecciona un tipo de variable</option>
+                                <option value="json">Json Endpoint</option>
+                                <option value="modbus">Modbus</option>
+                                <option value="memory">Memoria</option>
+                            </select>
+                        </div>
+                        <div class="variables" *ngIf="idxVariableSelected === null">
+                            <div *ngFor="let variable of allVars; let idxVariable = index;" class="option"
+                                (click)="selectVariable(idxVariable)">
+                                {{variable.name}}
+                                <div class="colorVariable" [ngSwitch]="variable.type">
+                                    <div class="color" *ngSwitchCase="'json'" style="color: rgb(186, 122, 45);">json
+                                    </div>
+                                    <div class="color" *ngSwitchCase="'modbus'" style="color:  rgb(79, 155, 55);">modbus
+                                    </div>
+                                    <div class="color" *ngSwitchCase="'memory'" style="color: rgb(97, 50, 179);">memory
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label for="">Tiempo de espera entre el envio de cada mensaje</label>
+                        <input type="text" #waiting_next_message_time>
+                    </div>
+                    <div class="campo">
+                        <label for="">Tiempo de espera para mandar el primer mensaje</label>
+                        <input type="text" #waiting_send_first_message>
+                    </div>
+                    <div class="campo">
+                        <label for="">Metodo de evaluación</label>
+                        <select #method_evaluation (change)="method_evaluation_Event(method_evaluation.value)">
+                            <option disable>Selecciona metodo de evaluación</option>
+                            <option value="1">Si el valor de la variable es menor que</option>
+                            <option value="2">Si el valor de la variable es mayor que</option>
+                            <option value="3">Si el valor de la variable esta entre los valores</option>
+                            <option value="4">Si el valor de la variable esta fuera de los valores</option>
+                            <option value="5">Si el valor de la variable es igual a</option>
+                        </select>
+                    </div>
+                    <div class="campo" *ngIf="max_enable">
+                        <label for="">Valor Maximo</label>
+                        <input type="text" #max (keyup)="set_Max(max.value)" (blur)="set_Max(max.value)">
+                    </div>
+                    <div class="campo" *ngIf="min_enable">
+                        <label for="">Valor Minimo</label>
+                        <input type="text" #min (keyup)="set_Min(min.value)" (blur)="set_Min(min.value)">
+                    </div>
+                    <div class="campo" *ngIf="equal_enable">
+                        <label for="">Igual a</label>
+                        <input type="text" #equal (keyup)="set_Equal(equal.value)" (blur)="set_Equal(equal.value)">
+                    </div>
+                    <div class="campo" *ngIf="equal_enable">
+                        <label for="">Tipo de dato</label>
+                        <select #type_data (change)="set_Type_Data(type_data.value)">
+                            <option disable>Selecciona el tipo de valor que es igual a</option>
+                            <option value="cadena de texto">Cadena de texto</option>
+                            <option value="numerico">Numerico</option>
+                            <option value="logico">Logico/Booleano</option>
+                        </select>
+                    </div>
+
+                    <div class="btn-guardar"
+                        (click)="guardarAlertaSMS_Event(nombre.value, descripcion.value, mensaje.value, waiting_next_message_time.value, waiting_send_first_message.value, method_evaluation.value)">
+                        Guardar alerta
+                    </div>
+                </div>
+                <div class="Eventos" *ngIf="menu == 3">
+                    Eventos de alerta
+                </div>
+            </div>
+        </div>
+    </div>
