@@ -1,3 +1,4 @@
+// New repository
 .primary-container {
     display: flex;
     width: 100%;
@@ -57,17 +58,20 @@
     .menu {
         position: relative;
         right: 0px;
-        min-width: 400px;
+        min-width: 40px;
+        width: max-content;
         max-width: 400px;
         overflow-x: hidden;
         overflow-y: hidden;
         height: 100vh;
         border-left: 1px solid rgb(125, 125, 125);
         background-color: white;
-        display: grid;
-        grid-template-columns: 10% 90%;
+        display: flex;
+        flex-wrap: nowrap;
 
         .toggle-button-menu {
+            min-width: 40px;
+            max-width: 40px;
             grid-column: 1;
             height: 100%;
             background-color: rgb(229, 229, 229);
@@ -185,6 +189,28 @@
             }
 
             
+        }
+    }
+
+    .menu-hidden{
+        width: 0px;  
+        overflow: hidden;  
+        visibility: hidden;
+        animation: 2s hidden_menu;
+        transition: all 2s;
+        animation-fill-mode: forwards;
+        animation-iteration-count: 1;
+    }
+
+    @keyframes hidden_menu {
+        0% {
+           transform: translateX(0%);
+           opacity: 1;
+        }
+
+        100% {
+             transform: translateX(calc(100% - 40px));
+             opacity: 1;
         }
     }
 
