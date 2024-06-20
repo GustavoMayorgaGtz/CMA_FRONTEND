@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "buildProduction": "ng build --configuration=production && cp .htaccess dist/cma",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
