@@ -60,7 +60,6 @@ export class LoginComponent {
       this.servicios.login_user({ nombre_usuario: username, password }).subscribe((res) => {
         sessionStorage.setItem("token", res.token);
         sessionStorage.setItem("idUser", res.user.toString());
-        console.log("datos de logeo ", res);
         if(res){
           this.router.navigate(['/dashboard'])
         }else{

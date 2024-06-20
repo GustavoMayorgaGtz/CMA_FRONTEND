@@ -37,9 +37,7 @@ export class ModbusVariableClass {
                     if (err.status == 409) {
                         this.alertService.setMessageAlert("El nombre de esta variable ya esta en uso, Define otro");
                     } else if(err.status == 400) {
-                        console.log("error testeando variable de modbus: ", err);
                         const message_error = err.error.message;
-                        // const state_error = err.error.state;{}
                         this.alertService.setMessageAlert(message_error);
                     }else{
                         this.alertService.setMessageAlert("Error al crear la variable modbus.  Err: " + err.message);

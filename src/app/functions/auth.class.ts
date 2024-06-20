@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { EventEmitter } from "@angular/core";
 import { Router } from "@angular/router";
+import { IUser } from "../interfaces/LoginInterface/login.interface";
 
 export let userEvent = new EventEmitter<IUser>();
 
@@ -18,7 +19,6 @@ export class functions {
             const idUserParser = parseInt(idUser);
             this.services.verifyAccount({ idUser: idUserParser, token }).subscribe((info) => {
                 if (!info) {
-                    console.log("La verificacion del usuario es incorrecta In functions class")
                     this.loginRedirect();
                 } else {
                     //Usuario logeado y verificado
@@ -48,7 +48,6 @@ export class functions {
     }
 
     private loginRedirect() {
-        console.log("redirigiendo")
         sessionStorage.clear()
         //No cumple con todos los requisitos
         if (this.alertService) {

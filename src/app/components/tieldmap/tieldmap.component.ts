@@ -49,37 +49,6 @@ export class TieldmapComponent {
     })
   }
 
-  // public noState = 0;
-  // validateAllViews() {
-
-  //   this.noState++;
-  //   if (this.noState == 2) {
-  //     this.ngAfterViewInit();
-  //   }
-  // }
-
-
-  // ngAfterViewInit(): void {
-  //   setTimeout(() => {
-  //     console.log("Llamando a ngAfterViewInit")
-  //     console.log(this.tieldmap)
-  //     console.log(this.shadow_containers);
-  //     console.log("---------------")
-  //     if (this.tieldmap && this.shadow_containers) {
-  //       const map = this.tieldmap.nativeElement;
-  //       const anyvar: any = this.shadow_containers;
-  //       console.log(anyvar.length)
-  //       this.shadow_containers.forEach((shadow_container, idx) => {
-  //         console.log("##")
-  //         console.log(shadow_container);
-  //         console.log("##")
-  //         this.setPropietiesShadow(shadow_container.nativeElement, idx, map);
-  //       })
-  //     }
-  //   }, 10000);
-  // }
-
-
 
   /**
    * Funcion para establecer la posicion relativa del cursor y mostrar el punto de inicio del contenedor shadow

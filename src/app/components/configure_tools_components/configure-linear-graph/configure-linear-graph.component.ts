@@ -233,7 +233,6 @@ export class ConfigureLinearGraphComponent implements OnInit {
       }
 
       this.linechartService.create_LineChart(this.linear_chart_configuration).subscribe((response) => {
-        console.log(response);
         this.alert.setMessageAlert("Grafico Lineal creado exitosamente.");
         window.location.reload();
         this.enableSave = true;

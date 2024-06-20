@@ -57,7 +57,6 @@ export class VarsService {
   }
 
   create_Json_Var(body: IJsonVariable_Create) {
-    console.log(body)
     return this.http.post(server + "jsonvars/create", body);
   }
 

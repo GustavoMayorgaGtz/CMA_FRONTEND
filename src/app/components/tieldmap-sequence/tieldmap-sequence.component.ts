@@ -82,10 +82,6 @@ export class TieldmapSequenceComponent implements OnInit {
    setPoint(position: HTMLDivElement){
       this.puntos[0].x = position.getBoundingClientRect().x - this.canvas_element.getBoundingClientRect().x;
       this.puntos[0].y = position.getBoundingClientRect().y - this.canvas_element.getBoundingClientRect().y;
-      console.log("Canvas x: "+this.canvas_element.getBoundingClientRect().x)
-      console.log("Canvas y: "+this.canvas_element.getBoundingClientRect().y)
-      console.log("boton x: "+ this.puntos[0].x)
-      console.log("boton y: "+ this.puntos[0].y)
    }
    dibujarPuntos() { 
     if(this.puntos[1]){

@@ -124,8 +124,6 @@ export class CalculatorExpression {
         if (operadoresSinParentesis.length == numerosArr.length - 1) {
             //Materia prima 
             this.escaneoJerarquia(operadoresArr, numerosArr)
-        } else {
-            console.log("Hay un error en el sistema de parseo");
         }
     }
 
