@@ -6,6 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "buildProduction": "ng build --configuration=production && cp .htaccess dist/cma",
+    "deploy":"git add . && git commit -a -m deploy && git push -u origin master" ,
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
