@@ -13,6 +13,8 @@ import { BLOBDATA } from '../functions/blobdata_class';
 import { finalizeService } from '../service/finalize.service';
 import { CMA_ENDPOINT_SERVICES } from '../service/cma_endpoints.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { timeout } from 'rxjs';
+import { identifierName } from '@angular/compiler';
 
 export class LineGraph {
   public jsonBuilder = new JsonVariableClass(this.varsService, this.alertService);
@@ -37,7 +39,7 @@ export class LineGraph {
         pointBackgroundColor: 'rgb(51, 85, 111)',
         borderWidth: 1,
         showLine: true,
-        // animation: true
+        animation: false
       }
     ]
   };
@@ -536,12 +538,14 @@ export class LineGraph {
 
 
   getVariableEndpoint(idEndpoint: number, time: number) {
-    this.cma_endpoint.getOneEndpointById(idEndpoint, 0).subscribe((blobdata) => {
+
+    this.cma_endpoint.getOneEndpointById(idEndpoint, 0).subscribe((blobdata) => { 
       if (blobdata.length > 0) {
         this.var1_dataset = [];
         this.var1_labels = [];
         this.copyDataBlobData = [];
         this.copyDateBlobData = [];
+
         blobdata[0].register_date.forEach((datenow, idx) => {
           if (this.var1_dataset.length + 1 > this.muestreo) {
             const restarCount = (this.var1_dataset.length + 1) - (this.muestreo);
@@ -560,45 +564,48 @@ export class LineGraph {
             lineChartOptions: this.lineChartOptions
           });
         })
-      }else{
+      } else {
         this.alertService.setMessageAlert("No hay valores en este espacio.")
       }
     }, (err: HttpErrorResponse) => {
       console.log(err);
+    }, () => {
+      //Polling
+      //Limpiamos el intervalo 
+      if (this.idInterval) {
+        clearInterval(this.idInterval);
+      }
+      this.idInterval = setInterval(() => {
+        this.cma_endpoint.getOneEndpointById(idEndpoint, this.lineChartData.datasets[0].data.length)
+        .pipe(timeout(time < 3000 ? 3000 : time))
+        .subscribe((blobdata) => {
+          if (blobdata.length > 0) {
+            blobdata[0].register_date.forEach((datenow, idx) => {
+              if (this.var1_dataset.length + 1 > this.muestreo) {
+                const restarCount = (this.var1_dataset.length + 1) - (this.muestreo);
+                this.var1_dataset.splice(0, restarCount);
+                this.var1_labels.splice(0, restarCount);
+                console.log("Aqui hay un splice");
+                console.log(this.var1_dataset)
+                console.log(this.var1_labels)
+              }
+              this.var1_dataset.push(blobdata[0].value[idx]);
+              this.var1_labels.push(datenow);
+              this.copyDataBlobData.push(blobdata[0].value[idx]);
+              this.copyDateBlobData.push(datenow);
+              this.lineChartData.datasets[0].data = this.var1_dataset;
+              this.lineChartData.labels = this.var1_labels;
+              this.eventData.emit({
+                lineChartData: this.lineChartData,
+                lineChartOptions: this.lineChartOptions
+              });
+            })
+          }
+        }, (err: HttpErrorResponse) => {
+          console.log(err);
+        })
+      }, time < 3000 ? 3000 : time)
     })
-
-    //Polling
-    //Limpiamos el intervalo 
-    if (this.idInterval) {
-      clearInterval(this.idInterval);
-    }
-    this.idInterval = setInterval(() => {
-      this.cma_endpoint.getOneEndpointById(idEndpoint, this.var1_dataset.length).subscribe((blobdata) => {
-        if (blobdata.length > 0) {
-          blobdata[0].register_date.forEach((datenow, idx) => {
-            if (this.var1_dataset.length + 1 > this.muestreo) {
-              const restarCount = (this.var1_dataset.length + 1) - (this.muestreo);
-              this.var1_dataset.splice(0, restarCount);
-              this.var1_labels.splice(0, restarCount);
-            }
-            this.var1_dataset.push(blobdata[0].value[idx]);
-            this.var1_labels.push(datenow);
-            this.copyDataBlobData.push(blobdata[0].value[idx]);
-            console.log(blobdata[0]);
-            console.log("Mira este es el dato que se mete: ", blobdata[0].value[idx])
-            this.copyDateBlobData.push(datenow);
-            this.lineChartData.datasets[0].data = this.var1_dataset;
-            this.lineChartData.labels = this.var1_labels;
-            this.eventData.emit({
-              lineChartData: this.lineChartData,
-              lineChartOptions: this.lineChartOptions
-            });
-          })
-        }
-      }, (err: HttpErrorResponse) => {
-        console.log(err);
-      })
-    }, time)
   }
 
 
@@ -666,7 +673,7 @@ export class LineGraph {
           });
         }
       })
-    }, time)
+    }, time < 1000 ? 1000 : time)
   }
 
 
@@ -738,6 +745,6 @@ export class LineGraph {
         .catch((err) => {
           console.log("Error al realizar la peticion: ", err)
         })
-    }, time);
+    }, time < 1000 ? 1000 : time);
   }
 }
