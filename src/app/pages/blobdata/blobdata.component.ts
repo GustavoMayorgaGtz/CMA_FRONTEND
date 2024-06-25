@@ -69,10 +69,11 @@ export class BlobdataComponent implements OnInit {
 
       
       this.blobdataServices.getOneBlobDataById(idblobdata).subscribe((blobdata) => {
-        blobdata.value.forEach((valor, idx) => {
-            this.blobdataInformation.push({valor: valor, fecha: blobdata.register_date[idx]});
-        })
-
+        if(blobdata && blobdata.value){
+          blobdata.value.forEach((valor, idx) => {
+              this.blobdataInformation.push({valor: valor, fecha: blobdata.register_date[idx]});
+          }) 
+        }
       }, (err: HttpErrorResponse) => {
         console.log(err)
       })
@@ -128,8 +129,6 @@ export class BlobdataComponent implements OnInit {
       })
     });
   }
-
-
 
   public groupByDataOption: number = 1;
   groupByData(option: number){
