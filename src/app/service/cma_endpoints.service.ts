@@ -18,7 +18,7 @@ export class CMA_ENDPOINT_SERVICES {
     return this.http.get<ICMA_ENDPOINT_DATABASE[]>(server + "cma_endpoint/getAll");
   }
 
-  getOneEndpointById(id_endpoint:number , sizeActualArray: number){
-    return this.http.post<IBlobData_Database[]>(server+"cma_endpoint/getLastLineChartValues", {id_endpoint, sizeActualArray});
+  getOneEndpointById(id_endpoint:number , sizeActualArray: number, limit: number){
+    return this.http.post<IBlobData_Database[]>(server+"cma_endpoint/getLastLineChartValues", {id_endpoint, sizeActualArray, limit});
   }
 }

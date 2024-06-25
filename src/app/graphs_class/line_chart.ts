@@ -539,7 +539,7 @@ export class LineGraph {
 
   getVariableEndpoint(idEndpoint: number, time: number) {
 
-    this.cma_endpoint.getOneEndpointById(idEndpoint, 0).subscribe((blobdata) => { 
+    this.cma_endpoint.getOneEndpointById(idEndpoint, 0, this.muestreo).subscribe((blobdata) => { 
       if (blobdata.length > 0) {
         this.var1_dataset = [];
         this.var1_labels = [];
@@ -576,7 +576,7 @@ export class LineGraph {
         clearInterval(this.idInterval);
       }
       this.idInterval = setInterval(() => {
-        this.cma_endpoint.getOneEndpointById(idEndpoint, this.lineChartData.datasets[0].data.length)
+        this.cma_endpoint.getOneEndpointById(idEndpoint, this.lineChartData.datasets[0].data.length, this.muestreo)
         .pipe(timeout(time < 3000 ? 3000 : time))
         .subscribe((blobdata) => {
           if (blobdata.length > 0) {
