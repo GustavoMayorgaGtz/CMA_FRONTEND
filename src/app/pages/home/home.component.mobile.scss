@@ -1,5 +1,10 @@
 @media screen and (max-width: 700px) {
     .container-primary {
+        .title-header{
+            display: none;
+            visibility: hidden;
+            height: 0px;
+        }
         .main {
             width: calc(100vw - 330px);
             flex-direction: column;
