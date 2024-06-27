@@ -2,7 +2,7 @@
     <app-nav></app-nav>
     <div class="title-header"> Dashboard</div>
     <div class="main">
-        <app-menu (option)="setOptionEnable($event)">  </app-menu>
+        <app-menu (option)="setOptionEnable($event)" class="menu_app">  </app-menu>
         <div class="container-pages">
            <app-autentificacion *ngIf="optionEnable === 1"></app-autentificacion>
            <app-cuenta *ngIf="optionEnable === 2"></app-cuenta>

@@ -4,7 +4,7 @@ import { ExitService } from 'src/app/service/exit.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss', './dashboard.component.mobile.scss']
 })
 export class DashboardComponent implements OnInit {
   public menu_tool: number = 1;
