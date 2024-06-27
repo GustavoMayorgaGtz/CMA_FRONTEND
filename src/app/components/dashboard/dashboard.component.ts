@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  private stateToolsMenu: boolean = true;
+  private stateToolsMenu: boolean = false;
   hiddenTools(menuElement: HTMLDivElement){
     if(this.stateToolsMenu){
       menuElement.setAttribute("class", `menu-hidden`);
