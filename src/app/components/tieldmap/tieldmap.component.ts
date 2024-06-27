@@ -173,9 +173,11 @@ export class TieldmapComponent {
       this.shadow_container[idShadow].x = 0;
     }
     //Validacion 2 y 3
-    if (shadow_container_x_end > tieldmap_x_end) {
+    console.log(shadow_container_x_end, tieldmap_x_end)
+    if (shadow_container_x_end >= (tieldmap_x_end - 50)) {
       const restante = shadow_container_x_end - tieldmap_x_end; //Este restante nos sirve para restar al shadow init x
       const new_shadow_container_x_init = shadow_container_x - restante; //Esta es la nueva posicion del shadow container en el eje X hay que validar si es menor a la del tieldmap
+      console.log(new_shadow_container_x_init);
       if (new_shadow_container_x_init < tieldmap.getBoundingClientRect().x - 25) {
         /**
          * Se le asigna el position x = 0 y el width de full tieldmap debido a que no cabe originalmente
