@@ -61,12 +61,13 @@ export class TieldmapComponent {
   public isDraw: boolean = false;
   public lastBloqueWidth: number = 25;
 
+
+
   /**
    * Funcion que sirve para determinar los valores para los diferentes eventos de shadow
    * @param event 
    * @param tieldmap 
    */
-
   getPosition(event: MouseEvent, tieldmap: HTMLDivElement) {
     const tieldmap_positionX = tieldmap.getBoundingClientRect().x;
     const tieldmap_positionY = tieldmap.getBoundingClientRect().y;
@@ -110,6 +111,7 @@ export class TieldmapComponent {
   public tieldmap_bloque_width = 0;
   public temp_shadow_container: IConfigurationShadow[] = [];
   public messages: string = "";
+  private last_height: number = 0;
   setPropietiesShadow(shadow: HTMLDivElement, idShadow: number, tieldmap: HTMLDivElement) {
     /*Hacer validaciones
     1. Ver si la posicion x es mayor al tamaño del screen
@@ -129,12 +131,68 @@ export class TieldmapComponent {
     const tieldmap_x_end = tieldmap.getBoundingClientRect().x + tieldmap.getBoundingClientRect().width;
     //validacion 5
     if (this.temp_shadow_container.length > 0) {
+
+       /**
+       * Validaciones dentro de la validacion 5
+       * Eliminar la superposicion de los contenedores
+       * Agarrar el contenedor actual y validar cada uno de los contenedores temporeales
+       */
+        this.validacion_overarea(shadow_container, idShadow);
+    }
+    //Validacion 1
+    if (shadow_container.x * this.lastBloqueWidth > tieldmap_x_end) {
+      this.shadow_container[idShadow].x = 0;
+      // this.validacion_overarea(shadow_container, idShadow);
+    }
+    //Validacion 2 y 3
+    if (shadow_container_x_end >= (tieldmap_x_end - 50)) {
+      const restante = shadow_container_x_end - tieldmap_x_end; //Este restante nos sirve para restar al shadow init x
+      const new_shadow_container_x_init = shadow_container_x - restante; //Esta es la nueva posicion del shadow container en el eje X hay que validar si es menor a la del tieldmap
+      if (new_shadow_container_x_init < tieldmap.getBoundingClientRect().x - 25) {
+        /**
+         * Se le asigna el position x = 0 y el width de full tieldmap debido a que no cabe originalmente
+         */
+        this.shadow_container[idShadow].x = 0;
+        this.shadow_container[idShadow].width = (this.tieldmap_bloque_width * this.lastBloqueWidth) - 25;
+      } else {
+        this.shadow_container[idShadow].x = new_shadow_container_x_init; //Si cabe si le quitamos el restante a la posicion inicial de x
+      }
+      this.shadow_container[idShadow].x = 0;
+      this.validacion_overarea(shadow_container, idShadow);
+    }
+    //Validacion 4
+    this.temp_shadow_container.push({
+      width: this.shadow_container[idShadow].width,
+      height: this.shadow_container[idShadow].height,
+      x: this.shadow_container[idShadow].x,
+      y: this.shadow_container[idShadow].y,
+      type: this.shadow_container[idShadow].type,
+      id: this.shadow_container[idShadow].id
+    })
+    if (this.last_height < this.shadow_container[idShadow].y) {
+      this.last_height = this.shadow_container[idShadow].y;
+      tieldmap.setAttribute("height", `
+         height: ${this.last_height+200}px;
+         `);
+    }
+    shadow.setAttribute("style", `position: absolute;
+     top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+     left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
+      width: ${this.shadow_container[idShadow].width}px; 
+      height: ${this.shadow_container[idShadow].height}px;
+       background-color: white;
+     border: 1px solid black; border-radius: 5px;`);
+  }
+
+  validacion_overarea(shadow_container: IConfigurationShadow, idShadow: number){
       /**
        * Validaciones dentro de la validacion 5
        * Eliminar la superposicion de los contenedores
        * Agarrar el contenedor actual y validar cada uno de los contenedores temporeales
        */
       this.temp_shadow_container.forEach((temp_shadow) => {
+        //VALIDACION EXTERNA
+        /**********************************************************************************************/
         //Validar si ocupamos el mismo area
         const shadow_container_x = this.shadow_container[idShadow].x * this.lastBloqueWidth;
         const shadow_container_x_end = shadow_container.x * this.lastBloqueWidth + shadow_container.width;
@@ -165,46 +223,10 @@ export class TieldmapComponent {
           //recorrer hacia abajo
           let newPositionY = parseInt(((y_end + (this.lastBloqueWidth)) / this.lastBloqueWidth).toString());
           this.shadow_container[idShadow].y = newPositionY;
+          this.validacion_overarea(shadow_container, idShadow);
         }
+
       })
-    }
-    //Validacion 1
-    if (shadow_container.x * this.lastBloqueWidth > tieldmap_x_end) {
-      this.shadow_container[idShadow].x = 0;
-    }
-    //Validacion 2 y 3
-    console.log(shadow_container_x_end, tieldmap_x_end)
-    if (shadow_container_x_end >= (tieldmap_x_end - 50)) {
-      const restante = shadow_container_x_end - tieldmap_x_end; //Este restante nos sirve para restar al shadow init x
-      const new_shadow_container_x_init = shadow_container_x - restante; //Esta es la nueva posicion del shadow container en el eje X hay que validar si es menor a la del tieldmap
-      console.log(new_shadow_container_x_init);
-      if (new_shadow_container_x_init < tieldmap.getBoundingClientRect().x - 25) {
-        /**
-         * Se le asigna el position x = 0 y el width de full tieldmap debido a que no cabe originalmente
-         */
-        this.shadow_container[idShadow].x = 0;
-        this.shadow_container[idShadow].width = (this.tieldmap_bloque_width * this.lastBloqueWidth) - 25;
-      } else {
-        this.shadow_container[idShadow].x = new_shadow_container_x_init; //Si cabe si le quitamos el restante a la posicion inicial de x
-      }
-      this.shadow_container[idShadow].x = 0;
-    }
-    //Validacion 4
-    this.temp_shadow_container.push({
-      width: this.shadow_container[idShadow].width,
-      height: this.shadow_container[idShadow].height,
-      x: this.shadow_container[idShadow].x,
-      y: this.shadow_container[idShadow].y,
-      type: this.shadow_container[idShadow].type,
-      id: this.shadow_container[idShadow].id
-    })
-    shadow.setAttribute("style", `position: absolute;
-     top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
-     left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
-      width: ${this.shadow_container[idShadow].width}px; 
-      height: ${this.shadow_container[idShadow].height}px;
-       background-color: white;
-     border: 1px solid black; border-radius: 5px;`);
   }
 
 
@@ -214,14 +236,16 @@ export class TieldmapComponent {
     shadow.setAttribute("style", `position: absolute;
     top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
     left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
-     width: ${this.shadow_container[idShadow].width}px; 
-     height: ${this.shadow_container[idShadow].height}px;
-      background-color: white;
+    width: ${this.shadow_container[idShadow].width}px; 
+    height: ${this.shadow_container[idShadow].height}px;
+    background-color: white;
     border: 1px solid black; border-radius: 5px;`);
-    if(this.propiedadAplicada.indexOf(idShadow) == -1){
+
+    if (this.propiedadAplicada.indexOf(idShadow) == -1) {
       this.propiedadAplicada.push(idShadow);
       this.setPropietiesShadow(shadow, idShadow, tieldmap);
     }
+
     return { backgroundColor: "" }
   }
 
