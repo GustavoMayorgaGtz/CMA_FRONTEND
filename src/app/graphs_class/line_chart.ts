@@ -13,6 +13,8 @@ import { BLOBDATA } from '../functions/blobdata_class';
 import { finalizeService } from '../service/finalize.service';
 import { CMA_ENDPOINT_SERVICES } from '../service/cma_endpoints.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { timeout } from 'rxjs';
+import { BlobdataModule } from '../pages/blobdata/blobdata.module';
 
 export class LineGraph {
   public jsonBuilder = new JsonVariableClass(this.varsService, this.alertService);
@@ -36,13 +38,19 @@ export class LineGraph {
         pointBackgroundColor: 'rgb(51, 85, 111)',
         borderWidth: 1,
         showLine: true,
-        // animation: true
+        animation: false
+
       }
     ]
   };
 
   public lineChartOptions: ChartOptions<'line'> = {
     responsive: true,
+    plugins: {
+      legend: {
+        display: false
+      }
+    },
     maintainAspectRatio: false, // Esto permite que el gráfico no mantenga un aspecto de cuadrado
     scales: {
       x: {
@@ -62,9 +70,9 @@ export class LineGraph {
           // stepSize: .1  // Paso entre cada marca en el eje Y
         }
       }
-    },
+    }
   };
-  private lineChartLegend = true;
+
   constructor(private service: AllService,
     private alertService: AlertService,
     private varsService: VarsService,
@@ -96,11 +104,11 @@ export class LineGraph {
           this.copyDataBlobData.splice(0, restarCount);
           this.copyDateBlobData.splice(0, restarCount);
         }
-
         this.setValueData(this.copyDataBlobData)
         this.setValueLabel(this.copyDateBlobData)
         break;
       }
+      /*********************************************************************/
       case 2: {
         //Minutos
         let lastFecha = "";
@@ -110,14 +118,24 @@ export class LineGraph {
         const newValue: number[] = [];
         let suma = 0;
         let contador = 0;
+
         dates.forEach((fecha, idx) => {
           const date = fecha.split(" ");
           const timeArray = date[1].split(":");
           const hora = parseInt(timeArray[0]);
           const minuto = parseInt(timeArray[1]);
+
           if (idx == (dates.length - 1)) {
-            newDate.push(date[0] + " " + `${hora}:${minuto}`);
-            newValue.push((suma / contador));
+            if ((lastFecha == date[0] && lastHora == hora && lastMinuto == minuto)) {
+              newDate.push(date[0] + " " + `${hora}:${minuto}`);
+              newValue.push((suma / contador));
+            } else {
+
+              newDate.push(lastFecha + " " + `${lastHora}:${lastMinuto}`);
+              newValue.push((suma / contador));
+              newDate.push(date[0] + " " + `${hora}:${minuto}`);
+              newValue.push((values[idx]));
+            }
           } else if (idx != 0 && lastFecha == date[0] && lastHora == hora && lastMinuto == minuto) {
             suma += values[idx];
             contador++;
@@ -146,10 +164,12 @@ export class LineGraph {
           const restarCount = (newDate.length + 1) - (this.muestreo + 1);
           newDate.splice(0, restarCount);
         }
+
         this.setValueData(newValue);
         this.setValueLabel(newDate);
         break;
       }
+      /*********************************************************************/
       case 3: {
         //Horas
         let lastFecha = "";
@@ -165,8 +185,16 @@ export class LineGraph {
           const hora = parseInt(timeArray[0]);
 
           if (idx == (dates.length - 1)) {
-            newDate.push(date[0] + " " + `${hora}:xx`);
-            newValue.push((suma / contador));
+            if (lastFecha == date[0] && lastHora == hora) {
+              newDate.push(date[0] + " " + `${hora}:xx`);
+              newValue.push((suma / contador));
+            } else {
+              newDate.push(lastFecha + " " + `${lastHora}:xx`);
+              newValue.push((suma / contador));
+              newDate.push(date[0] + " " + `${hora}:xx`);
+              newValue.push((values[idx]));
+            }
+
           } else if (idx != 0 && lastFecha == date[0] && lastHora == hora) {
             suma += values[idx];
             contador++;
@@ -197,6 +225,7 @@ export class LineGraph {
         this.setValueLabel(newDate);
         break;
       }
+       /*********************************************************************/
       case 4: {
         //Dia
         const newDate: string[] = [];
@@ -213,8 +242,17 @@ export class LineGraph {
           let month = parseInt(dateArr[1])
           let year = parseInt(dateArr[2])
           if (idx == (dates.length - 1)) {
-            newDate.push(date[0]);
-            newValue.push((suma / contador));
+            if (lastYear == year && lastMonth == month && lastDay == day) {
+              suma += values[idx];
+              contador++;
+              newDate.push(date[0]);
+              newValue.push((suma / contador));
+            } else {
+              newDate.push(`${lastDay}-${lastMonth}-${lastYear}`);
+              newValue.push((suma / contador));
+              newDate.push(date[0]);
+              newValue.push((values[idx]));
+            }
           } else if (idx != 0 && lastYear == year && lastMonth == month && lastDay == day) {
             suma += values[idx];
             contador++;
@@ -336,12 +374,16 @@ export class LineGraph {
   }
 
 
-  setValueData(array_number: number[], isMuestreo: boolean = false,) {
-    if (isMuestreo) {
-      if (array_number.length > this.muestreo) {
-        const restarCount = (array_number.length + 1) - (this.muestreo);
-        array_number.splice(0, restarCount);
-      }
+  /**
+   * Funcion para asignar los datos a la grafica
+   * @param array_number 
+   * @param isMuestreo 
+   */
+  setValueData(array_number: number[]) {
+    //Validamos si la copia original de los datos supera el numero de muestreo
+    if (array_number.length > this.muestreo) {
+      const restarCount = (array_number.length + 1) - (this.muestreo);
+      array_number.splice(0, restarCount);
     }
     this.var1_dataset = array_number;
     this.lineChartData.datasets[0].data = array_number;
@@ -351,14 +393,22 @@ export class LineGraph {
     });
   }
 
+
+
   public muestreo = 0;
-  setValueLabel(array_labels: string[], isMuestreo: boolean = false) {
-    if (isMuestreo) {
-      if (array_labels.length > this.muestreo) {
-        const restarCount = (array_labels.length + 1) - (this.muestreo);
-        array_labels.splice(0, restarCount);
-      }
+  /**
+   * 
+   * @param array_labels 
+   * @param isMuestreo 
+   */
+  setValueLabel(array_labels: string[]) {
+
+    //Validamos si la copia original de los datos supera el numero de muestreo
+    if (array_labels.length > this.muestreo) {
+      const restarCount = (array_labels.length + 1) - (this.muestreo);
+      array_labels.splice(0, restarCount);
     }
+
     this.var1_labels = array_labels;
     this.lineChartData.labels = array_labels;
     this.eventData.emit({
@@ -380,22 +430,55 @@ export class LineGraph {
   sendParams() {
   }
 
+
+  /**
+   * Funcion para establecer el muestreo
+   * @param value string
+   */
   setMuestreo(value: string) {
     this.muestreo = parseInt(value);
-    let copiaData: number[] = [];
-    let copiaDate: string[] = [];
-    copiaData = copiaData.concat(this.copyDataBlobData)
-    copiaDate = copiaDate.concat(this.copyDateBlobData)
-    this.setValueData(copiaData, true);
-    this.setValueLabel(copiaDate, true);
+    /*
+       Reinicio las variables con los datos
+     */
+    this.no_de_elementos_recibidos = 0;
+    if (this.idInterval) {
+      clearInterval(this.idInterval);
+    }
+    this.copyDataBlobData = [];
+    this.copyDateBlobData = [];
+    this.executeQuerysAndPollingsVars(this.option_global, this.vars_global, this.varsName_global);
+
+    // /* 
+    //    Se crea dos arreglos para guardar la informacion esta
+    //    copia son los datos totales de blobData
+    // */
+    // let copiaData: number[] = [];
+    // let copiaDate: string[] = [];
+
+    // copiaData = this.copyDataBlobData
+    // copiaDate = this.copyDateBlobData
+
+    // this.setValueData(copiaData);
+    // this.setValueLabel(copiaDate);
   }
 
   public enableBlobData: boolean = false;
   public idBlobData: number | null = 0;
   private copyDataBlobData: number[] = [];
   private copyDateBlobData: string[] = [];
+
+  private option_global!: IlineChartConfiguration;
+  private vars_global !: AllVar[];
+  private varsName_global !: string[];
   reloadData(option: IlineChartConfiguration, vars?: AllVar[], varsName?: string[]) {
-    //BlobData
+    //Asignar Variables en caso del muestreo
+    this.option_global = option;
+    if (vars)
+      this.vars_global = vars;
+    if (varsName)
+      this.varsName_global = varsName;
+
+    //BlobData operations
     if (!this.enableBlobData) {
       this.idBlobData = option.general.idblobdata;
       this.muestreo = option.general.sampling_number;
@@ -408,8 +491,8 @@ export class LineGraph {
             let copiaDate: string[] = [];
             copiaData = copiaData.concat(this.copyDataBlobData)
             copiaDate = copiaDate.concat(this.copyDateBlobData)
-            this.setValueData(copiaData, true);
-            this.setValueLabel(copiaDate, true);
+            this.setValueData(copiaData);
+            this.setValueLabel(copiaDate);
             this.enableBlobData = true;
           })
           .catch((err) => {
@@ -432,7 +515,21 @@ export class LineGraph {
     this.lineChartData.datasets[0].pointBorderWidth = option.styles.point_border_size;
     this.lineChartData.datasets[0].pointBorderColor = option.styles.point_border_color;
     this.lineChartData.datasets[0].pointRadius = option.styles.point_width;
+    this.executeQuerysAndPollingsVars(option, vars, varsName);
+  }
 
+
+
+
+  private no_de_elementos_recibidos: number = 0;
+  /**
+   * @file line_chart.ts
+   * @description Ejecuta las consultas por tipo y su respectivo polling
+   * @param option 
+   * @param vars 
+   * @param varsName 
+   */
+  executeQuerysAndPollingsVars(option: IlineChartConfiguration, vars?: AllVar[], varsName?: string[]) {
     //Calcular tiempo en milisgundos del polling
     let time = 100000; //Valor default de 10 segundos
     const tiempoEntrada = option.general.polling.time;
@@ -450,6 +547,7 @@ export class LineGraph {
         break;
       }
     }
+
     //Configuracion con la peticion asignada a la grafica
     if (option.general.idVariableJson) {
       //Protocolo "http
@@ -458,7 +556,7 @@ export class LineGraph {
       //Protocolo modbus tcp/ip
       this.getVariableModbus(option.general.idVariableModbus, time);
     } else if (option.general.idVariableMemory) {
-      //Protocolo modbus tcp/ip
+      //Variable de memoria 
       this.varsService.getMemoryVarById(option.general.idVariableMemory).subscribe((variable) => {
         if (vars && varsName) {
           this.getNextResultMemoryVar(variable, 0, 1, vars, varsName);
@@ -475,7 +573,6 @@ export class LineGraph {
     } else if (option.general.idVariableEndpoint) {
       this.getVariableEndpoint(option.general.idVariableEndpoint, time);
     }
-
   }
 
 
@@ -491,7 +588,6 @@ export class LineGraph {
           if (this.var1_dataset.length + 1 > this.muestreo) {
             const restarCount = (this.var1_dataset.length + 1) - (this.muestreo);
             this.var1_dataset.splice(0, restarCount);
-
             this.var1_labels.splice(0, restarCount);
           }
           this.var1_dataset.push(result_number);
@@ -534,13 +630,17 @@ export class LineGraph {
 
 
 
+
+
   getVariableEndpoint(idEndpoint: number, time: number) {
-    this.cma_endpoint.getOneEndpointById(idEndpoint, 0).subscribe((blobdata) => {
+    this.cma_endpoint.getOneEndpointById(idEndpoint, 0, this.muestreo).subscribe((blobdata) => {
+      this.var1_dataset = [];
+      this.var1_labels = [];
+      this.copyDataBlobData = [];
+      this.copyDateBlobData = [];
+      this.no_de_elementos_recibidos = 0;
+
       if (blobdata.length > 0) {
-        this.var1_dataset = [];
-        this.var1_labels = [];
-        this.copyDataBlobData = [];
-        this.copyDateBlobData = [];
         blobdata[0].register_date.forEach((datenow, idx) => {
           if (this.var1_dataset.length + 1 > this.muestreo) {
             const restarCount = (this.var1_dataset.length + 1) - (this.muestreo);
@@ -550,54 +650,73 @@ export class LineGraph {
 
           this.var1_dataset.push(blobdata[0].value[idx]);
           this.var1_labels.push(datenow);
+
           this.copyDataBlobData.push(blobdata[0].value[idx]);
           this.copyDateBlobData.push(datenow);
+        })
+
+        this.no_de_elementos_recibidos = this.copyDataBlobData.length;
+
+        if (this.groupByDateOption > 0) {
+          this.groupByDate(this.groupByDateOption)
+        } else {
           this.lineChartData.datasets[0].data = this.var1_dataset;
           this.lineChartData.labels = this.var1_labels;
-          this.eventData.emit({
-            lineChartData: this.lineChartData,
-            lineChartOptions: this.lineChartOptions
-          });
-        })
+        }
+        this.eventData.emit({
+          lineChartData: this.lineChartData,
+          lineChartOptions: this.lineChartOptions
+        });
       } else {
         this.alertService.setMessageAlert("No hay valores en este espacio.")
       }
     }, (err: HttpErrorResponse) => {
       console.log(err);
-    })
-
-    //Polling
-    //Limpiamos el intervalo 
-    if (this.idInterval) {
-      clearInterval(this.idInterval);
-    }
-    setTimeout(()=>{
+    }, () => {
+      //Polling
+      //Limpiamos el intervalo 
+      if (this.idInterval) {
+        clearInterval(this.idInterval);
+      }
       this.idInterval = setInterval(() => {
-        this.cma_endpoint.getOneEndpointById(idEndpoint, this.var1_dataset.length).subscribe((blobdata) => {
-          if (blobdata.length > 0) {
-            blobdata[0].register_date.forEach((datenow, idx) => {
-              if (this.var1_dataset.length + 1 > this.muestreo) {
-                const restarCount = (this.var1_dataset.length + 1) - (this.muestreo);
-                this.var1_dataset.splice(0, restarCount);
-                this.var1_labels.splice(0, restarCount);
+        this.cma_endpoint.getOneEndpointById(idEndpoint, this.no_de_elementos_recibidos, this.muestreo)
+          .pipe(timeout(time < 3000 ? 3000 : time))
+          .subscribe((blobdata) => {
+            if (blobdata && blobdata.length > 0) {
+              if(blobdata[0]){
+                blobdata[0].register_date.forEach((datenow, idx) => {
+                  if (this.var1_dataset.length + 1 > this.muestreo) {
+                    const restarCount = (this.var1_dataset.length + 1) - (this.muestreo);
+                    this.var1_dataset.splice(0, restarCount);
+                    this.var1_labels.splice(0, restarCount);
+                  }
+  
+                  this.var1_dataset.push(blobdata[0].value[idx]);
+                  this.var1_labels.push(datenow);
+                  this.copyDataBlobData.push(blobdata[0].value[idx]);
+                  this.copyDateBlobData.push(datenow);
+                })
+  
+                this.no_de_elementos_recibidos = this.copyDataBlobData.length;
+  
+                if (this.groupByDateOption > 0) {
+                  this.groupByDate(this.groupByDateOption)
+                } else {
+                  this.lineChartData.datasets[0].data = this.var1_dataset;
+                  this.lineChartData.labels = this.var1_labels;
+                }
+                this.eventData.emit({
+                  lineChartData: this.lineChartData,
+                  lineChartOptions: this.lineChartOptions
+                });
               }
-              this.var1_dataset.push(blobdata[0].value[idx]);
-              this.var1_labels.push(datenow);
-              this.copyDataBlobData.push(blobdata[0].value[idx]);
-              this.copyDateBlobData.push(datenow);
-              this.lineChartData.datasets[0].data = this.var1_dataset;
-              this.lineChartData.labels = this.var1_labels;
-              this.eventData.emit({
-                lineChartData: this.lineChartData,
-                lineChartOptions: this.lineChartOptions
-              });
-            })
-          }
-        }, (err: HttpErrorResponse) => {
-          console.log(err);
-        })
-      }, time)
-    }, 10000)
+          
+            }
+          }, (err: HttpErrorResponse) => {
+            console.log(err);
+          })
+      }, time < 3000 ? 3000 : time)
+    })
   }
 
 
@@ -634,40 +753,37 @@ export class LineGraph {
         }
       }
     })
-    setTimeout(() => {
-      //Polling
-      //Limpiamos el intervalo 
-      if (this.idInterval) {
-        clearInterval(this.idInterval);
-      }
-      this.idInterval = setInterval(() => {
-        this.varsService.getModbusVarById(idmodbusvar).subscribe((modbusVar) => {
-          const value: number = modbusVar[0].value[0];
-          if (value && typeof value == 'number') {
-            if (this.var1_dataset.length + 1 > this.muestreo) {
-              const restarCount = (this.var1_dataset.length + 1) - (this.muestreo + 1);
-              this.var1_dataset.splice(0, restarCount);
-              this.var1_labels.splice(0, restarCount);
-            }
-            this.var1_dataset.push(value);
-            this.var1_labels.push(this.parsearFecha(dateNow));
-            this.copyDataBlobData.push(value);
-            this.copyDateBlobData.push(this.parsearFecha(dateNow));
-            if (this.groupByDateOption > 0) {
-              this.groupByDate(this.groupByDateOption)
-            } else {
-              this.lineChartData.datasets[0].data = this.var1_dataset;
-              this.lineChartData.labels = this.var1_labels;
-            }
-            this.eventData.emit({
-              lineChartData: this.lineChartData,
-              lineChartOptions: this.lineChartOptions
-            });
+    //Polling
+    //Limpiamos el intervalo 
+    if (this.idInterval) {
+      clearInterval(this.idInterval);
+    }
+    this.idInterval = setInterval(() => {
+      this.varsService.getModbusVarById(idmodbusvar).subscribe((modbusVar) => {
+        const value: number = modbusVar[0].value[0];
+        if (value && typeof value == 'number') {
+          if (this.var1_dataset.length + 1 > this.muestreo) {
+            const restarCount = (this.var1_dataset.length + 1) - (this.muestreo + 1);
+            this.var1_dataset.splice(0, restarCount);
+            this.var1_labels.splice(0, restarCount);
           }
-        })
-      }, time)
-    }, 10000);
-
+          this.var1_dataset.push(value);
+          this.var1_labels.push(this.parsearFecha(dateNow));
+          this.copyDataBlobData.push(value);
+          this.copyDateBlobData.push(this.parsearFecha(dateNow));
+          if (this.groupByDateOption > 0) {
+            this.groupByDate(this.groupByDateOption)
+          } else {
+            this.lineChartData.datasets[0].data = this.var1_dataset;
+            this.lineChartData.labels = this.var1_labels;
+          }
+          this.eventData.emit({
+            lineChartData: this.lineChartData,
+            lineChartOptions: this.lineChartOptions
+          });
+        }
+      })
+    }, time < 1000 ? 1000 : time)
   }
 
 
@@ -710,38 +826,35 @@ export class LineGraph {
     }
 
     //Iniciamos el intervalo
-    setTimeout(()=> {
-      this.idInterval = setInterval(() => {
-        this.jsonBuilder.doQuery(jsonVar)
-          .then((value) => {
-            const date = new Date();
-            const dateNow = date.toLocaleString().replace(",", "").replaceAll("/", "-");
-  
-            if (this.var1_dataset.length + 1 > this.muestreo) {
-              const restarCount = (this.var1_dataset.length) - (this.muestreo);
-              this.var1_dataset.splice(0, restarCount);
-              this.var1_labels.splice(0, restarCount);
-            }
-            this.var1_dataset.push(parseFloat(value as string));
-            this.var1_labels.push(this.parsearFecha(dateNow));
-            this.copyDataBlobData.push(parseFloat(value as string));
-            this.copyDateBlobData.push(this.parsearFecha(dateNow));
-            if (this.groupByDateOption > 0) {
-              this.groupByDate(this.groupByDateOption)
-            } else {
-              this.lineChartData.datasets[0].data = this.var1_dataset;
-              this.lineChartData.labels = this.var1_labels;
-            }
-            this.eventData.emit({
-              lineChartData: this.lineChartData,
-              lineChartOptions: this.lineChartOptions
-            });
-          })
-          .catch((err) => {
-            console.log("Error al realizar la peticion: ", err)
-          })
-      }, time);
-    }, 10000)
-   
+    this.idInterval = setInterval(() => {
+      this.jsonBuilder.doQuery(jsonVar)
+        .then((value) => {
+          const date = new Date();
+          const dateNow = date.toLocaleString().replace(",", "").replaceAll("/", "-");
+
+          if (this.var1_dataset.length + 1 > this.muestreo) {
+            const restarCount = (this.var1_dataset.length) - (this.muestreo);
+            this.var1_dataset.splice(0, restarCount);
+            this.var1_labels.splice(0, restarCount);
+          }
+          this.var1_dataset.push(parseFloat(value as string));
+          this.var1_labels.push(this.parsearFecha(dateNow));
+          this.copyDataBlobData.push(parseFloat(value as string));
+          this.copyDateBlobData.push(this.parsearFecha(dateNow));
+          if (this.groupByDateOption > 0) {
+            this.groupByDate(this.groupByDateOption)
+          } else {
+            this.lineChartData.datasets[0].data = this.var1_dataset;
+            this.lineChartData.labels = this.var1_labels;
+          }
+          this.eventData.emit({
+            lineChartData: this.lineChartData,
+            lineChartOptions: this.lineChartOptions
+          });
+        })
+        .catch((err) => {
+          console.log("Error al realizar la peticion: ", err)
+        })
+    }, time < 1000 ? 1000 : time);
   }
 }

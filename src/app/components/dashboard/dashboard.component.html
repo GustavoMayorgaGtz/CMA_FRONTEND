@@ -1,18 +1,18 @@
 <div class="primary-container" *ngIf="menu_tool == 1">
     <div class="main" >
-        <div class="title">
+        <!-- <div class="title">
             Dashboard
-        </div>
+        </div> -->
         <div class="content">
             <app-tieldmap style="width: 100%; height: 100%;" > </app-tieldmap>
      
         </div>
     </div>
     <div class="menu" >
-        <div class="toggle-button-menu" (click)="hiddenTools(menu)">
+        <div class="toggle-button-menu " (click)="hiddenTools(menu)">
             <img src="./assets/graphs/expand.svg" alt="">
         </div>
-        <div class="menu-content" #menu>
+        <div class="menu-hidden" #menu>
             <div class="content-type-graphs">
                 <div class="box-graph" (click)="set_menu_tool = 2">
                     <img src="./assets/graphs/line_chart.svg" alt="line chart" class="image_contet">

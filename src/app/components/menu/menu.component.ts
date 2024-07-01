@@ -8,7 +8,7 @@ import { finalizeService } from 'src/app/service/finalize.service';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  styleUrls: ['./menu.component.scss', './menu.component.mobile.scss']
 })
 export class MenuComponent {
    @Output() option: EventEmitter<number> = new EventEmitter();

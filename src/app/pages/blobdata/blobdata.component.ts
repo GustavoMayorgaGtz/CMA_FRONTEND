@@ -67,14 +67,17 @@ export class BlobdataComponent implements OnInit {
       let idgraph = params['idgraph']; //Este es el id de la grafica
       let type = params['type']; //Este es el tipo de la grafica
 
+      
       this.blobdataServices.getOneBlobDataById(idblobdata).subscribe((blobdata) => {
-        blobdata.value.forEach((valor, idx) => {
-            this.blobdataInformation.push({valor: valor, fecha: blobdata.register_date[idx]});
-        })
-
+        if(blobdata && blobdata.value){
+          blobdata.value.forEach((valor, idx) => {
+              this.blobdataInformation.push({valor: valor, fecha: blobdata.register_date[idx]});
+          }) 
+        }
       }, (err: HttpErrorResponse) => {
         console.log(err)
       })
+      
       //Validar que tipo de grafica se va a mostrar por el momento
       this.typeChart = type;
       this.linechart.getOneById(idgraph).subscribe((graph_line) => {
@@ -126,8 +129,6 @@ export class BlobdataComponent implements OnInit {
       })
     });
   }
-
-
 
   public groupByDataOption: number = 1;
   groupByData(option: number){

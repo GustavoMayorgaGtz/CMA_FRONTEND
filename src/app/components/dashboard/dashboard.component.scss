@@ -21,7 +21,7 @@
             flex-wrap: wrap;
             align-content: start;
             overflow: hidden;
-            height: calc(100vh - 130px);
+            height: calc(100vh - 85px);
             width: 100%;
             position: relative;
 
@@ -74,7 +74,6 @@
             max-width: 40px;
             grid-column: 1;
             height: 100%;
-            background-color: rgb(229, 229, 229);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -83,12 +82,25 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            animation: 2s callActionToggleMenu;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
 
             &:hover {
                 cursor: pointer;
                 background-color: rgb(242, 242, 242);
                 transition: 0.2 all;
             }
+        }
+
+        @keyframes callActionToggleMenu{
+           from {
+            background-color: rgb(233, 158, 109);
+           }
+           to{
+            background-color: rgb(229, 229, 229);
+           }
+
         }
 
         .menu-content {

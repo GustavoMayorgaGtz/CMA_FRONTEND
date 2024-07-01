@@ -13,16 +13,16 @@
             </div>
             <div class="bloque-entrada">
                 <label for="inpt-title">Contraseña</label>
-                <input type="password" name="password" id="password" autocomplete="off" placeholder="Password" formControlName="password">
+                <input type="password" name="password" id="password" autocomplete="off" placeholder="Password" formControlName="password" (keyup.enter)="loggear()">
             </div>
             <div class="bloque-general">
                 <div class="container-recordar">
                     <input type="checkbox" name="recordar" id="recordar">
                     <label for="recordar">Recordarme</label>
                 </div>
-                <div class="container-forgeinpassword">
+                <!-- <div class="container-forgeinpassword">
                     ¿Olvidaste tu contraseña?
-                </div>
+                </div> -->
             </div>
             <div class="btn-login" >
                 <span class="back">Comenzar!</span>

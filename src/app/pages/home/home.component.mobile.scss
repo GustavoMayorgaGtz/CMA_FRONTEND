@@ -1,0 +1,21 @@
+@media screen and (max-width: 700px) {
+    .container-primary {
+        .title-header{
+            display: none;
+            visibility: hidden;
+            height: 0px;
+        }
+        .main {
+            width: 100vw;
+            flex-direction: column;
+            display: flex;
+
+            .container-pages {
+                width: 100vw;
+                overflow: hidden;
+                min-height: 100%;
+                max-height: 100%;
+            }
+        }
+    }
+}

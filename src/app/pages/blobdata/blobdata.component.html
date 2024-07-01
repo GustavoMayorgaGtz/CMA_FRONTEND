@@ -39,7 +39,7 @@
                 </div>
                 <div class="content">
                     <div class="input-muestreo">
-                        <input type="range" min="10" max="2000" step="10" #range value={{samplingNumber}} (change)="grafica_linear.setMuestreo(range.value)">
+                        <input type="range" min="10" max="2000" step="10" #range value={{samplingNumber}} (click)="grafica_linear.setMuestreo(range.value)" (change)="grafica_linear.setMuestreo(range.value)" >
                         <div class="bottom">
                             <div class="min">0</div>
                             <div class="center">{{range.value}}</div>

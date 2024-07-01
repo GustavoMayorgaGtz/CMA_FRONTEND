@@ -10,7 +10,8 @@ export interface IBlobData_Database {
    idblobdata: number,
    value: number[],
    register_date: string[],
-   description: string
+   description: string,
+   full: boolean
 }
 
 //Esta informacion sirve para graficar en tabla
