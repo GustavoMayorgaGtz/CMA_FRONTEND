@@ -21,7 +21,14 @@ export class ModbusVariableClass {
    * @param no_register number
    *
    */
-    testConnection(ip: string, port: string, no_register: string) {
+    testConnection(
+        ip: string,
+        port: string,
+        no_register: string,
+        quantity: string,
+        type_date: string,
+        unidId: string
+    ) {
         const no_ip = ip.split(".");
         let noOfPoints = ((ip.split(".").length) == 4) ? true : false;
         no_ip.forEach((key) => {
@@ -30,7 +37,7 @@ export class ModbusVariableClass {
         });
         if (noOfPoints) {
             if (ip && port && no_register) {
-                this.varsService.test_Modbus_var({ ip, port, no_register }).subscribe((data) => {
+                this.varsService.test_Modbus_var({ ip, port, no_register, quantity, type_date, unidId }).subscribe((data) => {
                     this.alertService.setMessageAlert("Parametros correctos");
                     this.output_modbus_get_value.emit(data);
                 }, (err: HttpErrorResponse) => {
@@ -61,7 +68,13 @@ export class ModbusVariableClass {
      * @param no_register number
      *
      */
-    createVariable(nombre: string, ip: string, port: string, no_register: string) {
+    createVariable(nombre: string,
+        ip: string,
+        port: string,
+        no_register: string,
+        quantity: string,
+        type_date: string,
+        unidId: string) {
         const no_ip = ip.split(".");
         let noOfPoints = ((ip.split(".").length) == 4) ? true : false;
         no_ip.forEach((key) => {
@@ -69,9 +82,22 @@ export class ModbusVariableClass {
                 noOfPoints = false;
         });
         if (noOfPoints) {
-            if (nombre && ip && port && no_register) {
+            if (nombre &&
+                ip &&
+                port &&
+                no_register &&
+                quantity &&
+                type_date &&
+                unidId) {
                 if (confirm("¿Deseas guardar la variable modbus?")) {
-                    this.varsService.create_Modbus_var({ name: nombre, ip, port, no_register }).subscribe((data) => {
+                    this.varsService.create_Modbus_var({ 
+                        name: nombre,
+                        ip,
+                        port,
+                        no_register,
+                        quantity,
+                        type_date,
+                        unidId}).subscribe((data) => {
                         this.alertService.setMessageAlert("Variable modbus creada");
                         this.output_modbus_variableCreada.emit(true);
                     }, (err: HttpErrorResponse) => {

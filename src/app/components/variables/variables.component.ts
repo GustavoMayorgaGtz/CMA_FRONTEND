@@ -250,10 +250,19 @@ export class VariablesComponent implements OnInit, AfterViewInit {
    * @param port 
    * @param no_register 
    */
-  testModbusVar(name: string, ip: string, port: string, no_register: string) {
+  testModbusVar(
+    name: string,
+    ip: string,
+    port: string,
+    no_register: string,
+    quantity: string,
+    type_date: string,
+    unidId: string
+  ) {
     if (!this.modbus_connection_value) {
-      this.modbusBuilder.testConnection(ip, port, no_register);
+      this.modbusBuilder.testConnection(ip, port, no_register, quantity, type_date, unidId);
       this.modbusBuilder.output_modbus_get_value.subscribe((value) => {
+        console.log(value);
         this.modbus_connection_value = value.message;
       })
     } else {
@@ -261,7 +270,7 @@ export class VariablesComponent implements OnInit, AfterViewInit {
       if (enableName !== -1) {
         this.alertService.setMessageAlert("Nombre repetido, cambia el nombre de la variable.");
       } else {
-        this.modbusBuilder.createVariable(name, ip, port, no_register);
+        this.modbusBuilder.createVariable(name,ip, port, no_register, quantity, type_date, unidId);
       }
     }
   }

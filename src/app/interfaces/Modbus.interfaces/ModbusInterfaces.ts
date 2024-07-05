@@ -2,13 +2,19 @@ export interface IModbusVar_Create {
     name: string,
     ip: string,
     port: string,
-    no_register: string
+    no_register: string,
+    quantity: string,
+    type_date: string,
+    unidId: string
 }
 
 export interface IModbusVar_Test {
     ip: string,
     port: string,
-    no_register: string
+    no_register: string,
+    quantity: string,
+    type_date: string,
+    unidId: string
 }
 export interface IModbusVar {
     idmodbusvar: number,
@@ -19,7 +25,7 @@ export interface IModbusVar {
     value: number[]
 }
 
-export interface IMemoryVar{
+export interface IMemoryVar {
     idmemoryvar: number,
     name: string,
     expression: string,

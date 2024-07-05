@@ -225,7 +225,7 @@ export class LineGraph {
         this.setValueLabel(newDate);
         break;
       }
-       /*********************************************************************/
+      /*********************************************************************/
       case 4: {
         //Dia
         const newDate: string[] = [];
@@ -683,22 +683,22 @@ export class LineGraph {
           .pipe(timeout(time < 3000 ? 3000 : time))
           .subscribe((blobdata) => {
             if (blobdata && blobdata.length > 0) {
-              if(blobdata[0]){
+              if (blobdata[0]) {
                 blobdata[0].register_date.forEach((datenow, idx) => {
                   if (this.var1_dataset.length + 1 > this.muestreo) {
                     const restarCount = (this.var1_dataset.length + 1) - (this.muestreo);
                     this.var1_dataset.splice(0, restarCount);
                     this.var1_labels.splice(0, restarCount);
                   }
-  
+
                   this.var1_dataset.push(blobdata[0].value[idx]);
                   this.var1_labels.push(datenow);
                   this.copyDataBlobData.push(blobdata[0].value[idx]);
                   this.copyDateBlobData.push(datenow);
                 })
-  
+
                 this.no_de_elementos_recibidos = this.copyDataBlobData.length;
-  
+
                 if (this.groupByDateOption > 0) {
                   this.groupByDate(this.groupByDateOption)
                 } else {
@@ -710,7 +710,7 @@ export class LineGraph {
                   lineChartOptions: this.lineChartOptions
                 });
               }
-          
+
             }
           }, (err: HttpErrorResponse) => {
             console.log(err);
@@ -760,28 +760,33 @@ export class LineGraph {
     }
     this.idInterval = setInterval(() => {
       this.varsService.getModbusVarById(idmodbusvar).subscribe((modbusVar) => {
-        const value: number = modbusVar[0].value[0];
-        if (value && typeof value == 'number') {
-          if (this.var1_dataset.length + 1 > this.muestreo) {
-            const restarCount = (this.var1_dataset.length + 1) - (this.muestreo + 1);
-            this.var1_dataset.splice(0, restarCount);
-            this.var1_labels.splice(0, restarCount);
+        if (modbusVar.length > 0) {
+          const value: number = modbusVar[0].value[0];
+          if (value && typeof value == 'number') {
+            if (this.var1_dataset.length + 1 > this.muestreo) {
+              const restarCount = (this.var1_dataset.length + 1) - (this.muestreo + 1);
+              this.var1_dataset.splice(0, restarCount);
+              this.var1_labels.splice(0, restarCount);
+            }
+            const date = new Date();
+            const dateNow = date.toLocaleString().replace(",", "").replaceAll("/", "-");
+            this.var1_dataset.push(value);
+            this.var1_labels.push(this.parsearFecha(dateNow));
+            this.copyDataBlobData.push(value);
+            this.copyDateBlobData.push(this.parsearFecha(dateNow));
+            if (this.groupByDateOption > 0) {
+              this.groupByDate(this.groupByDateOption)
+            } else {
+              this.lineChartData.datasets[0].data = this.var1_dataset;
+              this.lineChartData.labels = this.var1_labels;
+            }
+            this.eventData.emit({
+              lineChartData: this.lineChartData,
+              lineChartOptions: this.lineChartOptions
+            });
           }
-          this.var1_dataset.push(value);
-          this.var1_labels.push(this.parsearFecha(dateNow));
-          this.copyDataBlobData.push(value);
-          this.copyDateBlobData.push(this.parsearFecha(dateNow));
-          if (this.groupByDateOption > 0) {
-            this.groupByDate(this.groupByDateOption)
-          } else {
-            this.lineChartData.datasets[0].data = this.var1_dataset;
-            this.lineChartData.labels = this.var1_labels;
-          }
-          this.eventData.emit({
-            lineChartData: this.lineChartData,
-            lineChartOptions: this.lineChartOptions
-          });
         }
+
       })
     }, time < 1000 ? 1000 : time)
   }

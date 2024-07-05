@@ -39,7 +39,8 @@
 
     </div>
     <div class="variables" *ngIf="menu === 1">
-        <span *ngIf="jsonVariables.length === 0 && modbusVariables.length === 0 && memoryVariables.length === 0 && variablesEndpoint.length === 0 "
+        <span
+            *ngIf="jsonVariables.length === 0 && modbusVariables.length === 0 && memoryVariables.length === 0 && variablesEndpoint.length === 0 "
             style="width: 100%; height: 100%; display: flex; justify-content: center; margin-top: 15%;">No hay variables
             creadas</span>
         <div class="card-variable" *ngFor="let jsonVar of jsonVariables; let j = index">
@@ -51,7 +52,7 @@
                 {{jsonVar.value}}
             </div>
         </div>
-       
+
         <div class="card-variable" *ngFor="let modbusVar of modbusVariables; let j = index">
             <div class="header">
                 <div class="title">{{modbusVar.name}}</div>
@@ -79,9 +80,12 @@
                 <div class="type" style="color: rgb(49, 156, 156);">CMA Endpoint</div>
             </div>
             <div class="value_var">
-                <p>{{server}}cma_endpoint/insertValue<span style="color: rgb(0, 98, 255)">?</span><b>id_endpoint</b>={{cma_endpoint.id_endpoint}}<span style="color: rgb(0, 98, 255)">&</span><b>token</b>={{cma_endpoint.token}}<span style="color: rgb(0, 98, 255)">&</span><b>value</b>=Valor
-                <!-- {{cma_endpoint.description}} -->
-                <!-- {{modbusVar.value[0]}} -->
+                <p>{{server}}cma_endpoint/insertValue<span
+                        style="color: rgb(0, 98, 255)">?</span><b>id_endpoint</b>={{cma_endpoint.id_endpoint}}<span
+                        style="color: rgb(0, 98, 255)">&</span><b>token</b>={{cma_endpoint.token}}<span
+                        style="color: rgb(0, 98, 255)">&</span><b>value</b>=Valor
+                    <!-- {{cma_endpoint.description}} -->
+                    <!-- {{modbusVar.value[0]}} -->
             </div>
         </div>
     </div>
@@ -234,6 +238,10 @@
                     <input type="text" #name>
                 </div>
                 <div class="campo">
+                    <label for="">Slave ID</label>
+                    <input type="text" #unidID (keyup)="changeModbusInput()">
+                </div>
+                <div class="campo">
                     <label for="">IP PLC</label>
                     <input type="text" #ip (keyup)="changeModbusInput()">
                 </div>
@@ -246,14 +254,32 @@
                     <input type="number" #no_registro (keyup)="changeModbusInput()">
                 </div>
                 <div class="campo">
+                    <label for="">Numero de registros</label>
+                    <input type="text" #quantity (keyup)="changeModbusInput()">
+                </div>
+                <div class="campo">
+                    <label for="type_date">Tipo de datos</label>
+                    <select name="type_date" id="type_date" #type_data (change)="changeModbusInput()">
+                        <option>Signed</option>
+                        <option>Unsigned</option>
+                        <option>Hex</option>
+                        <option>Binary</option>
+                        <option>Float</option>
+                        <option>Float inverse</option>
+                        <option>Double</option> 
+                        <option>Double inverse</option>
+                        <option>Long</option>
+                        <option>Long inverse</option>
+                    </select>
+                </div>
+                <div class="campo">
                     <label for="">Valor del registro</label>
                     <input type="text" value={{modbus_connection_value}} disabled>
                 </div>
-
                 <br>
                 <br>
                 <div class="btn-guardar" style="background-color: rgb(174, 241, 152);"
-                    (click)="testModbusVar(name.value, ip.value, puerto.value, no_registro.value)">
+                    (click)="testModbusVar(name.value, ip.value, puerto.value, no_registro.value, quantity.value, type_data.value, unidID.value)">
                     <span *ngIf="!modbus_connection_value">Probar conexion y obtener valor</span>
                     <span *ngIf="modbus_connection_value">Guardar variable</span>
                 </div>

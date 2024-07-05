@@ -14,6 +14,10 @@ const routes: Routes = [
   {
     path: "blobdata",
     loadChildren: () => import("./blobdata/blobdata.module").then((m) => m.BlobdataModule)
+  },
+  {
+    path: "**",
+    redirectTo: "login"
   }
 ];
 
