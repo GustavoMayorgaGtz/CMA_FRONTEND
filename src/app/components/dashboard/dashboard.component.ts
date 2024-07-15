@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ExitService } from 'src/app/service/exit.service';
+import { SignalService } from 'src/app/service/signal_websocket.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +15,9 @@ export class DashboardComponent implements OnInit {
   }
 
   constructor(
-    private exitService: ExitService,) {
+    private exitService: ExitService,
+  private signalsService: SignalService) {
+    this.signalsService.ProduccionTotal(3);
   }
 
   public linear1: any;
