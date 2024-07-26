@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ExitService } from 'src/app/service/exit.service';
 import { SignalService } from 'src/app/service/signal_websocket.service';
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss', './dashboard.component.mobile.scss']
 })
 export class DashboardComponent implements OnInit {
-  public menu_tool: number = 1;
+  public menu_tool: number = 4;
 
   set set_menu_tool(option: number) {
     this.menu_tool = option;

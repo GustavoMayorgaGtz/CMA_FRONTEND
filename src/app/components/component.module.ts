@@ -26,6 +26,7 @@ import { TieldmapSequenceComponent } from './tieldmap-sequence/tieldmap-sequence
 import { MiCuentaComponent } from './cuenta/mi-cuenta/mi-cuenta.component';
 import { GestionCuentasComponent } from './cuenta/gestion-cuentas/gestion-cuentas.component';
 import { AccesosApiComponent } from './cuenta/accesos-api/accesos-api.component';
+import { ConfigureIndicatorComponent } from './configure_tools_components/configure-indicator/configure-indicator.component';
 
 const components = [NavComponent,
   MenuComponent,
@@ -44,6 +45,7 @@ const components = [NavComponent,
   SimpleTextInputComponent,
   ConfigureLinearGraphComponent,
   ConfigureSimpleButtonComponent,
+  ConfigureIndicatorComponent,
   LineChartComponent,
   TieldmapComponent,
   TieldmapSequenceComponent,

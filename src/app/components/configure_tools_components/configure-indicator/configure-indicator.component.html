@@ -1,0 +1,100 @@
+<div class="primary-container">
+    <nav>
+        <span class="title">
+            Configuracion de indicador
+        </span>
+        <span class="regresar" (click)="return()">
+            Regresar 
+        </span>
+    </nav>
+    <div class="left">
+        <div class="chart-container">
+            <div class="content-button" #button>
+               <div class="left">
+                  <div class="container-icon">
+                     <img src="./assets/warning.png" alt="warning" class="warning">
+                  </div>
+               </div>
+               <div class="right">
+                  <div class="container-content">
+                      <div class="title">TEMP OFI</div>
+                      <div class="content">LOW FLOW</div>
+                  </div>
+               </div>
+            </div>
+        </div>
+        <div class="description">
+        </div>
+    </div>
+    <div class="right">
+        <div class="content-create-tool">
+            <div class="class-configuration">
+                <div class="title">
+                    General
+                </div>
+                <div class="line">
+ 
+                </div>
+                <div class="updown">
+                    <img src="./assets/expand_more.png" class="open">
+                </div>
+            </div>
+            <div class="container-class">
+                <div class="campo">
+                    <div class="title">Titulo</div>
+                    <div class="description">Asigna el texto al indicador.</div>
+                    <input type="text" class="input-text" name="title" id="title" #title
+                        (change)="set_indicator_title = title.value" (keyup)="set_indicator_title = title.value" value={{get_indicator_title}}>
+                </div>
+                <div class="campo">
+                    <div class="title">Descripcion</div>
+                    <div class="description">Describe el uso del indicador.</div>
+                    <input type="text" class="input-text" name="description" id="description" #description
+                        (change)="set_indicator_description = description.value" value="Descripcion de un boton simple">
+                </div>
+                <div class="campo">
+                    <div class="title">Tipo de dato</div>
+                    <div class="description">Define el tipo de dato que vas a insertar.</div>
+                    <select #typedatain 
+                    (change)="set_indicator_type_data_in = typedatain.value">
+                        <option disabled>Selecciona estilo</option>
+                        <option select value="number">Numerico</option>
+                        <option value="string">Cadena de texto</option>
+                        <option value="boolean">Logico</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <div class="title">Simbolo</div>
+                    <div class="description">Define el simbolo o texto que define el tipo de valor, ejemplo mts, in, °.</div>
+                    <input type="text" class="input-text" name="symbol" id="symbol" #symbol
+                    (change)="set_indicator_symbol = symbol.value" (keyup)="set_indicator_symbol = symbol.value">
+                </div>
+                <div class="campo">
+                    <div class="title">Diseño</div>
+                    <div class="description">Define el tipo de diseño que mas se acerca a tu indicador.</div>
+                    <select #type_data_design (change)="set_indicator_type_data_design = type_data_design.value" >
+                        <option disabled>Selecciona estilo</option>
+                        <option select value="number">Luz</option>
+                        <option value="string">Temperatura</option>
+                        <option value="boolean">Aire</option>
+                        <option value="boolean">Humedad</option>
+                        <option value="boolean">Motor</option>
+                        <option value="boolean">Maquina</option>
+                        <option value="boolean">Status</option>
+                        <option value="boolean">Otro</option>
+                    </select>
+                </div>
+                <div class="campo boolean-campo">
+                    <div class="content-information">
+                        <div class="title">Guardar datos en un espacio virtual</div>
+                        <div class="description">Los datos van a guardarse para posteriormente ser analizados o graficados.</div>
+                    </div>
+                    <input type="checkbox" class="input-text"  #blobdata  (change)="set_indicator_blobdata = blobdata.checked">
+                </div>
+                <div class="btn-guardar" (click)="createIndicator()">
+                    Guardar configuracion
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

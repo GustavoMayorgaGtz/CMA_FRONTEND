@@ -57,7 +57,7 @@
                         <div class="title">Alerta</div>
                     </div>
                 </div>
-                <div class="box-graph disabled">
+                <div class="box-graph" (click)="set_menu_tool = 4">
                     <img src="./assets/graphs/indicator.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
                         <div class="title">Indicador</div>
@@ -79,4 +79,7 @@
 </div>
 <div class="primary-container" *ngIf="menu_tool == 3">
     <app-configure-simple-button></app-configure-simple-button>
+</div>
+<div class="primary-container" *ngIf="menu_tool == 4">
+    <app-configure-indicator></app-configure-indicator>
 </div>
