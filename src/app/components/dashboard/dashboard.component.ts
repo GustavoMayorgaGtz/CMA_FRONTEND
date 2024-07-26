@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     private exitService: ExitService,
   private signalsService: SignalService) {
-    this.signalsService.ProduccionTotal(3);
+    // this.signalsService.ProduccionTotal(3);
   }
 
   public linear1: any;
