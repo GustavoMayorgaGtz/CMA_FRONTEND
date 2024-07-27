@@ -90,11 +90,22 @@ export class ConfigureIndicatorComponent implements OnInit {
     if(!this.get_indicator_description){
       this.alertService.setMessageAlert("No haz definido correctamente la descripcion del indicador.")
     }
-    if(!this.get_indicator_){
-      this.alertService.setMessageAlert("No haz definido correctamente el titulo del indicador.")
+    if(!this.get_indicator_symbol){ 
+      this.alertService.setMessageAlert("No haz definido correctamente el simbolo del indicador.")
     }
+    if(!this.get_indicator_type_data_in){ 
+      this.alertService.setMessageAlert("No haz definido correctamente el tipo de entrada del indicador.")
+    }
+    if(!this.get_indicator_type_data_design){ 
+      this.alertService.setMessageAlert("No haz definido correctamente el diseño orientado al indicador.")
+    }
+    
     //Crear objeto
-    let object!: ICreate_Indicator;
+    let object!: ICreate_Indicator={
+      title: this.get_indicator_title,
+      description: this.get_indicator_description,
+      symbol:  this.get_indicator_symbol
+    }
   }
 
 
