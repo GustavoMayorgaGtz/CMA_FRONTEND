@@ -1,8 +1,10 @@
 
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ICreate_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
 import { AlertService } from 'src/app/service/alert.service';
 import { ExitService } from 'src/app/service/exit.service';
+import { IndicatorService } from 'src/app/service/indicators_service';
 
 @Component({
   selector: 'app-configure-indicator',
@@ -13,9 +15,12 @@ import { ExitService } from 'src/app/service/exit.service';
 export class ConfigureIndicatorComponent implements OnInit {
 
   
+
+  public show_save_button: boolean = true;
+
   /*-----*/
   //-   -   -   -   -   -   -   -   -   -   TITLE
-  private indicator_title: string = "";
+  private indicator_title: string = "TEMP OFI";
   public get get_indicator_title() {
     return this.indicator_title;
   }
@@ -42,7 +47,7 @@ export class ConfigureIndicatorComponent implements OnInit {
   }
   /*-----*/
   //-   -   -   -   -   -   -   -   -   -   TYPE DATA IN  
-  private indicator_type_data_in: string = "";
+  private indicator_type_data_in: string = "boolean";
   public get get_indicator_type_data_in() {
     return this.indicator_type_data_in;
   }
@@ -51,7 +56,7 @@ export class ConfigureIndicatorComponent implements OnInit {
   }
   /*-----*/
   //-   -   -   -   -   -   -   -   -   -   TYPE DATA DESIGN
-  private indicator_type_data_design: string = "";
+  private indicator_type_data_design: string = "light";
   public get get_indicator_type_data_design() {
     return this.indicator_type_data_design;
   }
@@ -74,7 +79,8 @@ export class ConfigureIndicatorComponent implements OnInit {
 
   constructor(
     private alertService: AlertService,
-    private exitService: ExitService) {
+    private exitService: ExitService,
+    private indicatorService: IndicatorService) {
   }
 
 
@@ -85,19 +91,25 @@ export class ConfigureIndicatorComponent implements OnInit {
 
   createIndicator() {
     //Validaciones
+    this.show_save_button = false;
     if (!this.get_indicator_title) {
+      this.show_save_button = true;
       this.alertService.setMessageAlert("No haz definido correctamente el titulo del indicador.")
     } else {
       if (!this.get_indicator_description) {
+        this.show_save_button = true;
         this.alertService.setMessageAlert("No haz definido correctamente la descripcion del indicador.")
       } else {
         if (!this.get_indicator_symbol) {
+          this.show_save_button = true;
           this.alertService.setMessageAlert("No haz definido correctamente el simbolo del indicador.")
         } else {
           if (!this.get_indicator_type_data_in) {
+            this.show_save_button = true;
             this.alertService.setMessageAlert("No haz definido correctamente el tipo de entrada del indicador.")
           } else {
             if (!this.get_indicator_type_data_design) {
+              this.show_save_button = true;
               this.alertService.setMessageAlert("No haz definido correctamente el diseño orientado al indicador.")
             } else {
               //Crear objeto
@@ -105,12 +117,18 @@ export class ConfigureIndicatorComponent implements OnInit {
                 title: this.get_indicator_title,
                 description: this.get_indicator_description,
                 symbol: this.get_indicator_symbol,
-                type_data_in: "",
-                type_data_design: "",
-                dashboard: 0,
+                type_data_in: this.get_indicator_type_data_in,
+                type_data_design: this.get_indicator_type_data_design,
+                dashboard: 1,
                 issaveblobdata: true
-
               }
+              this.indicatorService.create_indicator(object).subscribe((response) => {
+                this.alertService.setMessageAlert("Se creo el indicador correctamente.");
+                this.show_save_button = true;
+                window.location.reload();
+              }, (err: HttpErrorResponse) => {
+                this.alertService.setMessageAlert("No se creo el indicador correctamente, vuelve a intentarlo mas tarde.");
+              })
             }
           }
         }
