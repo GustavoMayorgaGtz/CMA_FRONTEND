@@ -12,11 +12,12 @@
             [ngStyle]="setChanges(shadow_container, idShadow, tieldmap)">
 
             <app-line-chart *ngIf="shadow.type === 'linechart'" [idlinechart]=shadow.id>
-
             </app-line-chart>
-            <app-simple-button *ngIf="shadow.type === 'simplebutton'" [idSimpleButton]=shadow.id>
 
-            </app-simple-button>
+            <app-indicator *ngIf="shadow.type === 'indicator'" [id_indicator]=shadow.id></app-indicator>
+
+            <app-simple-button *ngIf="shadow.type === 'simplebutton'" [idSimpleButton]=shadow.id></app-simple-button>
+
             <div class="opendata" *ngIf="shadow.type === 'linechart'" (click)="openData(shadow.id)">
                 <img src="./assets/abrir.svg">
             </div>

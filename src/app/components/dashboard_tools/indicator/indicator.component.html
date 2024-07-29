@@ -1,13 +1,21 @@
 <div class="content-button" #button>
-    <div class="left">
-       <div class="container-icon">
-          <img src="./assets/warning.png" alt="warning" class="warning">
-       </div>
-    </div>
-    <div class="right">
-       <div class="container-content">
-           <div class="title">TEMP OFI</div>
-           <div class="content">LOW FLOW</div>
-       </div>
-    </div>
- </div>
+   <div class="left">
+      <div class="container-icon">
+         <img src="./assets/lightbulb.svg" alt="Luz" class="Luz" *ngIf="type_data_design === 'light'">
+         <img src="./assets/engine.svg" 
+         style="filter: invert(0)" alt="Motor" class="Motor" *ngIf="type_data_design === 'motor'">
+         <img src="./assets/machine.svg" alt="Maquina" class="Maquibna" *ngIf="type_data_design === 'machine'">
+         <img src="./assets/airwave.svg" alt="Aire" class="Aire" *ngIf="type_data_design === 'air'">
+         <img src="./assets/thermostat.svg" alt="Temperatura" class="Temperatura" *ngIf="type_data_design === 'temperature'">
+         <img src="./assets/water_drop.svg" alt="Humedad" class="Humedad" *ngIf="type_data_design === 'wet'">
+         <img src="./assets/check.svg" alt="warning" class="warning" *ngIf="type_data_design === 'status'">
+         <img src="./assets/warning.png" alt="warning" class="warning" *ngIf="type_data_design === 'other'">
+      </div>
+   </div>
+   <div class="right">
+      <div class="container-content">
+          <div class="title">{{title}}</div>
+          <div class="content">LOW FLOW <span class="symbol">{{symbol}}</span></div>
+      </div>
+   </div>
+</div>

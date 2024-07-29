@@ -16,5 +16,12 @@ export class IndicatorService {
   }
 
 
+  getAll(primary_user: number){
+    return this.http.get<any>(server + "indicators/getAll?primary_user="+primary_user);
+  }
+
+  getOne(primary_user: number, id_indicator: number){
+    return this.http.get<any>(server + `indicators/getAll?primary_user=${primary_user}&id_indicator=${id_indicator}`);
+  }
 
 }

@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { IConfigurationShadow } from 'src/app/interfaces/TieldmapInterfaces/tieldmapinterfaces';
 import { finalizeService } from 'src/app/service/finalize.service';
+import { IndicatorService } from 'src/app/service/indicators_service';
 import { LineChartService } from 'src/app/service/linechart_service';
 import { SimpleButtonService } from 'src/app/service/simple_button_service';
 
@@ -19,34 +21,57 @@ export class TieldmapComponent {
 
   constructor(private linechart_Service: LineChartService,
     private simplebutton_Service: SimpleButtonService,
+    private indicators_Service: IndicatorService,
     private router: Router,
     private finalizeServices: finalizeService) {
-    //Obtener las variables 
-    this.linechart_Service.getAllLineChart().subscribe((linecharts) => {
-      linecharts.forEach((line_chart) => {
-        this.shadow_container.push({
-          width: line_chart.width ? line_chart.width : 300,
-          height: line_chart.height ? line_chart.height : 300,
-          x: line_chart.x ? line_chart.x : 0,
-          y: line_chart.y ? line_chart.y : 0,
-          type: 'linechart',
-          id: line_chart.idlinealchart
+    const idUser = sessionStorage.getItem("idUser");
+    
+    if (idUser) {
+      //Obtener las variables 
+      this.linechart_Service.getAllLineChart().subscribe((linecharts) => {
+        linecharts.forEach((line_chart) => {
+          this.shadow_container.push({
+            width: line_chart.width ? line_chart.width : 300,
+            height: line_chart.height ? line_chart.height : 300,
+            x: line_chart.x ? line_chart.x : 0,
+            y: line_chart.y ? line_chart.y : 0,
+            type: 'linechart',
+            id: line_chart.idlinealchart
+          })
         })
       })
-    })
-    //--------
-    this.simplebutton_Service.getAll_SimpleButton().subscribe((simplebuttons) => {
-      simplebuttons.forEach((simplebutton) => {
-        this.shadow_container.push({
-          width: simplebutton.width ? simplebutton.width : 300,
-          height: simplebutton.height ? simplebutton.height : 300,
-          x: simplebutton.x ? simplebutton.x : 0,
-          y: simplebutton.y ? simplebutton.y : 0,
-          type: 'simplebutton',
-          id: simplebutton.idsimplebutton
+      //--------
+      this.simplebutton_Service.getAll_SimpleButton().subscribe((simplebuttons) => {
+        simplebuttons.forEach((simplebutton) => {
+          this.shadow_container.push({
+            width: simplebutton.width ? simplebutton.width : 300,
+            height: simplebutton.height ? simplebutton.height : 300,
+            x: simplebutton.x ? simplebutton.x : 0,
+            y: simplebutton.y ? simplebutton.y : 0,
+            type: 'simplebutton',
+            id: simplebutton.idsimplebutton
+          })
         })
       })
-    })
+      //--------
+      console.log(idUser);
+      this.indicators_Service.getAll(parseInt(idUser)).subscribe((data) => {
+        console.log(data)
+        this.shadow_container.push({
+          width: data.width ? data.width : 300,
+          height: data.height ? data.height : 300,
+          x: data.x ? data.x : 0,
+          y: data.y ? data.y : 0,
+          type: 'indicator',
+          id: data.idsimplebutton
+        })
+      }, (err: HttpErrorResponse) => {
+                console.log(err);
+      })
+    } else {
+     this.router.navigate(['/'])
+    }
+
   }
 
 
@@ -79,19 +104,19 @@ export class TieldmapComponent {
     const lastBloqueWidth = (tieldmap_width / bloque_width) >= 20 ? (tieldmap_width / bloque_width) : 25;
 
     //Funcion para mover el shadow container
-    if (this.isMove && (positionX <= tieldmap_positionX_End-20)) {
+    if (this.isMove && (positionX <= tieldmap_positionX_End - 20)) {
       this.shadow_container[this.idShadowMove].x = parseInt((positionX / lastBloqueWidth).toString());
       this.shadow_container[this.idShadowMove].y = parseInt((positionY / lastBloqueWidth).toString());
-    }else{
-      
-       this.isMove = false
+    } else {
+
+      this.isMove = false
     }
 
     //Funcion para alterar el size del shadow container
-    if(this.shadow_container[this.idShadowResize]){
+    if (this.shadow_container[this.idShadowResize]) {
       let tieldmap_width_last = parseInt(((positionX / lastBloqueWidth) - this.shadow_container[this.idShadowResize].x).toString()) * lastBloqueWidth;
       const position_shadow_x_end = this.shadow_container[this.idShadowMove].x + tieldmap_width_last + tieldmap.getBoundingClientRect().x;
-      if (this.isResize && (position_shadow_x_end <= tieldmap_positionX_End-50)) {
+      if (this.isResize && (position_shadow_x_end <= tieldmap_positionX_End - 50)) {
         let tieldmap_height_last = parseInt(((positionY / lastBloqueWidth) - this.shadow_container[this.idShadowResize].y).toString()) * lastBloqueWidth;
         if (parseInt(((positionX / lastBloqueWidth) - this.init_x).toString()) <= 0) {
           tieldmap_width_last = lastBloqueWidth;
@@ -101,21 +126,21 @@ export class TieldmapComponent {
         }
         this.shadow_container[this.idShadowResize].width = tieldmap_width_last + lastBloqueWidth;
         this.shadow_container[this.idShadowResize].height = tieldmap_height_last + lastBloqueWidth;
-      }else{
+      } else {
         this.isResize = false;
       }
     }
- 
+
 
   }
 
 
-  setContenidoElement(contenedor: HTMLDivElement){
+  setContenidoElement(contenedor: HTMLDivElement) {
     contenedor.setAttribute("style", `
       width: 100%;
       height: ${this.MAX_HEIGHT}px`)
 
-      return{}
+    return {}
   }
 
 
@@ -141,7 +166,7 @@ export class TieldmapComponent {
     4.- Guardar la nueva posicion
     5.- Validar si la posicion Y esta siendo usada por otro objeto y si es asi recorrer y hacer validaciones
     */
- 
+
     const tieldmap_width = tieldmap.getBoundingClientRect().width;
     const bloque_width = parseInt((tieldmap_width / 25).toString());
     const lastBloqueWidth = (tieldmap_width / bloque_width) >= 20 ? (tieldmap_width / bloque_width) : 25;
@@ -151,25 +176,25 @@ export class TieldmapComponent {
     const shadow_container_x_end = shadow_container.x * this.lastBloqueWidth + shadow_container.width;
     const tieldmap_x_end = tieldmap.getBoundingClientRect().x + tieldmap.getBoundingClientRect().width;
 
-   
+
     //validacion 5
     if (this.temp_shadow_container.length > 0) {
 
-       /**
-       * Validaciones dentro de la validacion 5
-       * Eliminar la superposicion de los contenedores
-       * Agarrar el contenedor actual y validar cada uno de los contenedores temporeales
-       */
-        this.validacion_overarea(shadow_container, idShadow);
+      /**
+      * Validaciones dentro de la validacion 5
+      * Eliminar la superposicion de los contenedores
+      * Agarrar el contenedor actual y validar cada uno de los contenedores temporeales
+      */
+      this.validacion_overarea(shadow_container, idShadow);
     }
     //Validacion 1
-    if ((shadow_container.x * this.lastBloqueWidth) >= tieldmap_x_end ) {
+    if ((shadow_container.x * this.lastBloqueWidth) >= tieldmap_x_end) {
       this.shadow_container[idShadow].x = 0;
       // this.validacion_overarea(shadow_container, idShadow);
     }
     //Validacion 2 y 3
     if (shadow_container_x_end >= (tieldmap_x_end - 364)) { //TODO: Hay que checar esta validacion
-      const restante = shadow_container_x_end - (tieldmap_x_end-364); //Este restante nos sirve para restar al shadow init x
+      const restante = shadow_container_x_end - (tieldmap_x_end - 364); //Este restante nos sirve para restar al shadow init x
       const new_shadow_container_x_init = shadow_container_x - restante; //Esta es la nueva posicion del shadow container en el eje X hay que validar si es menor a la del tieldmap
 
       if (new_shadow_container_x_init <= tieldmap.getBoundingClientRect().x) {
@@ -177,8 +202,8 @@ export class TieldmapComponent {
          * Se le asigna el position x = 0 y el width de full tieldmap debido a que no cabe originalmente
          */
         this.shadow_container[idShadow].x = tieldmap.getBoundingClientRect().x;
-        this.shadow_container[idShadow].width = ((this.tieldmap_bloque_width * this.lastBloqueWidth) - 25 ); //El valor de resta es el que hace que este mas separado del borde derecho cuando el shadow lo sobrepasa
-      } 
+        this.shadow_container[idShadow].width = ((this.tieldmap_bloque_width * this.lastBloqueWidth) - 25); //El valor de resta es el que hace que este mas separado del borde derecho cuando el shadow lo sobrepasa
+      }
       else {
         this.shadow_container[idShadow].x = new_shadow_container_x_init; //Si cabe si le quitamos el restante a la posicion inicial de x
       }
@@ -198,12 +223,12 @@ export class TieldmapComponent {
       this.last_height = this.shadow_container[idShadow].y;
 
       tieldmap.setAttribute("height", `
-         height: ${this.last_height+200}px;
+         height: ${this.last_height + 200}px;
          `);
     }
 
 
-    if(this.MAX_HEIGHT < (this.shadow_container[idShadow].y * this.lastBloqueWidth)+ this.shadow_container[idShadow].height){
+    if (this.MAX_HEIGHT < (this.shadow_container[idShadow].y * this.lastBloqueWidth) + this.shadow_container[idShadow].height) {
       this.MAX_HEIGHT = (this.shadow_container[idShadow].y * this.lastBloqueWidth) + this.shadow_container[idShadow].height;
     }
 
@@ -216,49 +241,49 @@ export class TieldmapComponent {
      border: 1px solid rgba(0, 0, 0, 0.127);; border-radius: 5px;`);
   }
 
-  validacion_overarea(shadow_container: IConfigurationShadow, idShadow: number){
-      /**
-       * Validaciones dentro de la validacion 5
-       * Eliminar la superposicion de los contenedores
-       * Agarrar el contenedor actual y validar cada uno de los contenedores temporeales
-       */
-      this.temp_shadow_container.forEach((temp_shadow) => {
-        //VALIDACION EXTERNA
-        /**********************************************************************************************/
-        //Validar si ocupamos el mismo area
-        const shadow_container_x = this.shadow_container[idShadow].x * this.lastBloqueWidth;
-        const shadow_container_x_end = shadow_container.x * this.lastBloqueWidth + shadow_container.width;
-        const shadow_container_y = this.shadow_container[idShadow].y * this.lastBloqueWidth;
-        const shadow_container_y_end = shadow_container.y * this.lastBloqueWidth + shadow_container.height;
-        const y_init = temp_shadow.y * this.lastBloqueWidth;
-        const y_end = temp_shadow.y * this.lastBloqueWidth + temp_shadow.height;
-        const x_init = temp_shadow.x * this.lastBloqueWidth;
-        const x_end = temp_shadow.x * this.lastBloqueWidth + temp_shadow.width;
-        let inX = false;
-        let inY = false;
-        //dos validaciones para x
-        if (shadow_container_x >= x_init && shadow_container_x <= x_end) {
-          inX = true;
-        }
-        if (shadow_container_x_end >= x_init && shadow_container_x_end <= x_end) {
-          inX = true;
-        }
-        //dos validaciones para y
-        if (shadow_container_y >= y_init && shadow_container_y <= y_end) {
-          inY = true;
-        }
-        if (shadow_container_y_end >= y_init && shadow_container_y_end <= y_end) {
-          inY = true;
-        }
-        //Si estamos ocupando el area de otro contenedor hay que recorrer el contenedor actual
-        if (inX && inY) {
-          //recorrer hacia abajo
-          let newPositionY = parseInt(((y_end + (this.lastBloqueWidth)) / this.lastBloqueWidth).toString());
-          this.shadow_container[idShadow].y = newPositionY;
-          this.validacion_overarea(shadow_container, idShadow);
-        }
+  validacion_overarea(shadow_container: IConfigurationShadow, idShadow: number) {
+    /**
+     * Validaciones dentro de la validacion 5
+     * Eliminar la superposicion de los contenedores
+     * Agarrar el contenedor actual y validar cada uno de los contenedores temporeales
+     */
+    this.temp_shadow_container.forEach((temp_shadow) => {
+      //VALIDACION EXTERNA
+      /**********************************************************************************************/
+      //Validar si ocupamos el mismo area
+      const shadow_container_x = this.shadow_container[idShadow].x * this.lastBloqueWidth;
+      const shadow_container_x_end = shadow_container.x * this.lastBloqueWidth + shadow_container.width;
+      const shadow_container_y = this.shadow_container[idShadow].y * this.lastBloqueWidth;
+      const shadow_container_y_end = shadow_container.y * this.lastBloqueWidth + shadow_container.height;
+      const y_init = temp_shadow.y * this.lastBloqueWidth;
+      const y_end = temp_shadow.y * this.lastBloqueWidth + temp_shadow.height;
+      const x_init = temp_shadow.x * this.lastBloqueWidth;
+      const x_end = temp_shadow.x * this.lastBloqueWidth + temp_shadow.width;
+      let inX = false;
+      let inY = false;
+      //dos validaciones para x
+      if (shadow_container_x >= x_init && shadow_container_x <= x_end) {
+        inX = true;
+      }
+      if (shadow_container_x_end >= x_init && shadow_container_x_end <= x_end) {
+        inX = true;
+      }
+      //dos validaciones para y
+      if (shadow_container_y >= y_init && shadow_container_y <= y_end) {
+        inY = true;
+      }
+      if (shadow_container_y_end >= y_init && shadow_container_y_end <= y_end) {
+        inY = true;
+      }
+      //Si estamos ocupando el area de otro contenedor hay que recorrer el contenedor actual
+      if (inX && inY) {
+        //recorrer hacia abajo
+        let newPositionY = parseInt(((y_end + (this.lastBloqueWidth)) / this.lastBloqueWidth).toString());
+        this.shadow_container[idShadow].y = newPositionY;
+        this.validacion_overarea(shadow_container, idShadow);
+      }
 
-      })
+    })
   }
 
 

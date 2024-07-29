@@ -3,6 +3,6 @@ export interface IConfigurationShadow{
     y: number;
     width: number;
     height: number;
-    type: 'linechart' | 'simplebutton',
+    type: 'linechart' | 'simplebutton' | 'indicator',
     id: number
 }
