@@ -13,7 +13,7 @@ export class SignalService {
 
   socket = io(ws_server);
   constructor() {
-     console.log("Constructor de servicio")
+   
 
     
     //creando conexion a websocket

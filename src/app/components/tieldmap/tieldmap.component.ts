@@ -54,16 +54,15 @@ export class TieldmapComponent {
         })
       })
       //--------
-      console.log(idUser);
-      this.indicators_Service.getAll(parseInt(idUser)).subscribe((data) => {
-        console.log(data)
+      this.indicators_Service.getAll(parseInt(idUser)).subscribe((response) => {
+        const data = response[0]
         this.shadow_container.push({
           width: data.width ? data.width : 300,
           height: data.height ? data.height : 300,
           x: data.x ? data.x : 0,
           y: data.y ? data.y : 0,
           type: 'indicator',
-          id: data.idsimplebutton
+          id: data.id_indicator
         })
       }, (err: HttpErrorResponse) => {
                 console.log(err);

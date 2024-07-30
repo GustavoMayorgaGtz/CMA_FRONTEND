@@ -11,8 +11,7 @@
         <div class="shadow" *ngFor="let shadow of shadow_container; let idShadow = index;" #shadow_container
             [ngStyle]="setChanges(shadow_container, idShadow, tieldmap)">
 
-            <app-line-chart *ngIf="shadow.type === 'linechart'" [idlinechart]=shadow.id>
-            </app-line-chart>
+            <app-line-chart *ngIf="shadow.type === 'linechart'" [idlinechart]=shadow.id></app-line-chart>
 
             <app-indicator *ngIf="shadow.type === 'indicator'" [id_indicator]=shadow.id></app-indicator>
 

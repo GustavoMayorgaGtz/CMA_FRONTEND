@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { server } from 'src/environments/environment';
-import { ICreate_Indicator } from '../interfaces/IndicatorInterfaces/indicator_interfaces';
+import { ICreate_Indicator, IRecive_Indicator } from '../interfaces/IndicatorInterfaces/indicator_interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +17,11 @@ export class IndicatorService {
 
 
   getAll(primary_user: number){
-    return this.http.get<any>(server + "indicators/getAll?primary_user="+primary_user);
+    return this.http.get<IRecive_Indicator[]>(server + "indicators/getAll?primary_user="+primary_user);
   }
 
   getOne(primary_user: number, id_indicator: number){
-    return this.http.get<any>(server + `indicators/getAll?primary_user=${primary_user}&id_indicator=${id_indicator}`);
+    return this.http.get<IRecive_Indicator>(server + `indicators/getOne?primary_user=${primary_user}&id_indicator=${id_indicator}`);
   }
 
 }

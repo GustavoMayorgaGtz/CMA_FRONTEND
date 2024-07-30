@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AlertService } from 'src/app/service/alert.service';
 import { IndicatorService } from 'src/app/service/indicators_service';
 
@@ -8,7 +8,7 @@ import { IndicatorService } from 'src/app/service/indicators_service';
   templateUrl: './indicator.component.html',
   styleUrls: ['./indicator.component.scss']
 })
-export class IndicatorComponent implements OnInit {
+export class IndicatorComponent implements OnInit, OnChanges {
 
   @Input() id_indicator!: number;
 
@@ -24,19 +24,31 @@ export class IndicatorComponent implements OnInit {
   constructor(private indicatorService: IndicatorService,
     private alertService: AlertService
   ) { }
+
   
-  ngOnInit(): void {
-    const idUserString = sessionStorage.getItem("idUser");
-    if (idUserString) {
-      this.indicatorService.getOne(parseInt(idUserString), this.id_indicator).subscribe((data) => {
-        console.log(data);
-      }, (err: HttpErrorResponse) => {
-        this.alertService.setMessageAlert("No se pudo obtener el indicador, intentalo mas tarde.");
-      })
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes) {
+      const idUserString = sessionStorage.getItem("idUser");
+      if (idUserString) {
+        this.indicatorService.getOne(parseInt(idUserString), this.id_indicator).subscribe((data) => {
+          console.log(data)
+          const actualIndicator = data;
+          console.log(actualIndicator)
+          this.title = actualIndicator.title;
+          this.description = actualIndicator.description;
+          this.symbol = actualIndicator.symbol;
+          this.dashboard = actualIndicator.dashboard;
+          this.type_data_in = actualIndicator.type_data_in;
+          this.type_data_design = actualIndicator.type_data_design;
+          this.groupName = actualIndicator.groupname;
+        }, (err: HttpErrorResponse) => {
+          this.alertService.setMessageAlert("No se pudo obtener el indicador, intentalo mas tarde." + err.message);
+        })
+      }
     }
   }
 
+  ngOnInit(): void {
 
-
-
+  }
 }
