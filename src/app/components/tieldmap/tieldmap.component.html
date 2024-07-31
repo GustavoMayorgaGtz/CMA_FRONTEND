@@ -10,7 +10,10 @@
             No hay herramientas creadas.</span>
         <div class="shadow" *ngFor="let shadow of shadow_container; let idShadow = index;" #shadow_container
             [ngStyle]="setChanges(shadow_container, idShadow, tieldmap)">
-
+             <span class="title" *ngIf="shadow.type === 'linechart'" >
+                Title
+            </span>
+             <!-- <span class="subtitle" *ngIf="shadow.type === 'linechart'" >Description</span> -->
             <app-line-chart *ngIf="shadow.type === 'linechart'" [idlinechart]=shadow.id></app-line-chart>
 
             <app-indicator *ngIf="shadow.type === 'indicator'" [id_indicator]=shadow.id></app-indicator>

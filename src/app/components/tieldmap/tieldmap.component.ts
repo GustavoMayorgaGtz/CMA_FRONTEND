@@ -237,7 +237,7 @@ export class TieldmapComponent {
       width: ${this.shadow_container[idShadow].width}px; 
       height: ${this.shadow_container[idShadow].height}px;
        background-color: white;
-     border: 1px solid rgba(0, 0, 0, 0.127);; border-radius: 5px;`);
+     border: 1px solid rgba(0, 0, 0, 0.127);; border-radius: 10px;`);
   }
 
   validacion_overarea(shadow_container: IConfigurationShadow, idShadow: number) {
@@ -295,7 +295,7 @@ export class TieldmapComponent {
     width: ${this.shadow_container[idShadow].width}px; 
     height: ${this.shadow_container[idShadow].height}px;
     background-color: white;
-    border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 5px;`);
+    border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 10px;`);
 
     if (this.propiedadAplicada.indexOf(idShadow) == -1) {
       this.propiedadAplicada.push(idShadow);

@@ -54,19 +54,22 @@ export class LineGraph {
     maintainAspectRatio: false, // Esto permite que el gráfico no mantenga un aspecto de cuadrado
     scales: {
       x: {
-        beginAtZero: false,
-
+        alignToPixels: true,
+        beginAtZero: false, 
+        // stacked: true,        
+        // display: false,
         ticks: {
-          maxRotation: 90,
+          maxRotation: 100,
           autoSkip: true,
           minRotation: 35
         }
       },
       y: {
-
+        // display: false,
+        // stacked: true,
         beginAtZero: false,
         ticks: {
-
+              
           // stepSize: .1  // Paso entre cada marca en el eje Y
         }
       }
