@@ -1,8 +1,12 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { iif } from 'rxjs';
+import { auth_class } from 'src/app/graphs_class/auth_class';
 import { ICreate_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
 import { AlertService } from 'src/app/service/alert.service';
+import { AuthService } from 'src/app/service/auth.service';
 import { ExitService } from 'src/app/service/exit.service';
 import { IndicatorService } from 'src/app/service/indicators_service';
 
@@ -14,7 +18,7 @@ import { IndicatorService } from 'src/app/service/indicators_service';
 
 export class ConfigureIndicatorComponent implements OnInit {
 
-  
+
 
   public show_save_button: boolean = true;
 
@@ -75,12 +79,15 @@ export class ConfigureIndicatorComponent implements OnInit {
   /*-----*/
 
 
-
+  public authClass = new auth_class(this.router, this.authService, this.alertService);
 
   constructor(
     private alertService: AlertService,
     private exitService: ExitService,
-    private indicatorService: IndicatorService) {
+    private router: Router,
+    private indicatorService: IndicatorService,
+    private authService: AuthService) {
+    this.authClass.validateUser();
   }
 
 
@@ -112,23 +119,34 @@ export class ConfigureIndicatorComponent implements OnInit {
               this.show_save_button = true;
               this.alertService.setMessageAlert("No haz definido correctamente el diseño orientado al indicador.")
             } else {
-              //Crear objeto
-              let object: ICreate_Indicator = {
-                title: this.get_indicator_title,
-                description: this.get_indicator_description,
-                symbol: this.get_indicator_symbol,
-                type_data_in: this.get_indicator_type_data_in,
-                type_data_design: this.get_indicator_type_data_design,
-                dashboard: 1,
-                issaveblobdata: true
+              //Obtener el id del usuario
+              this.authClass.validateUser();
+              const idUser = sessionStorage.getItem("idUser")
+              const token = sessionStorage.getItem("token")
+              if (idUser) {
+                //Crear objeto
+                let object: ICreate_Indicator = {
+                  title: this.get_indicator_title,
+                  description: this.get_indicator_description,
+                  symbol: this.get_indicator_symbol,
+                  type_data_in: this.get_indicator_type_data_in,
+                  type_data_design: this.get_indicator_type_data_design,
+                  dashboard: 1,
+                  issaveblobdata: true,
+                  primary_user: parseInt(idUser)
+                }
+                this.indicatorService.create_indicator(object).subscribe((response) => {
+                  this.alertService.setMessageAlert("Se creo el indicador correctamente.");
+                  this.show_save_button = true;
+                  window.location.reload();
+                }, (err: HttpErrorResponse) => {
+                  this.alertService.setMessageAlert("No se creo el indicador correctamente, vuelve a intentarlo mas tarde.");
+                })
+              } else {
+                this.alertService.setMessageAlert("Vuelve a iniciar sesion...")
+                this.router.navigate(['/login']);
               }
-              this.indicatorService.create_indicator(object).subscribe((response) => {
-                this.alertService.setMessageAlert("Se creo el indicador correctamente.");
-                this.show_save_button = true;
-                window.location.reload();
-              }, (err: HttpErrorResponse) => {
-                this.alertService.setMessageAlert("No se creo el indicador correctamente, vuelve a intentarlo mas tarde.");
-              })
+
             }
           }
         }

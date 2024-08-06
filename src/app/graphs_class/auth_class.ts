@@ -15,6 +15,7 @@ export class auth_class {
        
         if (idUser && token) {
             this.authService.authUser(parseInt(idUser), token).subscribe((response) => {
+                console.log("Response de validacion: ", response)
             }, (err: HttpErrorResponse) => {
                 this.alertService.setMessageAlert("Vuelve a iniciar sesion...")
                 this.router.navigate(['/login'])

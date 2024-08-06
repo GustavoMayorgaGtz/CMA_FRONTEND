@@ -5,7 +5,8 @@ export interface ICreate_Indicator {
     type_data_in: string,
     type_data_design: string,
     dashboard: number,
-    issaveblobdata: boolean
+    issaveblobdata: boolean,
+    primary_user: number
 }
 
 
