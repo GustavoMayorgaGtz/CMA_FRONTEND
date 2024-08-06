@@ -1,4 +1,5 @@
 export interface IConfigurationShadow{
+    name: string;
     x: number;
     y: number;
     width: number;

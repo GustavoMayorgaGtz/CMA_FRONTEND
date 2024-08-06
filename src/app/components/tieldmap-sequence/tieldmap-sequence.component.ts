@@ -32,6 +32,7 @@ export class TieldmapSequenceComponent implements OnInit {
       this.linechart_Service.getAllLineChart().subscribe((linecharts) => {
         linecharts.forEach((line_chart, idx) => {
             this.shadow_container.push({
+              name:  line_chart.title,
               width: line_chart.width ? line_chart.width : 300,
               height: line_chart.height ? line_chart.height : 300,
               x: line_chart.x ? line_chart.x : 0,
@@ -45,6 +46,7 @@ export class TieldmapSequenceComponent implements OnInit {
       this.simplebutton_Service.getAll_SimpleButton().subscribe((simplebuttons) => {
         simplebuttons.forEach((simplebutton) => {
           this.shadow_container.push({
+            name: simplebutton.title,
             width: simplebutton.width ? simplebutton.width : 300,
             height: simplebutton.height ? simplebutton.height : 300,
             x: simplebutton.x ? simplebutton.x : 0,
@@ -301,6 +303,7 @@ export class TieldmapSequenceComponent implements OnInit {
     }
     //Validacion 4
     this.temp_shadow_container.push({
+      name: this.shadow_container[idShadow].name,
       width: this.shadow_container[idShadow].width,
       height: this.shadow_container[idShadow].height,
       x: this.shadow_container[idShadow].x,

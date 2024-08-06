@@ -27,7 +27,8 @@ export class LineGraph {
     datasets: [
       {
         data: [],
-        label: this.title,
+
+        // label: this.title,
         // this dataset is drawn below
 
         fill: true,
@@ -45,19 +46,30 @@ export class LineGraph {
   };
 
   public lineChartOptions: ChartOptions<'line'> = {
+    // showLine: false,
     responsive: true,
     plugins: {
-      legend: {
-        display: false
+      // title: {
+      //   display: true,
+      //   text: 'Custom Chart Title'
+      // },
+      subtitle: {
+        display: true, 
+        fullSize:  true,
+        padding: 10,
+        font: {weight: 'bold'},
+        text: ''
+      },
+
+      tooltip: {
+        enabled: true // Opcional: controla si los tooltips están habilitados
       }
     },
     maintainAspectRatio: false, // Esto permite que el gráfico no mantenga un aspecto de cuadrado
     scales: {
       x: {
         alignToPixels: true,
-        beginAtZero: false, 
-        // stacked: true,        
-        // display: false,
+        beginAtZero: false,
         ticks: {
           maxRotation: 100,
           autoSkip: true,
@@ -65,16 +77,57 @@ export class LineGraph {
         }
       },
       y: {
-        // display: false,
-        // stacked: true,
         beginAtZero: false,
         ticks: {
-              
           // stepSize: .1  // Paso entre cada marca en el eje Y
         }
       }
     }
   };
+
+  // public lineChartOptions: ChartOptions<'line'> = {
+  //   responsive: true,
+  //   plugins: {
+  //     title: {
+  //       display: true,
+  //       text: 'Custom Chart Title'
+  //     },
+  //     subtitle: {
+  //       display: true,
+  //       text: 'Custom Chart Subtitle'
+  //     },
+  //     legend: {
+  //       display: false,
+  //       maxWidth: 0,
+  //       labels: {
+  //           color: 'rgb(255, 99, 132)'
+  //       }
+  //     }
+  //   },
+  //   maintainAspectRatio: false, // Esto permite que el gráfico no mantenga un aspecto de cuadrado
+  //   scales: {
+  //     x: {
+  //       alignToPixels: true,
+  //       beginAtZero: false,
+  //       // stacked: true,        
+  //       // display: false,
+  //       ticks: {
+  //         maxRotation: 100,
+  //         autoSkip: true,
+  //         minRotation: 35
+  //       }
+  //     },
+  //     y: {
+  //       // display: false,
+  //       // stacked: true,
+  //       beginAtZero: false,
+  //       ticks: {
+
+  //         // stepSize: .1  // Paso entre cada marca en el eje Y
+  //       }
+  //     }
+  //   }
+  // };
 
   constructor(private service: AllService,
     private alertService: AlertService,
@@ -392,6 +445,7 @@ export class LineGraph {
     this.lineChartData.datasets[0].data = array_number;
     this.eventData.emit({
       lineChartData: this.lineChartData,
+
       lineChartOptions: this.lineChartOptions
     });
   }
@@ -505,6 +559,12 @@ export class LineGraph {
 
 
     //Estilos de la grafica lineal
+    if (this.lineChartOptions.plugins) {
+      if (this.lineChartOptions.plugins.subtitle) {
+        this.lineChartOptions.plugins.subtitle.text = option.general.description;
+        this.lineChartOptions.plugins.subtitle.color = option.styles.point_color;
+      }
+    }
     this.lineChartData.datasets[0].label = option.general.title;
     this.lineChartData.datasets[0].fill = option.styles.fill;
     this.lineChartData.datasets[0].backgroundColor = option.styles.fill_color;

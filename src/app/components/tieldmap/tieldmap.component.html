@@ -11,7 +11,7 @@
         <div class="shadow" *ngFor="let shadow of shadow_container; let idShadow = index;" #shadow_container
             [ngStyle]="setChanges(shadow_container, idShadow, tieldmap)">
              <span class="title" *ngIf="shadow.type === 'linechart'" >
-                Title
+                {{shadow.name}}
             </span>
              <!-- <span class="subtitle" *ngIf="shadow.type === 'linechart'" >Description</span> -->
             <app-line-chart *ngIf="shadow.type === 'linechart'" [idlinechart]=shadow.id></app-line-chart>
@@ -21,7 +21,7 @@
             <app-simple-button *ngIf="shadow.type === 'simplebutton'" [idSimpleButton]=shadow.id></app-simple-button>
 
             <div class="opendata" *ngIf="shadow.type === 'linechart'" (click)="openData(shadow.id)">
-                <img src="./assets/abrir.svg">
+                <img src="./assets/open.svg">
             </div>
             <div class="erased" (click)="erasedShadow(idShadow)">
                 <img src="./assets/x-makeme.svg" draggable="false">
