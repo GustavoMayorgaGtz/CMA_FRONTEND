@@ -19,8 +19,7 @@ export class HomeComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.signalService.Alerta_TiempoParo(1);
-    this.signalService.Mandar(1);
+    
   }
 
   

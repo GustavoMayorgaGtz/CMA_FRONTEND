@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AlertService } from 'src/app/service/alert.service';
 import { IndicatorService } from 'src/app/service/indicators_service';
+import { SignalService } from 'src/app/service/signal_websocket.service';
 
 @Component({
   selector: 'app-indicator',
@@ -22,6 +23,7 @@ export class IndicatorComponent implements OnInit, OnChanges {
 
 
   constructor(private indicatorService: IndicatorService,
+    private signalService: SignalService,
     private alertService: AlertService
   ) { }
 
@@ -31,9 +33,7 @@ export class IndicatorComponent implements OnInit, OnChanges {
       const idUserString = sessionStorage.getItem("idUser");
       if (idUserString) {
         this.indicatorService.getOne(parseInt(idUserString), this.id_indicator).subscribe((data) => {
-          console.log(data)
           const actualIndicator = data;
-          console.log(actualIndicator)
           this.title = actualIndicator.title;
           this.description = actualIndicator.description;
           this.symbol = actualIndicator.symbol;
@@ -41,6 +41,7 @@ export class IndicatorComponent implements OnInit, OnChanges {
           this.type_data_in = actualIndicator.type_data_in;
           this.type_data_design = actualIndicator.type_data_design;
           this.groupName = actualIndicator.groupname;
+          this.signalService.groupName(actualIndicator.groupname);
         }, (err: HttpErrorResponse) => {
           this.alertService.setMessageAlert("No se pudo obtener el indicador, intentalo mas tarde." + err.message);
         })
@@ -48,7 +49,11 @@ export class IndicatorComponent implements OnInit, OnChanges {
     }
   }
 
+  public data: any;
   ngOnInit(): void {
-
+    this.signalService.dataRecive.subscribe((response) => {
+      console.log(response);
+      this.data = response;
+    })
   }
 }
