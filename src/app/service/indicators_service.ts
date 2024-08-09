@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { server } from 'src/environments/environment';
 import { ICreate_Indicator, IRecive_Indicator } from '../interfaces/IndicatorInterfaces/indicator_interfaces';
+import { IConfigurationShadow } from '../interfaces/TieldmapInterfaces/tieldmapinterfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ export class IndicatorService {
 
   getOne(primary_user: number, id_indicator: number){
     return this.http.get<IRecive_Indicator>(server + `indicators/getOne?primary_user=${primary_user}&id_indicator=${id_indicator}`);
+  }
+
+  updatePositionAndSizeIndicators(params: IConfigurationShadow){
+    return this.http.post(server+"indicators/positions", params);
   }
 
 }

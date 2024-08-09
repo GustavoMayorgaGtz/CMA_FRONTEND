@@ -382,6 +382,12 @@ export class TieldmapComponent {
           this.simplebutton_Service.updatePositionAndSizeSimpleButtons(shadow).subscribe((response) => {
           })
         }
+
+        
+        if (shadow.type == 'indicator') {
+          this.indicators_Service.updatePositionAndSizeIndicators(shadow).subscribe((response) => {
+          })
+        }
       })
       this.Update = false;
     }

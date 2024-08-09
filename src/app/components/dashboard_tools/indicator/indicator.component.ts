@@ -20,6 +20,7 @@ export class IndicatorComponent implements OnInit, OnChanges {
   type_data_in: string = "";
   type_data_design: string = "";
   groupName: string = "";
+  backgroundColor: string = "";
 
 
   constructor(private indicatorService: IndicatorService,
@@ -37,11 +38,49 @@ export class IndicatorComponent implements OnInit, OnChanges {
           this.title = actualIndicator.title;
           this.description = actualIndicator.description;
           this.symbol = actualIndicator.symbol;
+
           this.dashboard = actualIndicator.dashboard;
           this.type_data_in = actualIndicator.type_data_in;
           this.type_data_design = actualIndicator.type_data_design;
           this.groupName = actualIndicator.groupname;
-          this.signalService.groupName(actualIndicator.groupname);
+          switch(this.type_data_design){
+            case 'light':{
+              this.backgroundColor = "yellow"
+              break;
+            }
+            case 'motor':{
+              this.backgroundColor = "blue"
+              break;
+            }
+            case 'machine':{
+              this.backgroundColor = "blue"
+              break;
+            }
+            case 'air':{
+              this.backgroundColor = "blue"
+              break;
+            }
+            case 'temperature':{
+              this.backgroundColor = "blue"
+              break;
+            }
+            case 'wet':{
+              this.backgroundColor = "blue"
+              break;
+            }
+            case 'status':{
+              this.backgroundColor = "blue"
+              break; 
+            }
+            case 'other':{
+              this.backgroundColor = "blue"
+              break;
+            }
+            default:{
+              this.backgroundColor = "red"
+              break;
+            }
+          }
         }, (err: HttpErrorResponse) => {
           this.alertService.setMessageAlert("No se pudo obtener el indicador, intentalo mas tarde." + err.message);
         })

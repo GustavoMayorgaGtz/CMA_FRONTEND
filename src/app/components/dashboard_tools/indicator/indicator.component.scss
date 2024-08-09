@@ -43,19 +43,20 @@
     .right{
         overflow: hidden;
         .container-content{
+            height: 100%;
             display: flex;
             flex-direction: column;
             gap:10px;
-            justify-content: space-between;
+            justify-content: space-evenly;
             .title{
                 font-weight: bold;
-                font-size: calc(0.8vw + 10px);
+                font-size: max(calc(0.5vw + 6px), 14px); 
                 color: rgb(148, 148, 148);
             }
             .content
             {
                 margin-left: 2px;
-                font-size: calc(0.4vw + 8px);
+                font-size: max(calc(0.5vw + 6px), 12px); 
                 font-weight: bold;
             }
         }
