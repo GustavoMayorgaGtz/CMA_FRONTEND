@@ -25,7 +25,7 @@ export class TieldmapComponent {
     private router: Router,
     private finalizeServices: finalizeService) {
     const idUser = sessionStorage.getItem("idUser");
-
+    
     if (idUser) {
       //Obtener las variables 
       this.linechart_Service.getAllLineChart().subscribe((linecharts) => {
@@ -43,25 +43,6 @@ export class TieldmapComponent {
         })
       })
       //--------
-      this.indicators_Service.getAll(parseInt(idUser)).subscribe((response) => {
-        response.forEach((indicator_data) => {
-          const data = indicator_data
-          const width: number = data.width ? data.width : 300;
-          const height: number = data.height ? data.height : 300;
-          this.shadow_container.push({
-            name: data.title,
-            width: width,
-            height: height,
-            x: data.x ? data.x : 0,
-            y: data.y ? data.y : 0,
-            type: 'indicator',
-            id: data.id_indicator
-          })
-        })
-      }, (err: HttpErrorResponse) => {
-        console.log(err);
-      })
-      //--------
       this.simplebutton_Service.getAll_SimpleButton().subscribe((simplebuttons) => {
         simplebuttons.forEach((simplebutton) => {
           this.shadow_container.push({
@@ -76,8 +57,25 @@ export class TieldmapComponent {
         })
       })
       //--------
+      this.indicators_Service.getAll(parseInt(idUser)).subscribe((response) => {
+        console.log(response);
+        response.forEach((data) => {
+          this.shadow_container.push({
+            name: data.title,
+            width: data.width ? data.width : 300,
+            height: data.height ? data.height : 150,
+            x: data.x ? data.x : 0,
+            y: data.y ? data.y : 0,
+            type: 'indicator',
+            id: data.id_indicator
+          })
+        })
+        console.log(this.shadow_container)
+      }, (err: HttpErrorResponse) => {
+                console.log(err);
+      })
     } else {
-      this.router.navigate(['/'])
+     this.router.navigate(['/'])
     }
 
   }
@@ -175,14 +173,14 @@ export class TieldmapComponent {
     5.- Validar si la posicion Y esta siendo usada por otro objeto y si es asi recorrer y hacer validaciones
     */
 
-    const tieldmap_width: number = tieldmap.getBoundingClientRect().width;
-    const bloque_width: number = parseInt((tieldmap_width / 25).toString());
-    const lastBloqueWidth: number = (tieldmap_width / bloque_width) >= 20 ? (tieldmap_width / bloque_width) : 25;
+    const tieldmap_width = tieldmap.getBoundingClientRect().width;
+    const bloque_width = parseInt((tieldmap_width / 25).toString());
+    const lastBloqueWidth = (tieldmap_width / bloque_width) >= 20 ? (tieldmap_width / bloque_width) : 25;
     this.tieldmap_bloque_width = parseInt((tieldmap_width / lastBloqueWidth).toString());
     const shadow_container = this.shadow_container[idShadow];
-    const shadow_container_x: number = this.shadow_container[idShadow].x * this.lastBloqueWidth;
-    const shadow_container_x_end: number = parseFloat((shadow_container.x * this.lastBloqueWidth).toString()) + parseFloat(shadow_container_width_number.toString());
-    const tieldmap_x_end: number = tieldmap.getBoundingClientRect().x + tieldmap.getBoundingClientRect().width;
+    const shadow_container_x = this.shadow_container[idShadow].x * this.lastBloqueWidth;
+    const shadow_container_x_end = shadow_container.x * this.lastBloqueWidth + shadow_container.width;
+    const tieldmap_x_end = tieldmap.getBoundingClientRect().x + tieldmap.getBoundingClientRect().width;
 
 
     //validacion 5
@@ -260,49 +258,47 @@ export class TieldmapComponent {
       //VALIDACION EXTERNA
       /**********************************************************************************************/
       //Validar si ocupamos el mismo area
-      const shadow_container_x: number = this.shadow_container[idShadow].x * this.lastBloqueWidth;
-      const shadow_container_width_number: number = shadow_container.width
-      const shadow_container_x_end: number = parseFloat((shadow_container.x * this.lastBloqueWidth).toString()) + parseFloat(shadow_container_width_number.toString());
-      console.log("shadow_container_x_end: ", parseFloat(shadow_container_x_end.toString()))
+      const shadow_container_x = this.shadow_container[idShadow].x * this.lastBloqueWidth;
+      const shadow_container_x_end = shadow_container.x * this.lastBloqueWidth + shadow_container.width;
       const shadow_container_y = this.shadow_container[idShadow].y * this.lastBloqueWidth;
-      const shadow_container_height_number: number = shadow_container.height
-      const shadow_container_y_end = parseFloat((shadow_container.y * this.lastBloqueWidth).toString()) + parseFloat(shadow_container_height_number.toString());
-      console.log("shadow_container_y_end: ", parseFloat(shadow_container_y_end.toString()))
-
-      const temp_heigh: number = temp_shadow.height;
+      const shadow_container_y_end = shadow_container.y * this.lastBloqueWidth + shadow_container.height;
       const y_init = temp_shadow.y * this.lastBloqueWidth;
-      const y_end: number = (temp_shadow.y * this.lastBloqueWidth) + temp_heigh;
+      const y_end = temp_shadow.y * this.lastBloqueWidth + ((typeof temp_shadow.height == 'string')? parseFloat(temp_shadow.height) : temp_shadow.height);
+      // console.log("================")
+      // console.log(temp_shadow.y)
+      // console.log(this.lastBloqueWidth)
+      // console.log(temp_shadow.height)
+      // console.log(y_end)
+      // console.log("================")
       const x_init = temp_shadow.x * this.lastBloqueWidth;
       const x_end = temp_shadow.x * this.lastBloqueWidth + temp_shadow.width;
-
       let inX = false;
       let inY = false;
       //dos validaciones para x
       if (shadow_container_x >= x_init && shadow_container_x <= x_end) {
-        // console.log("True 1", shadow_container_x, x_init, x_end)
         inX = true;
       }
       if (shadow_container_x_end >= x_init && shadow_container_x_end <= x_end) {
-        // console.log("True 2", shadow_container_x_end, x_init, x_end)
         inX = true;
       }
       //dos validaciones para y
       if (shadow_container_y >= y_init && shadow_container_y <= y_end) {
-        // console.log("True 3",shadow_container_y, y_init, y_end )
         inY = true;
       }
       if (shadow_container_y_end >= y_init && shadow_container_y_end <= y_end) {
-        // console.log("True 4", shadow_container_y_end, y_init, y_end)
         inY = true;
       }
       //Si estamos ocupando el area de otro contenedor hay que recorrer el contenedor actual
       if (inX && inY) {
         //recorrer hacia abajo
+        console.log("----------")
+        console.log(y_end)
+        console.log(this.lastBloqueWidth)
+        console.log(this.lastBloqueWidth)
         let newPositionY = parseInt(((y_end + (this.lastBloqueWidth)) / this.lastBloqueWidth).toString());
+        console.log(newPositionY);
+        console.log("----------")
         this.shadow_container[idShadow].y = newPositionY;
-        if (typeof this.shadow_container[idShadow].y == "string") {
-          console.log("STRING DETECTADO________")
-        }
         this.validacion_overarea(shadow_container, idShadow);
       }
 
@@ -402,7 +398,7 @@ export class TieldmapComponent {
           })
         }
 
-
+        
         if (shadow.type == 'indicator') {
           this.indicators_Service.updatePositionAndSizeIndicators(shadow).subscribe((response) => {
           })

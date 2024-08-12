@@ -34,6 +34,8 @@ export class IndicatorComponent implements OnInit, OnChanges {
       const idUserString = sessionStorage.getItem("idUser");
       if (idUserString) {
         this.indicatorService.getOne(parseInt(idUserString), this.id_indicator).subscribe((data) => {
+          console.log(data)
+
           const actualIndicator = data;
           this.title = actualIndicator.title;
           this.description = actualIndicator.description;
@@ -45,11 +47,11 @@ export class IndicatorComponent implements OnInit, OnChanges {
           this.groupName = actualIndicator.groupname;
           switch(this.type_data_design){
             case 'light':{
-              this.backgroundColor = "yellow"
+              this.backgroundColor = "rgb(229, 215, 70)"
               break;
             }
             case 'motor':{
-              this.backgroundColor = "blue"
+              this.backgroundColor = "rgb(211, 134, 66)"
               break;
             }
             case 'machine':{
@@ -57,23 +59,23 @@ export class IndicatorComponent implements OnInit, OnChanges {
               break;
             }
             case 'air':{
-              this.backgroundColor = "blue"
+              this.backgroundColor = "rgb(66, 117, 211)"
               break;
             }
             case 'temperature':{
-              this.backgroundColor = "blue"
+              this.backgroundColor = "rgb(211, 66, 66)"
               break;
             }
             case 'wet':{
-              this.backgroundColor = "blue"
+              this.backgroundColor = "rgb(136, 166, 222)"
               break;
             }
             case 'status':{
-              this.backgroundColor = "blue"
+              this.backgroundColor = "rgb(129, 175, 92)"
               break; 
             }
             case 'other':{
-              this.backgroundColor = "blue"
+              this.backgroundColor = "rgb(182, 182, 182)"
               break;
             }
             default:{
