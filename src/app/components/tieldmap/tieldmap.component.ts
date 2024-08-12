@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { IConfigurationShadow } from 'src/app/interfaces/TieldmapInterfaces/tieldmapinterfaces';
 import { finalizeService } from 'src/app/service/finalize.service';
@@ -12,73 +12,80 @@ import { SimpleButtonService } from 'src/app/service/simple_button_service';
   templateUrl: './tieldmap.component.html',
   styleUrls: ['./tieldmap.component.scss']
 })
-export class TieldmapComponent {
+export class TieldmapComponent implements OnChanges {
 
   @ViewChildren('shadow_container') shadow_containers!: QueryList<ElementRef>;
   @ViewChild('tieldmap') tieldmap!: ElementRef<HTMLDivElement>;
-  public shadow_container: IConfigurationShadow[] = []
+  @Input() id_user!: number;
 
+  public shadow_container: IConfigurationShadow[] = []
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes) {
+      const idUser = sessionStorage.getItem("idUser");
+      if (idUser) {
+        //Obtener las variables 
+        this.linechart_Service.getAllLineChart().subscribe((linecharts) => {
+          linecharts.forEach((line_chart) => {
+
+            this.shadow_container.push({
+              name: line_chart.title,
+              width: line_chart.width ? line_chart.width : 300,
+              height: line_chart.height ? line_chart.height : 300,
+              x: line_chart.x ? line_chart.x : 0,
+              y: line_chart.y ? line_chart.y : 0,
+              type: 'linechart',
+              id: line_chart.idlinealchart
+            })
+          })
+        })
+        //--------
+        this.simplebutton_Service.getAll_SimpleButton().subscribe((simplebuttons) => {
+          simplebuttons.forEach((simplebutton) => {
+            this.shadow_container.push({
+              name: simplebutton.title,
+              width: simplebutton.width ? simplebutton.width : 300,
+              height: simplebutton.height ? simplebutton.height : 300,
+              x: simplebutton.x ? simplebutton.x : 0,
+              y: simplebutton.y ? simplebutton.y : 0,
+              type: 'simplebutton',
+              id: simplebutton.idsimplebutton
+            })
+          })
+        })
+        //--------
+        this.indicators_Service.getAll(parseInt(idUser)).subscribe((response) => {
+          console.log(response);
+          response.forEach((data) => {
+            this.shadow_container.push({
+              name: data.title,
+              width: data.width ? data.width : 300,
+              height: data.height ? data.height : 150,
+              x: data.x ? data.x : 0,
+              y: data.y ? data.y : 0,
+              type: 'indicator',
+              id: data.id_indicator
+            })
+          })
+          console.log(this.shadow_container)
+        }, (err: HttpErrorResponse) => {
+          console.log(err);
+        })
+      } else {
+        this.router.navigate(['/'])
+      }
+    }
+  }
 
   constructor(private linechart_Service: LineChartService,
     private simplebutton_Service: SimpleButtonService,
     private indicators_Service: IndicatorService,
     private router: Router,
     private finalizeServices: finalizeService) {
-    const idUser = sessionStorage.getItem("idUser");
-    
-    if (idUser) {
-      //Obtener las variables 
-      this.linechart_Service.getAllLineChart().subscribe((linecharts) => {
-        linecharts.forEach((line_chart) => {
 
-          this.shadow_container.push({
-            name: line_chart.title,
-            width: line_chart.width ? line_chart.width : 300,
-            height: line_chart.height ? line_chart.height : 300,
-            x: line_chart.x ? line_chart.x : 0,
-            y: line_chart.y ? line_chart.y : 0,
-            type: 'linechart',
-            id: line_chart.idlinealchart
-          })
-        })
-      })
-      //--------
-      this.simplebutton_Service.getAll_SimpleButton().subscribe((simplebuttons) => {
-        simplebuttons.forEach((simplebutton) => {
-          this.shadow_container.push({
-            name: simplebutton.title,
-            width: simplebutton.width ? simplebutton.width : 300,
-            height: simplebutton.height ? simplebutton.height : 300,
-            x: simplebutton.x ? simplebutton.x : 0,
-            y: simplebutton.y ? simplebutton.y : 0,
-            type: 'simplebutton',
-            id: simplebutton.idsimplebutton
-          })
-        })
-      })
-      //--------
-      this.indicators_Service.getAll(parseInt(idUser)).subscribe((response) => {
-        console.log(response);
-        response.forEach((data) => {
-          this.shadow_container.push({
-            name: data.title,
-            width: data.width ? data.width : 300,
-            height: data.height ? data.height : 150,
-            x: data.x ? data.x : 0,
-            y: data.y ? data.y : 0,
-            type: 'indicator',
-            id: data.id_indicator
-          })
-        })
-        console.log(this.shadow_container)
-      }, (err: HttpErrorResponse) => {
-                console.log(err);
-      })
-    } else {
-     this.router.navigate(['/'])
-    }
+
 
   }
+
 
 
   /**
@@ -263,7 +270,7 @@ export class TieldmapComponent {
       const shadow_container_y = this.shadow_container[idShadow].y * this.lastBloqueWidth;
       const shadow_container_y_end = shadow_container.y * this.lastBloqueWidth + shadow_container.height;
       const y_init = temp_shadow.y * this.lastBloqueWidth;
-      const y_end = temp_shadow.y * this.lastBloqueWidth + ((typeof temp_shadow.height == 'string')? parseFloat(temp_shadow.height) : temp_shadow.height);
+      const y_end = temp_shadow.y * this.lastBloqueWidth + ((typeof temp_shadow.height == 'string') ? parseFloat(temp_shadow.height) : temp_shadow.height);
       // console.log("================")
       // console.log(temp_shadow.y)
       // console.log(this.lastBloqueWidth)
@@ -398,7 +405,7 @@ export class TieldmapComponent {
           })
         }
 
-        
+
         if (shadow.type == 'indicator') {
           this.indicators_Service.updatePositionAndSizeIndicators(shadow).subscribe((response) => {
           })

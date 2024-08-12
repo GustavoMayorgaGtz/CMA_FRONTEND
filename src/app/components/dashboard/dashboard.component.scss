@@ -5,6 +5,82 @@
     height: 100%;
     position: relative;
 
+    .nav{
+        background-color: #fafafa;
+        display: flex;
+        padding: 0px 20px;
+        align-items: center;
+        font-weight: bold;
+        height: 50px;
+        border-bottom: 1px solid rgb(182, 182, 182);
+    }
+
+    .nav_btn{
+        @extend .nav;
+        &:hover{
+            cursor: pointer;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+    }
+
+    .view_dashboards{
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        border-radius: 15px;
+
+      
+
+        .container_dashboards{
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+
+            .card-dashboard{
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                box-sizing: border-box;
+                gap:5px;
+                padding: 15px;
+                border-radius: 5px;
+                min-width: 350px;
+                width: min-content;
+                max-width: 1000px;
+                min-height: 100px;
+                height: min-content;
+                max-height: 200px;
+                border: 1px solid rgb(182, 182, 182);
+                background-color: #fafafa;
+                transition: all 0.2s;
+
+                &:hover{
+                    cursor: pointer;
+                    background-color: #ffffff;
+                    transition: all 0.2s;
+                    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.142);
+                    transform: scale(1.01);
+                }
+
+                .title{
+                    font-weight: bold;
+                    font-size: 1.3em;
+                    white-space: nowrap;
+                }
+                .subtitle{
+                    color: rgb(52, 52, 52);
+                    font-size: 0.75em;
+                }
+            }
+        }
+    }
+
     .main {
         width: 100%;
         height: 100%;

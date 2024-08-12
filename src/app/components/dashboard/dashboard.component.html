@@ -1,7 +1,26 @@
+<div class="primary-container" *ngIf="menu_tool == 0">
+   <div class="view_dashboards">
+       <div class="nav">Dashboards</div>
+       <div class="container_dashboards">
+        <div class="card-dashboard"  
+        *ngFor="let dashboard of dashboards; let idx = index"
+         (click)="selectDashboard(dashboard.id_dashboard)">
+            <span class="title">
+                {{dashboard.title}}
+            </span>
+            <span class="subtitle">
+                {{dashboard.description}}
+            </span>
+        </div>
+       </div>
+   </div>
+</div>
 <div class="primary-container" *ngIf="menu_tool == 1">
     <div class="main" >
+        <div class="nav_btn" (click)="set_menu_tool = 0">Regresar | Dashboard</div>
         <div class="content">
-            <app-tieldmap style="width: 100%; height: 100%;" > </app-tieldmap>
+            <app-tieldmap [id_user]="(selectedDashboard? selectedDashboard:0)"
+            style="width: 100%; height: 100%;" > </app-tieldmap>
      
         </div>
     </div>
