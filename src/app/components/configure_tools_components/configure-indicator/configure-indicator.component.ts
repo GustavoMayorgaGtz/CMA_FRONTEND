@@ -1,8 +1,7 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { iif } from 'rxjs';
 import { auth_class } from 'src/app/graphs_class/auth_class';
 import { ICreate_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
 import { AlertService } from 'src/app/service/alert.service';
@@ -17,9 +16,7 @@ import { IndicatorService } from 'src/app/service/indicators_service';
 })
 
 export class ConfigureIndicatorComponent implements OnInit {
-
-
-
+  @Input() id_dashboard_selected!: number|undefined;
   public show_save_button: boolean = true;
 
   /*-----*/
@@ -99,59 +96,65 @@ export class ConfigureIndicatorComponent implements OnInit {
   createIndicator() {
     //Validaciones
     this.show_save_button = false;
-    if (!this.get_indicator_title) {
+    if(!this.id_dashboard_selected){
       this.show_save_button = true;
-      this.alertService.setMessageAlert("No haz definido correctamente el titulo del indicador.")
-    } else {
-      if (!this.get_indicator_description) {
+      this.alertService.setMessageAlert("Ocurrio algun error al seleccionar el dashboard.")
+    }else{
+      if (!this.get_indicator_title) {
         this.show_save_button = true;
-        this.alertService.setMessageAlert("No haz definido correctamente la descripcion del indicador.")
+        this.alertService.setMessageAlert("No haz definido correctamente el titulo del indicador.")
       } else {
-        if (!this.get_indicator_symbol) {
+        if (!this.get_indicator_description) {
           this.show_save_button = true;
-          this.alertService.setMessageAlert("No haz definido correctamente el simbolo del indicador.")
+          this.alertService.setMessageAlert("No haz definido correctamente la descripcion del indicador.")
         } else {
-          if (!this.get_indicator_type_data_in) {
+          if (!this.get_indicator_symbol) {
             this.show_save_button = true;
-            this.alertService.setMessageAlert("No haz definido correctamente el tipo de entrada del indicador.")
+            this.alertService.setMessageAlert("No haz definido correctamente el simbolo del indicador.")
           } else {
-            if (!this.get_indicator_type_data_design) {
+            if (!this.get_indicator_type_data_in) {
               this.show_save_button = true;
-              this.alertService.setMessageAlert("No haz definido correctamente el diseño orientado al indicador.")
+              this.alertService.setMessageAlert("No haz definido correctamente el tipo de entrada del indicador.")
             } else {
-              //Obtener el id del usuario
-              this.authClass.validateUser();
-              const idUser = sessionStorage.getItem("idUser")
-              const token = sessionStorage.getItem("token")
-              if (idUser) {
-                //Crear objeto
-                let object: ICreate_Indicator = {
-                  title: this.get_indicator_title,
-                  description: this.get_indicator_description,
-                  symbol: this.get_indicator_symbol,
-                  type_data_in: this.get_indicator_type_data_in,
-                  type_data_design: this.get_indicator_type_data_design,
-                  dashboard: 1,
-                  issaveblobdata: true,
-                  primary_user: parseInt(idUser)
-                }
-                this.indicatorService.create_indicator(object).subscribe((response) => {
-                  this.alertService.setMessageAlert("Se creo el indicador correctamente.");
-                  this.show_save_button = true;
-                  window.location.reload();
-                }, (err: HttpErrorResponse) => {
-                  this.alertService.setMessageAlert("No se creo el indicador correctamente, vuelve a intentarlo mas tarde.");
-                })
+              if (!this.get_indicator_type_data_design) {
+                this.show_save_button = true;
+                this.alertService.setMessageAlert("No haz definido correctamente el diseño orientado al indicador.")
               } else {
-                this.alertService.setMessageAlert("Vuelve a iniciar sesion...")
-                this.router.navigate(['/login']);
+                //Obtener el id del usuario
+                this.authClass.validateUser();
+                const idUser = sessionStorage.getItem("idUser")
+                const token = sessionStorage.getItem("token")
+                if (idUser) {
+                  //Crear objeto
+                  let object: ICreate_Indicator = {
+                    title: this.get_indicator_title,
+                    description: this.get_indicator_description,
+                    symbol: this.get_indicator_symbol,
+                    type_data_in: this.get_indicator_type_data_in,
+                    type_data_design: this.get_indicator_type_data_design,
+                    dashboard: this.id_dashboard_selected,
+                    issaveblobdata: true,
+                    primary_user: parseInt(idUser)
+                  }
+                  this.indicatorService.create_indicator(object).subscribe((response) => {
+                    this.alertService.setMessageAlert("Se creo el indicador correctamente.");
+                    this.show_save_button = true;
+                    window.location.reload();
+                  }, (err: HttpErrorResponse) => {
+                    this.alertService.setMessageAlert("No se creo el indicador correctamente, vuelve a intentarlo mas tarde.");
+                  })
+                } else {
+                  this.alertService.setMessageAlert("Vuelve a iniciar sesion...")
+                  this.router.navigate(['/login']);
+                }
+  
               }
-
             }
           }
         }
       }
     }
+  
 
 
 

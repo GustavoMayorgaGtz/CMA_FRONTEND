@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { ScatterDataPoint } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/types/utils';
 import { BaseChartDirective } from 'ng2-charts';
@@ -29,7 +30,7 @@ export class ConfigureLinearGraphComponent implements OnInit {
   //Se define la variable que define los datos que se van a capturar
   private linear_chart_configuration!: IlineChartConfiguration;
   public jsonBuilder = new JsonVariableClass(this.varsService, this.alert);
-
+  @Input() id_dashboard_selected!: number|undefined;
   @ViewChild(BaseChartDirective) canvas_chart!: BaseChartDirective;
 
   constructor(
@@ -39,7 +40,8 @@ export class ConfigureLinearGraphComponent implements OnInit {
     private linechartService: LineChartService,
     private finalizeServices: finalizeService,
     private exitService: ExitService,
-    private endpointService: CMA_ENDPOINT_SERVICES
+    private endpointService: CMA_ENDPOINT_SERVICES,
+    private router: Router
   ) {
 
 
@@ -189,6 +191,11 @@ export class ConfigureLinearGraphComponent implements OnInit {
       this.alert.setMessageAlert("Define el color del borde del punto conector");
       readyToSave = false;
     }
+    //ID DEL DASHBOARD DONDE SE VA A CREAR
+    if(!this.id_dashboard_selected || this.id_dashboard_selected <= 0){
+      this.alert.setMessageAlert("Ocurrio un error al seleccionar el dashboard.z");
+      readyToSave = false;
+    }
     //TAMAÑO DEL BORDE DEL PUNTO CONECTOR
     if (!this.point_border_size) {
       this.point_border_size = 2;
@@ -198,8 +205,13 @@ export class ConfigureLinearGraphComponent implements OnInit {
       this.point_width = 5;
     }
 
-    if (readyToSave) {
+    const token = sessionStorage.getItem("token");
+    const idUser= sessionStorage.getItem("idUser");
+
+    if (readyToSave && this.id_dashboard_selected && token && idUser && parseInt(idUser) > 0) {
       this.linear_chart_configuration = {
+        id_usuario: parseInt(idUser),
+        id_dashboard: this.id_dashboard_selected,
         general: {
           title: this.title,
           description: this.description,
@@ -232,7 +244,7 @@ export class ConfigureLinearGraphComponent implements OnInit {
         }
       }
 
-      this.linechartService.create_LineChart(this.linear_chart_configuration).subscribe((response) => {
+      this.linechartService.create_LineChart(token, this.linear_chart_configuration).subscribe((response) => {
         this.alert.setMessageAlert("Grafico Lineal creado exitosamente.");
         window.location.reload();
         this.enableSave = true;
@@ -291,46 +303,54 @@ export class ConfigureLinearGraphComponent implements OnInit {
     // this.varsService.getAllVars().subscribe((vars) => {
 
     // })
-    this.linear_chart_configuration = {
-      general: {
-        title: this.title,
-        description: this.description,
-        idVariableModbus: this.idModbusVariable,
-        idVariableJson: this.idJsonVariable,
-        idVariableMemory: this.idMemoryVariable,
-        idVariableEndpoint: this.idEndpointVariable,
-        sampling_number: this.sampling_number,
-        isArray: this.isArray,
-        idblobdata: null,
-        issaveblobdata: this.isSaveBlobData,
-        polling: {
-          time: this.polling_time,
-          type: this.polling_type
+    const idUser = sessionStorage.getItem("idUser");
+    if(idUser && parseInt(idUser) > 0){
+      this.linear_chart_configuration = {
+        id_usuario: parseInt(idUser),
+        id_dashboard: this.id_dashboard_selected? this.id_dashboard_selected:0,
+        general: {
+          title: this.title,
+          description: this.description,
+          idVariableModbus: this.idModbusVariable,
+          idVariableJson: this.idJsonVariable,
+          idVariableMemory: this.idMemoryVariable,
+          idVariableEndpoint: this.idEndpointVariable,
+          sampling_number: this.sampling_number,
+          isArray: this.isArray,
+          idblobdata: null,
+          issaveblobdata: this.isSaveBlobData,
+          polling: {
+            time: this.polling_time,
+            type: this.polling_type
+          }
+        },
+        styles: {
+          fill: this.fill,
+          fill_color: this.fill_color,
+          line: this.line,
+          line_color: this.line_color,
+          line_size: this.line_size,
+          line_tension: this.line_tension,
+          line_stepped: this.line_stepped,
+          point_style: this.point_style,
+          point_color: this.point_color,
+          point_border_color: this.point_border_color,
+          point_border_size: this.point_border_size,
+          point_width: this.point_width
         }
-      },
-      styles: {
-        fill: this.fill,
-        fill_color: this.fill_color,
-        line: this.line,
-        line_color: this.line_color,
-        line_size: this.line_size,
-        line_tension: this.line_tension,
-        line_stepped: this.line_stepped,
-        point_style: this.point_style,
-        point_color: this.point_color,
-        point_border_color: this.point_border_color,
-        point_border_size: this.point_border_size,
-        point_width: this.point_width
       }
+      this.grafica_linear.reloadData(this.linear_chart_configuration, this.vars, this.Vars_names);
+      this.grafica_linear.eventData.subscribe((graph_configuration) => {
+        this.linear1 = graph_configuration;
+        if (this.canvas_chart) {
+          // this.canvas_chart.chart?.reset()
+          this.canvas_chart.chart?.update()
+        }
+      });
+    }else{
+       this.router.navigate(['/login']);
     }
-    this.grafica_linear.reloadData(this.linear_chart_configuration, this.vars, this.Vars_names);
-    this.grafica_linear.eventData.subscribe((graph_configuration) => {
-      this.linear1 = graph_configuration;
-      if (this.canvas_chart) {
-        // this.canvas_chart.chart?.reset()
-        this.canvas_chart.chart?.update()
-      }
-    });
+  
   }
 
 

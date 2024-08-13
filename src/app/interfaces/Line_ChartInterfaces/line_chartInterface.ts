@@ -5,6 +5,8 @@ import { ChartConfiguration, ChartOptions } from "chart.js";
  * esta definiendo una nueva line_chart (Uso en configure-linear-graph.component.ts)
  */
 export interface IlineChartConfiguration {
+    id_usuario: number;
+    id_dashboard: number;
     general: {
         title: string;
         description: string;
@@ -51,6 +53,8 @@ export interface getParamsLineChart {
  * Interfaz utilizada para recibir todos los parametros guardados en la base de datos
  */
 export interface LineChartConfigurationDatabase {
+    id_usuario: number,
+    id_dashboard: number,
     idlinealchart: number,
     title: string,
     description: string,

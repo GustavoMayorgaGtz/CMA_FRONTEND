@@ -57,6 +57,8 @@ export class LineChartComponent implements OnInit, OnChanges {
     if (changes && this.id) {
       this.linechartservice.getOneById(this.id).subscribe((configuration) => {
         this.linear_chart_configuration = {
+          id_usuario: configuration.id_usuario,
+          id_dashboard: configuration.id_dashboard,
           general: {
             title: configuration.title,
             description: configuration.description,

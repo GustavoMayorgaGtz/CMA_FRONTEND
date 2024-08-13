@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { _DeepPartialObject } from 'chart.js/types/utils';
 import { BaseChartDirective } from 'ng2-charts';
 import { JsonVariableClass } from 'src/app/functions/json_functions';
@@ -24,8 +24,9 @@ import { VarsService } from 'src/app/service/vars';
 export class ConfigureSimpleButtonComponent implements OnInit {
   //Se define la variable que define los datos que se van a capturar
   public jsonBuilder = new JsonVariableClass(this.varsService, this.alert);
-
   @ViewChild(BaseChartDirective) canvas_chart!: BaseChartDirective;
+  @Input() id_dashboard_selected!: number|undefined;
+
 
   constructor(
     private all: AllService,

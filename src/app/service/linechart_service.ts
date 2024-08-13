@@ -20,8 +20,13 @@ export class LineChartService {
     return this.http.get<LineChartConfigurationDatabase[]>(server + `linechart/getAll?id_user=${id_user}&id_dashboard=${id_dashboard}`, { headers });
   }
 
-  create_LineChart(line_chart_configuration: IlineChartConfiguration) {
-    return this.http.post<any>(server + "linechart/create", line_chart_configuration)
+  create_LineChart(token: string, line_chart_configuration: IlineChartConfiguration) {
+       // Agrega el token Bearer al encabezado de la solicitud
+       const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+  
+    return this.http.post<any>(server + "linechart/create", line_chart_configuration, {headers})
   }
 
   getOneById(idlinealchart: number) {

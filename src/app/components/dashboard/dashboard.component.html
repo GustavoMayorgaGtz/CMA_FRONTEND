@@ -96,13 +96,13 @@
     </div>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 2">
-    <app-configure-linear-graph></app-configure-linear-graph>
+    <app-configure-linear-graph [id_dashboard_selected]="selectedDashboard"></app-configure-linear-graph>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 3">
-    <app-configure-simple-button></app-configure-simple-button>
+    <app-configure-simple-button [id_dashboard_selected]="selectedDashboard"></app-configure-simple-button>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 4">
-    <app-configure-indicator></app-configure-indicator>
+    <app-configure-indicator [id_dashboard_selected]="selectedDashboard"></app-configure-indicator>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 5">
     <div class="create-dashboard">

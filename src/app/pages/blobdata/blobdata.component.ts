@@ -85,6 +85,8 @@ export class BlobdataComponent implements OnInit {
         this.description = graph_line.description;
         this.samplingNumber = graph_line.sampling_number;
         const linear_chart_configuration: IlineChartConfiguration = {
+          id_usuario: graph_line.id_usuario,
+          id_dashboard: graph_line.id_dashboard,
           general: {
             title: graph_line.title,
             description: graph_line.description,
