@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { TokenType } from '@angular/compiler';
 import { Component, ElementRef, Input, OnChanges, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { IConfigurationShadow } from 'src/app/interfaces/TieldmapInterfaces/tieldmapinterfaces';
@@ -16,15 +17,16 @@ export class TieldmapComponent implements OnChanges {
 
   @ViewChildren('shadow_container') shadow_containers!: QueryList<ElementRef>;
   @ViewChild('tieldmap') tieldmap!: ElementRef<HTMLDivElement>;
-  @Input() id_user!: number;
+  @Input() id_dashboard!: number;
 
   public shadow_container: IConfigurationShadow[] = []
   ngOnChanges(changes: SimpleChanges): void {
     if (changes) {
       const idUser = sessionStorage.getItem("idUser");
-      if (idUser) {
+      const token = sessionStorage.getItem("token");
+      if (idUser && parseInt(idUser) > 0 && token && this.id_dashboard) {
         //Obtener las variables 
-        this.linechart_Service.getAllLineChart().subscribe((linecharts) => {
+        this.linechart_Service.getAllLineChart(token, parseInt(idUser), this.id_dashboard).subscribe((linecharts) => {
           linecharts.forEach((line_chart) => {
 
             this.shadow_container.push({
@@ -39,7 +41,7 @@ export class TieldmapComponent implements OnChanges {
           })
         })
         //--------
-        this.simplebutton_Service.getAll_SimpleButton().subscribe((simplebuttons) => {
+        this.simplebutton_Service.getAll_SimpleButton(token, parseInt(idUser), this.id_dashboard).subscribe((simplebuttons) => {
           simplebuttons.forEach((simplebutton) => {
             this.shadow_container.push({
               name: simplebutton.title,
@@ -53,7 +55,7 @@ export class TieldmapComponent implements OnChanges {
           })
         })
         //--------
-        this.indicators_Service.getAll(parseInt(idUser)).subscribe((response) => {
+        this.indicators_Service.getAll(token, parseInt(idUser), this.id_dashboard).subscribe((response) => {
           console.log(response);
           response.forEach((data) => {
             this.shadow_container.push({
@@ -118,8 +120,10 @@ export class TieldmapComponent implements OnChanges {
 
     //Funcion para mover el shadow container
     if (this.isMove && (positionX <= tieldmap_positionX_End - 20)) {
-      this.shadow_container[this.idShadowMove].x = parseInt((positionX / lastBloqueWidth).toString());
-      this.shadow_container[this.idShadowMove].y = parseInt((positionY / lastBloqueWidth).toString());
+      const y_new_position = parseInt((positionY / lastBloqueWidth).toString())
+      const x_new_position = parseInt((positionX / lastBloqueWidth).toString())
+      this.shadow_container[this.idShadowMove].x = x_new_position >= 0? x_new_position: 0;
+      this.shadow_container[this.idShadowMove].y = y_new_position >= 0? y_new_position: 0;
     } else {
 
       this.isMove = false
@@ -252,7 +256,7 @@ export class TieldmapComponent implements OnChanges {
       width: ${this.shadow_container[idShadow].width}px; 
       height: ${this.shadow_container[idShadow].height}px;
        background-color: white;
-     border: 1px solid rgba(0, 0, 0, 0.127);; border-radius: 10px;`);
+     border: 1px solid rgba(0, 0, 0, 0.127);; border-radius: 5px;`);
   }
 
   validacion_overarea(shadow_container: IConfigurationShadow, idShadow: number) {
@@ -322,7 +326,7 @@ export class TieldmapComponent implements OnChanges {
     width: ${this.shadow_container[idShadow].width}px; 
     height: ${this.shadow_container[idShadow].height}px;
     background-color: white;
-    border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 10px;`);
+    border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 5px;`);
 
     if (this.propiedadAplicada.indexOf(idShadow) == -1) {
       this.propiedadAplicada.push(idShadow);

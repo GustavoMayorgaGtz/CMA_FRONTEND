@@ -18,8 +18,8 @@ import { VarsService } from 'src/app/service/vars';
 export class TieldmapSequenceComponent implements OnInit {
   public jsonBuilder = new JsonVariableClass(this.varsService, this.alertService);
   public menu_tool: number = 1;
-
   
+
   constructor(private service: AllService,
     private alertService: AlertService,
     private varsService: VarsService,
@@ -27,36 +27,42 @@ export class TieldmapSequenceComponent implements OnInit {
     private simplebutton_Service: SimpleButtonService,
     private finalizeServices: finalizeService,
     private exitService: ExitService,
-    private cma_endpointService: CMA_ENDPOINT_SERVICES){
-      //Obtener las variables 
-      this.linechart_Service.getAllLineChart().subscribe((linecharts) => {
-        linecharts.forEach((line_chart, idx) => {
-            this.shadow_container.push({
-              name:  line_chart.title,
-              width: line_chart.width ? line_chart.width : 300,
-              height: line_chart.height ? line_chart.height : 300,
-              x: line_chart.x ? line_chart.x : 0,
-              y: line_chart.y ? line_chart.y : 0,
-              type: 'linechart',
-              id: line_chart.idlinealchart
-            })
-        })
-      })
+    private cma_endpointService: CMA_ENDPOINT_SERVICES) {
+    const idUser = sessionStorage.getItem("idUser");
+    const token = sessionStorage.getItem("token");
+    if (idUser && parseInt(idUser) > 0 && token) {
+      // //Obtener las variables 
+      // this.linechart_Service.getAllLineChart(token, parseInt(idUser)).subscribe((linecharts) => {
+      //   linecharts.forEach((line_chart, idx) => {
+      //     this.shadow_container.push({
+      //       name: line_chart.title,
+      //       width: line_chart.width ? line_chart.width : 300,
+      //       height: line_chart.height ? line_chart.height : 300,
+      //       x: line_chart.x ? line_chart.x : 0,
+      //       y: line_chart.y ? line_chart.y : 0,
+      //       type: 'linechart',
+      //       id: line_chart.idlinealchart
+      //     })
+      //   })
+      // })
       //--------
-      this.simplebutton_Service.getAll_SimpleButton().subscribe((simplebuttons) => {
-        simplebuttons.forEach((simplebutton) => {
-          this.shadow_container.push({
-            name: simplebutton.title,
-            width: simplebutton.width ? simplebutton.width : 300,
-            height: simplebutton.height ? simplebutton.height : 300,
-            x: simplebutton.x ? simplebutton.x : 0,
-            y: simplebutton.y ? simplebutton.y : 0,
-            type: 'simplebutton',
-            id: simplebutton.idsimplebutton
-          })
-        })
-      })
+      // this.simplebutton_Service.getAll_SimpleButton().subscribe((simplebuttons) => {
+      //   simplebuttons.forEach((simplebutton) => {
+      //     this.shadow_container.push({
+      //       name: simplebutton.title,
+      //       width: simplebutton.width ? simplebutton.width : 300,
+      //       height: simplebutton.height ? simplebutton.height : 300,
+      //       x: simplebutton.x ? simplebutton.x : 0,
+      //       y: simplebutton.y ? simplebutton.y : 0,
+      //       type: 'simplebutton',
+      //       id: simplebutton.idsimplebutton
+      //     })
+      //   })
+      // })
     }
+  }
+
+
   ngOnInit(): void {
   }
 
@@ -65,82 +71,82 @@ export class TieldmapSequenceComponent implements OnInit {
   }
 
   /*------------------Funcion de graficacion de linesenoidal----------------*/
-   // Función para graficar los puntos
-   @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
-   private canvas_element!: HTMLCanvasElement;
-   setTieldmapSequence(input: HTMLCanvasElement){
+  // Función para graficar los puntos
+  @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
+  private canvas_element!: HTMLCanvasElement;
+  setTieldmapSequence(input: HTMLCanvasElement) {
     this.canvas_element = input;
     this.dibujarPuntos();
 
     return {}
-   }
+  }
 
 
 
-  private puntos: {x: number, y: number}[] = [
+  private puntos: { x: number, y: number }[] = [
     { x: 70, y: 90 },
-    { x: 400, y: 400}
-];
-   setPoint(position: HTMLDivElement){
-      this.puntos[0].x = position.getBoundingClientRect().x - this.canvas_element.getBoundingClientRect().x;
-      this.puntos[0].y = position.getBoundingClientRect().y - this.canvas_element.getBoundingClientRect().y;
-   }
-   dibujarPuntos() { 
-    if(this.puntos[1]){
+    { x: 400, y: 400 }
+  ];
+  setPoint(position: HTMLDivElement) {
+    this.puntos[0].x = position.getBoundingClientRect().x - this.canvas_element.getBoundingClientRect().x;
+    this.puntos[0].y = position.getBoundingClientRect().y - this.canvas_element.getBoundingClientRect().y;
+  }
+  dibujarPuntos() {
+    if (this.puntos[1]) {
 
 
-    const ctx = this.canvas_element.getContext("2d");
-    if(ctx){
+      const ctx = this.canvas_element.getContext("2d");
+      if (ctx) {
 
-    ctx.clearRect(0, 0, this.canvas_element.width, this.canvas_element.height); // Limpiar el canvas
-    ctx.fillStyle = "black"; // Color de los puntos
-   
-    let x = this.puntos[0].x;
-    //Calcular pendiente
-    let m = (this.puntos[1].y - this.puntos[0].y) / (this.puntos[1].x - this.puntos[0].x);
-    //Calcular el numero de iteraciones para la grafica
-    let size = this.puntos[0].x - this.puntos[1].x;
-    if (size < 0) {
-        size = this.puntos[1].x - this.puntos[0].x;
-    }
-    let amplitud = 70;
-    let h = Math.sqrt(Math.pow((this.puntos[0].x - this.puntos[1].x), 2) + ((this.puntos[0].y - this.puntos[1].y), 2));
-    //let w = (2 * Math.PI)/h;
-    let w = (2 * Math.PI)/h;
-    w = w * 1;
-    //Puntos para graficar
-    let vectors = [];
-    let b = this.puntos[0].y - (m * x);
-    let diferencia = 0;
-    for (let i = 0; i < size + 3; i++) {
-        if (i == 0) {
-            let y_f = ((m * x) + b);
-            y_f = y_f + amplitud * Math.sin(((w * x)+Math.asinh(Math.PI)))
-            diferencia = y_f - this.puntos[0].y;
+        ctx.clearRect(0, 0, this.canvas_element.width, this.canvas_element.height); // Limpiar el canvas
+        ctx.fillStyle = "black"; // Color de los puntos
+
+        let x = this.puntos[0].x;
+        //Calcular pendiente
+        let m = (this.puntos[1].y - this.puntos[0].y) / (this.puntos[1].x - this.puntos[0].x);
+        //Calcular el numero de iteraciones para la grafica
+        let size = this.puntos[0].x - this.puntos[1].x;
+        if (size < 0) {
+          size = this.puntos[1].x - this.puntos[0].x;
         }
-        let y_t = ((m * x)+b);
-        y_t = y_t + amplitud * Math.sin(((w * x)+Math.asinh(Math.PI)))-diferencia ;
-        vectors.push({ x, y_t })
-        x++;
-    }
-    // Dibujar cada punto
-    vectors.forEach(function (punto) {
+        let amplitud = 70;
+        let h = Math.sqrt(Math.pow((this.puntos[0].x - this.puntos[1].x), 2) + ((this.puntos[0].y - this.puntos[1].y), 2));
+        //let w = (2 * Math.PI)/h;
+        let w = (2 * Math.PI) / h;
+        w = w * 1;
+        //Puntos para graficar
+        let vectors = [];
+        let b = this.puntos[0].y - (m * x);
+        let diferencia = 0;
+        for (let i = 0; i < size + 3; i++) {
+          if (i == 0) {
+            let y_f = ((m * x) + b);
+            y_f = y_f + amplitud * Math.sin(((w * x) + Math.asinh(Math.PI)))
+            diferencia = y_f - this.puntos[0].y;
+          }
+          let y_t = ((m * x) + b);
+          y_t = y_t + amplitud * Math.sin(((w * x) + Math.asinh(Math.PI))) - diferencia;
+          vectors.push({ x, y_t })
+          x++;
+        }
+        // Dibujar cada punto
+        vectors.forEach(function (punto) {
+          ctx.beginPath();
+          ctx.arc(punto.x, punto.y_t, 1, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.closePath();
+        });
         ctx.beginPath();
-        ctx.arc(punto.x, punto.y_t, 1, 0, Math.PI * 2);
+        ctx.arc(this.puntos[0].x, this.puntos[0].y, 1, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath(); ctx.beginPath();
+        ctx.arc(this.puntos[1].x, this.puntos[1].y, 1, 0, Math.PI * 2);
         ctx.fill();
         ctx.closePath();
-    });
-    ctx.beginPath();
-    ctx.arc(this.puntos[0].x, this.puntos[0].y, 1, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.closePath(); ctx.beginPath();
-    ctx.arc(this.puntos[1].x, this.puntos[1].y, 1, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.closePath();
-  }
-}
+      }
+    }
 
-}
+  }
 
   /**Atributos del tieldmap */
   @ViewChildren('shadow_container') shadow_containers!: QueryList<ElementRef>;
@@ -156,14 +162,14 @@ export class TieldmapSequenceComponent implements OnInit {
      height: ${this.shadow_container[idShadow].height}px;
       background-color: white;
     border: 1px solid black; border-radius: 5px;`);
-    if(this.propiedadAplicada.indexOf(idShadow) == -1){
+    if (this.propiedadAplicada.indexOf(idShadow) == -1) {
       this.propiedadAplicada.push(idShadow);
       this.setPropietiesShadow(shadow, idShadow, tieldmap);
     }
     return { backgroundColor: "" }
   }
 
-  
+
   /**
    * Funcion para establecer la posicion relativa del cursor y mostrar el punto de inicio del contenedor shadow
    * @param event Evento para determinar la posicion del cursor
@@ -385,11 +391,11 @@ export class TieldmapSequenceComponent implements OnInit {
     if (this.Update) {
       this.shadow_container.forEach((shadow) => {
         if (shadow.type == 'linechart') {
-          
+
         }
 
         if (shadow.type == 'simplebutton') {
-          
+
         }
       })
       this.Update = false;

@@ -3,11 +3,85 @@
     display: flex;
     width: 100%;
     height: 100%;
+    box-sizing: border-box;
     position: relative;
+
+    .btn-create{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        white-space: nowrap;
+        color:rgb(0, 0, 0);
+        font-family: 'Mukta', sans-serif;
+        padding: 0px 50px;
+        height: 80%;
+        max-width: 250px;
+        max-height: 45px;
+        border-radius: 5px;
+        font-weight: bold;
+        background-color:  rgb(164, 220, 116);
+        cursor: pointer;
+        transition: 0.2s all;
+
+        &:hover {
+            transition: 0.2s all;
+            background-color: rgb(139, 195, 89);
+        }
+    }
+
+    .create-dashboard{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;   
+
+        .content{
+            padding: 10px;
+            box-sizing: border-box;
+            .title{
+                font-size: 1em;
+                font-weight: bold;
+            }
+            .campo {
+                font-size: 0.8em;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                width: 100%;
+                height: 50px;
+                input[type='text'],
+                select {
+                    height: 35px;
+                    border-radius: 5px;
+                    border: 1px solid rgb(96, 96, 96);
+                    padding: 0px 10px;
+                }
+                input[type="checkbox"] {
+                    width: 20px;
+                    height: 20px;
+                }
+                .send_img {
+                    width: 25px;
+                    height: 30px;
+                    margin-left: 5px;
+                    filter: invert(0.6);
+    
+                    &:hover {
+                        transition: all 0.2s;
+                        cursor: pointer;
+                        filter: invert(0);
+                    }
+                }
+            }
+        }
+    }
 
     .nav{
         background-color: #fafafa;
         display: flex;
+        justify-content: space-between;
         padding: 0px 20px;
         align-items: center;
         font-weight: bold;
@@ -29,8 +103,6 @@
         height: 100%;
         box-sizing: border-box;
         border-radius: 15px;
-
-      
 
         .container_dashboards{
             width: 100%;
@@ -97,7 +169,7 @@
             flex-wrap: wrap;
             align-content: start;
             overflow: hidden;
-            height: calc(100vh - 85px);
+            height: calc(100vh - 135px);
             width: 100%;
             position: relative;
 

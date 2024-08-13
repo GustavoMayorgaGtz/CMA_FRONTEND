@@ -14,7 +14,7 @@
     margin:auto;
     display: grid;
     grid-template-columns: 30% 70%;
-    padding: 15px 20px;
+    padding: 10px;
     box-sizing: border-box;
     gap: 20px;
     overflow: hidden;
@@ -41,17 +41,20 @@
                 max-width: 40px;
                 max-height: 40px;
                 width: auto;
-                height: 80%;
-                opacity: 0.45;
-                filter: invert(1);
+                height: 60%;
+                opacity: 0.95;
+                filter: invert(0);
             }
             .example{
                 background-color: rgb(129, 175, 92);
-                background-color: rgb(66, 117, 211);
-                background-color: rgb(136, 166, 222);
+                background-color: rgb(148, 200, 254);
+                color: rgb(240, 157, 85);
+                color:#e9cca4;
+                background-color: rgb(151, 213, 243);
                 background-color: rgb(182, 182, 182);
-                background-color: rgb(211, 66, 66);
-                background-color: rgb(229, 215, 70);
+                background-color: rgb(237, 108, 108);
+                background-color: rgb(243, 234, 140);
+                background-color: rgb(165, 224, 116);
             }
         }
     }

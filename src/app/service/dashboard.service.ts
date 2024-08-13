@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { server } from 'src/environments/environment';
 import { IDashboardGet } from '../interfaces/DasboardInterface/dashboard.interface';
 @Injectable({
@@ -15,13 +15,21 @@ export class DashboardService {
    * @param token 
    * @returns 
    */
-  getDashboardsUser(primary_user: number, token: string){
-      // Agrega el token Bearer al encabezado de la solicitud
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${token}`
-      });
-    return this.http.post<IDashboardGet[]>(server+"dashboard/getDashboardsUser", {primary_user}, {headers})
+  getDashboardsUser(primary_user: number, token: string) {
+    // Agrega el token Bearer al encabezado de la solicitud
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post<IDashboardGet[]>(server + "dashboard/getDashboardsUser", { primary_user }, { headers })
   }
 
-  
+
+  createDashboardUser(title: string, description: string, primary_user: number, token: string) {
+    // Agregar el token bearer al encabezado de la solicitud
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post<any>(server + "dashboard/createDashboard", { primary_user, title, description }, { headers })
+  }
+
 }

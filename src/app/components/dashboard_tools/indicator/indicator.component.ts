@@ -47,35 +47,39 @@ export class IndicatorComponent implements OnInit, OnChanges {
           this.groupName = actualIndicator.groupname;
           switch(this.type_data_design){
             case 'light':{
-              this.backgroundColor = "rgb(229, 215, 70)"
+              this.backgroundColor = "#F0E47A"
+              // this.backgroundColor = "#E4EFF0"
+              
               break;
             }
             case 'motor':{
-              this.backgroundColor = "rgb(211, 134, 66)"
+              this.backgroundColor = "rgb(240, 157, 85)"
+              // this.backgroundColor = "#F0E6E3"
               break;
             }
             case 'machine':{
-              this.backgroundColor = "blue"
+              this.backgroundColor = "#E4F0E8"
+              // this.backgroundColor = "blue"
               break;
             }
             case 'air':{
-              this.backgroundColor = "rgb(66, 117, 211)"
+              this.backgroundColor = "#D5E8F0"
               break;
             }
             case 'temperature':{
-              this.backgroundColor = "rgb(211, 66, 66)"
+              this.backgroundColor = "rgb(237, 108, 108)"
               break;
             }
             case 'wet':{
-              this.backgroundColor = "rgb(136, 166, 222)"
+              this.backgroundColor = "rgb(148, 200, 254)"
               break;
             }
             case 'status':{
-              this.backgroundColor = "rgb(129, 175, 92)"
+              this.backgroundColor = "rgb(165, 224, 116)"
               break; 
             }
             case 'other':{
-              this.backgroundColor = "rgb(182, 182, 182)"
+              this.backgroundColor = "#e9cca4"
               break;
             }
             default:{

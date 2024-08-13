@@ -379,7 +379,6 @@
                     gap: 10px;
                     width: 100%;
                     height: 50px;
-
                     input[type='text'],
                     select {
                         height: 35px;
@@ -387,12 +386,10 @@
                         border: 1px solid rgb(96, 96, 96);
                         padding: 0px 10px;
                     }
-
                     input[type="checkbox"] {
                         width: 20px;
                         height: 20px;
                     }
-
                     .send_img {
                         width: 25px;
                         height: 30px;
@@ -404,10 +401,7 @@
                             cursor: pointer;
                             filter: invert(0);
                         }
-
-                        // border: 1px solid rgb(96, 96, 96);
                     }
-
                 }
 
                 .container-parameters {
