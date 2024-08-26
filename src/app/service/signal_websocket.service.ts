@@ -14,11 +14,10 @@ export class SignalService {
   constructor() {
   }
 
-  groupName(groupname: string) {
-    this.socket.emit('joinGroup', { groupName: groupname }); // Unirse al grupo
-    console.log(groupname)
-    this.socket.on(groupname, (data: string) => {
-      console.log("valor recibido: ",data)
+  groupName(groupName: string) {
+    this.socket.emit('joinGroup', { groupName }); // Unirse al grupo
+    console.log(groupName)
+    this.socket.on(groupName, (data: string) => {
       this.dataRecive.emit(data);
     });
   }

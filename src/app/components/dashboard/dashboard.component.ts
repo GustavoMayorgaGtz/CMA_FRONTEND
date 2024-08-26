@@ -84,6 +84,7 @@ export class DashboardComponent implements OnInit {
 
   public linear1: any;
   public dashboards: IDashboardGet[] = [];
+  public src: string = "";
   ngOnInit(): void {
     this.exitService.exitConfigurationGraphLine.subscribe(() => {
       this.set_menu_tool = 0;
@@ -91,6 +92,14 @@ export class DashboardComponent implements OnInit {
     const idUser = sessionStorage.getItem("idUser");
     const token = sessionStorage.getItem("token");
 
+
+    this.signalsService.groupName("streaming");
+    this.signalsService.dataRecive.subscribe((buffer) => {
+      console.log(buffer)
+      const blob = new Blob([buffer.data], { type: 'image/jpeg' });
+      this.src = URL.createObjectURL(blob);
+    })
+    
     if (idUser && token) {
       this.dashboardService.getDashboardsUser(parseInt(idUser), token).subscribe((data) => {
         this.dashboards = data;

@@ -7,7 +7,7 @@
     height: calc(100vh - 85px);
     overflow: hidden;
     overflow-y: scroll;
-    background-color: #ecefec;
+    background-color: C;
 
     .nav {
         display: flex;
@@ -498,7 +498,7 @@
                         // color: white;
                         color: rgb(28, 28, 28);
                         cursor: pointer;
-                        background-color: rgb(242, 191, 129);
+                        background-color: #f2bf81;
                         transition: all 0.2s;
 
                         &:hover {

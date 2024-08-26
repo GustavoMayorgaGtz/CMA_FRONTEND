@@ -46,7 +46,7 @@
         <div class="card-variable" *ngFor="let jsonVar of jsonVariables; let j = index">
             <div class="header">
                 <div class="title">{{jsonVar.name}}</div>
-                <div class="type" style="color: rgb(227, 133, 17);">Json E</div>
+                <div class="type" style="color: #e38511;">Json E</div>
             </div>
             <div class="value_var">
                 {{jsonVar.value}}
@@ -56,7 +56,7 @@
         <div class="card-variable" *ngFor="let modbusVar of modbusVariables; let j = index">
             <div class="header">
                 <div class="title">{{modbusVar.name}}</div>
-                <div class="type" style="color: rgb(76, 156, 49);">Modbus</div>
+                <div class="type" style="color: #4c9c31;">Modbus</div>
             </div>
             <div class="value_var">
                 {{modbusVar.value[0]}}
@@ -65,7 +65,7 @@
         <div class="card-variable" *ngFor="let memoryVar of memoryVariables; let j = index">
             <div class="header">
                 <div class="title">{{memoryVar.name}}</div>
-                <div class="type" style="color: rgb(185, 152, 241);">Memory</div>
+                <div class="type" style="color: #b998f1;">Memory</div>
             </div>
             <div class="value_var">
                 {{memoryVar.expression}}
@@ -81,7 +81,7 @@
             </div>
             <div class="value_var">
                 <p>{{server}}cma_endpoint/insertValue<span
-                        style="color: rgb(0, 98, 255)">?</span><b>id_endpoint</b>={{cma_endpoint.id_endpoint}}<span
+                        style="color: #0062ff">?</span><b>id_endpoint</b>={{cma_endpoint.id_endpoint}}<span
                         style="color: rgb(0, 98, 255)">&</span><b>token</b>={{cma_endpoint.token}}<span
                         style="color: rgb(0, 98, 255)">&</span><b>value</b>=Valor
                     <!-- {{cma_endpoint.description}} -->
