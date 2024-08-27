@@ -26,5 +26,13 @@ export interface IRecive_Indicator {
     type_data_in: string,
     width: number,
     x: number,
-    y: number
+    y: number,
+    data: number
+}
+
+export interface IIndicator_Var{
+   idvar: number,
+   name: string,
+   id: number,
+   type: 'json'|'modbus'|'memory'|'cma_endpoint'|'indicator'
 }

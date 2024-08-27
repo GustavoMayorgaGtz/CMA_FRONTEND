@@ -1,15 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { CalculatorExpression } from 'src/app/functions/calculatorExpression';
 import { JsonVariableClass } from 'src/app/functions/json_functions';
 import { ModbusVariableClass } from 'src/app/functions/modbus_functions';
 import { ICMA_ENDPOINT_CREATE_RESPONSE, ICMA_ENDPOINT_DATABASE } from 'src/app/interfaces/CMA_EndpointInterfaces/cma_endpointInterface';
+import { IIndicator_Var, IRecive_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
 import { IJsonVariable } from 'src/app/interfaces/JsonEndpointsInterfaces/JsonEndpointI';
 import { IMemoryVar, IModbusVar } from 'src/app/interfaces/Modbus.interfaces/ModbusInterfaces';
 import { AllVar } from 'src/app/interfaces/interfaces';
 import { AlertService } from 'src/app/service/alert.service';
 import { AllService } from 'src/app/service/all.service';
 import { CMA_ENDPOINT_SERVICES } from 'src/app/service/cma_endpoints.service';
+import { IndicatorService } from 'src/app/service/indicators_service';
 import { VarsService } from 'src/app/service/vars';
 import { server } from 'src/environments/environment';
 
@@ -35,8 +38,10 @@ export class VariablesComponent implements OnInit, AfterViewInit {
   constructor(private service: AllService,
     private alertService: AlertService,
     private varsService: VarsService,
+    private router: Router,
+    private indicatorsService: IndicatorService,
     private cma_endpointService: CMA_ENDPOINT_SERVICES) {
-      this.server = server;
+    this.server = server;
   }
 
   ngAfterViewInit(): void {
@@ -58,6 +63,19 @@ export class VariablesComponent implements OnInit, AfterViewInit {
     this.regex.getMessage.subscribe((result) => {
       this.alertService.setMessageAlert("Resultado: " + result);
     })
+    const token = sessionStorage.getItem("token");
+    const id_user = sessionStorage.getItem("idUser");
+    if (token && id_user) {
+      this.indicatorsService.getAll(token, parseInt(id_user)).subscribe((indicadores) => {
+        console.log("Variables de indicador");
+        console.log(indicadores)
+        this.indicatorsVariables = indicadores;
+      })
+    } else {
+      sessionStorage.removeItem("id_user")
+      sessionStorage.removeItem("token")
+      this.router.navigate(['/login']);
+    }
     this.jsonBuilder.output_show_datos.subscribe((state) => {
       this.showDatos = state;
       this.showSeguridad = (state) ? false : this.showSeguridad;
@@ -99,6 +117,7 @@ export class VariablesComponent implements OnInit, AfterViewInit {
   public jsonVariables: IJsonVariable[] = [];
   public modbusVariables: IModbusVar[] = [];
   public memoryVariables: IMemoryVar[] = []
+  public indicatorsVariables: IRecive_Indicator[] = [];
   public variablesEndpoint: ICMA_ENDPOINT_DATABASE[] = []
   public Vars_names: string[] = [];
   public vars!: AllVar[];
@@ -109,7 +128,9 @@ export class VariablesComponent implements OnInit, AfterViewInit {
   getVariables() {
     this.varsService.getAllVars().subscribe((vars) => {
       this.vars = vars;
+
       this.Vars_names = vars.map((vars) => {
+        
         return vars.name;
       })
     });
@@ -270,7 +291,7 @@ export class VariablesComponent implements OnInit, AfterViewInit {
       if (enableName !== -1) {
         this.alertService.setMessageAlert("Nombre repetido, cambia el nombre de la variable.");
       } else {
-        this.modbusBuilder.createVariable(name,ip, port, no_register, quantity, type_date, unidId);
+        this.modbusBuilder.createVariable(name, ip, port, no_register, quantity, type_date, unidId);
       }
     }
   }
@@ -359,6 +380,6 @@ export class VariablesComponent implements OnInit, AfterViewInit {
 
 
 
-  
+
 }
 

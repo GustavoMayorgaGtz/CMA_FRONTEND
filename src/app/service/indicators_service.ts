@@ -17,13 +17,22 @@ export class IndicatorService {
   }
 
 
-  getAll(token: string, id_user: number, id_dashboard: number) {
+  getAll_Dashboard(token: string, id_user: number, id_dashboard: number) {
     // Agrega el token Bearer al encabezado de la solicitud
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get<IRecive_Indicator[]>(server + `indicators/getAll?id_user=${id_user}&id_dashboard=${id_dashboard}`, {headers});
+    return this.http.get<IRecive_Indicator[]>(server + `indicators/getAll_Dashboard?id_user=${id_user}&id_dashboard=${id_dashboard}`, {headers});
+  }
+  
+  getAll(token: string, id_user: number) {
+    // Agrega el token Bearer al encabezado de la solicitud
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get<IRecive_Indicator[]>(server + `indicators/getAll?id_user=${id_user}`, {headers});
   }
 
   getOne(primary_user: number, id_indicator: number){

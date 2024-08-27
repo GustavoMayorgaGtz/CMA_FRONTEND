@@ -2,11 +2,14 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { TokenType } from '@angular/compiler';
 import { Component, ElementRef, Input, OnChanges, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { io } from 'socket.io-client';
+import { IRecive_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
 import { IConfigurationShadow } from 'src/app/interfaces/TieldmapInterfaces/tieldmapinterfaces';
 import { finalizeService } from 'src/app/service/finalize.service';
 import { IndicatorService } from 'src/app/service/indicators_service';
 import { LineChartService } from 'src/app/service/linechart_service';
 import { SimpleButtonService } from 'src/app/service/simple_button_service';
+import { ws_server } from 'src/environments/environment';
 
 @Component({
   selector: 'app-tieldmap',
@@ -55,8 +58,8 @@ export class TieldmapComponent implements OnChanges {
           })
         })
         //--------
-        this.indicators_Service.getAll(token, parseInt(idUser), this.id_dashboard).subscribe((response) => {
-          console.log(response);
+        this.indicators_Service.getAll_Dashboard(token, parseInt(idUser), this.id_dashboard).subscribe((response) => {
+           this.listenIndicators(response);
           response.forEach((data) => {
             this.shadow_container.push({
               name: data.title,
@@ -67,6 +70,7 @@ export class TieldmapComponent implements OnChanges {
               type: 'indicator',
               id: data.id_indicator
             })
+
           })
           console.log(this.shadow_container)
         }, (err: HttpErrorResponse) => {
@@ -88,6 +92,7 @@ export class TieldmapComponent implements OnChanges {
 
   }
 
+  
 
 
   /**

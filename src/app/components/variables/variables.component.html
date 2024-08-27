@@ -74,6 +74,19 @@
                 {{memoryVar.result}}
             </div>
         </div>
+        <div class="card-variable" *ngFor="let indicatorVar of indicatorsVariables; let j = index">
+            <div class="header">
+                <div class="title">{{indicatorVar.title}}</div>
+                <div class="type" style="color: #a31414;">Indicador WS</div>
+            </div>
+            <div class="value_var">
+                {{indicatorVar.description}}
+            </div>
+            <div class="value_var">
+                <!-- {{memoryVar.result}} -->
+                {{indicatorVar.groupname}}
+            </div>
+        </div>
         <div class="card-variable-endpoint" *ngFor="let cma_endpoint of variablesEndpoint; let j = index">
             <div class="header">
                 <div class="title">{{cma_endpoint.name}}</div>
