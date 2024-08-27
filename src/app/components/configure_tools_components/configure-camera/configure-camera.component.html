@@ -1,0 +1,61 @@
+<div class="primary-container">
+    <nav>
+        <span class="title">
+            Configuración de camara
+        </span>
+        <span class="regresar" (click)="return()">
+            Regresar 
+        </span>
+    </nav>
+    <div class="left">
+        <div class="chart-container">
+          <div class="title_container">
+            <span class="title">
+                {{get_camera_title}}
+            </span>
+            <span class="description">
+                {{get_camera_description}}
+            </span>
+          </div>
+          <div class="canvas">
+            <img src="./assets/graphs/videocam.svg" alt="video">
+          </div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="content-create-tool">
+            <div class="class-configuration">
+                <div class="title">
+                    General
+                </div>
+                <div class="line">
+ 
+                </div>
+                <div class="updown">
+                    <img src="./assets/expand_more.png" class="open">
+                </div>
+            </div>
+            <div class="container-class">
+                <div class="campo">
+                    <div class="title">Titulo</div>
+                    <div class="description">Asigna el titulo de la camara.</div>
+                    <input type="text" class="input-text" name="title" id="title" #title
+                        (change)="set_camera_title = title.value" (keyup)="set_camera_title = title.value" value={{get_camera_title}}>
+                </div>
+                <div class="campo">
+                    <div class="title">Descripcion</div>
+                    <div class="description">Describe el uso de la camara.</div>
+                    <input type="text" class="input-text" name="description" id="description" #description
+                        (change)="set_camera_description = description.value" (keyup)="set_camera_description = description.value" value={{get_camera_description}}>
+                </div>
+             
+                <div class="btn-guardar" (click)="createCamera()" *ngIf="show_save_button">
+                    Guardar configuración
+                </div>
+                <div class="btn-guardar"  *ngIf="!show_save_button">
+                    Espera un momento...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

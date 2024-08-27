@@ -3,7 +3,7 @@
         <div class="nav">
             Dashboards
 
-            <div class="btn-create" (click)="set_menu_tool = 5">
+            <div class="btn-create" (click)="set_menu_tool = 6">
                 Crear dashboard
             </div>
         </div>
@@ -85,6 +85,12 @@
                         <div class="title">Indicador</div>
                     </div>
                 </div>
+                <div class="box-graph" (click)="set_menu_tool = 5">
+                    <img src="./assets/graphs/camera.svg" alt="camera" class="image_contet">
+                    <div class="title-content">
+                        <div class="title">Camara</div>
+                    </div>
+                </div>
                 <div class="box-graph disabled">
                     <img src="./assets/graphs/input.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
@@ -106,6 +112,9 @@
     <app-configure-indicator [id_dashboard_selected]="selectedDashboard"></app-configure-indicator>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 5">
+    <app-configure-camera  style="width: 100%;" [id_dashboard_selected]="selectedDashboard"></app-configure-camera>
+</div>
+<div class="primary-container" *ngIf="menu_tool == 6">
     <div class="create-dashboard">
         <div class="nav_btn" (click)="set_menu_tool = 0">Cancelar</div>
 

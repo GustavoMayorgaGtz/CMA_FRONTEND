@@ -27,6 +27,8 @@ import { MiCuentaComponent } from './cuenta/mi-cuenta/mi-cuenta.component';
 import { GestionCuentasComponent } from './cuenta/gestion-cuentas/gestion-cuentas.component';
 import { AccesosApiComponent } from './cuenta/accesos-api/accesos-api.component';
 import { ConfigureIndicatorComponent } from './configure_tools_components/configure-indicator/configure-indicator.component';
+import { ConfigureCaneraComponent } from './configure_tools_components/configure-camera/configure-camera.component';
+import { CameraViewComponent } from './dashboard_tools/camera_view/camera_view.component';
 
 const components = [NavComponent,
   MenuComponent,
@@ -51,7 +53,9 @@ const components = [NavComponent,
   TieldmapSequenceComponent,
   MiCuentaComponent,
   GestionCuentasComponent,
-  AccesosApiComponent]
+  AccesosApiComponent,
+  ConfigureCaneraComponent,
+  CameraViewComponent]
 
 @NgModule({
   declarations: components,

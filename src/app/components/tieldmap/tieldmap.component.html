@@ -19,6 +19,7 @@
             <app-indicator *ngIf="shadow.type === 'indicator'" [id_indicator]=shadow.id></app-indicator>
 
             <app-simple-button *ngIf="shadow.type === 'simplebutton'" [idSimpleButton]=shadow.id></app-simple-button>
+            <app-camera_view *ngIf="shadow.type === 'streaming'" [id_camera]=shadow.id></app-camera_view>
 
             <div class="opendata" *ngIf="shadow.type === 'linechart'" (click)="openData(shadow.id)">
                 <img src="./assets/open.svg">
@@ -26,7 +27,7 @@
             <div class="erased" (click)="erasedShadow(idShadow)">
                 <img src="./assets/x-makeme.svg" draggable="false">
             </div>
-            <div class="resize" (mousedown)="enableResizeShadow(idShadow)" (mouseup)="endResizeShadow()">
+            <div class="resize" *ngIf="shadow.type != 'indicator'" (mousedown)="enableResizeShadow(idShadow)" (mouseup)="endResizeShadow()">
                 <img src="./assets/resize-makeme.svg" draggable="false">
             </div>
             <div class="move" (mousedown)="enableMoveShadow(idShadow)" (mouseup)="endMoveShadow()">

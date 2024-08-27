@@ -2,39 +2,34 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DefaultEventsMap } from '@socket.io/component-emitter';
 import { io, Socket } from 'socket.io-client';
-import { IRecive_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
+import { ICamera_Recive } from 'src/app/interfaces/CameraInterfaces/camera.interfaces';
 import { AlertService } from 'src/app/service/alert.service';
-import { IndicatorService } from 'src/app/service/indicators_service';
+import { CameraService } from 'src/app/service/camera_service';
 import { ws_server } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-indicator',
-  templateUrl: './indicator.component.html',
-  styleUrls: ['./indicator.component.scss']
+  selector: 'app-camera_view',
+  templateUrl: './camera_view.component.html',
+  styleUrls: ['./camera_view.component.scss']
 })
-export class IndicatorComponent implements OnInit, OnChanges {
-
-  @Input() id_indicator!: number;
+export class CameraViewComponent implements OnInit, OnChanges {
+  @Input() id_camera!: number;
   title: string = "";
   description: string = "";
-  symbol: string = "";
   dashboard!: number;
-  type_data_in: string = "";
-  type_data_design: string = "";
   groupName: string = "";
-  backgroundColor: string = "";
 
 
-  constructor(private indicatorService: IndicatorService,
+  constructor(private cameraService: CameraService,
     private alertService: AlertService
   ) { }
 
-  public data: any;
   ngOnInit(): void {
    
   }
 
 
+  public streaming_data: string = "";
   public status: boolean = false;
   TriggerConnectSocket() {
     if (this.socket) {
@@ -43,7 +38,7 @@ export class IndicatorComponent implements OnInit, OnChanges {
         this.Connect_Socket().then(() => {
           //El socket funciono correctamente
           console.log("Volviendo a conectar");
-          this.listenIndicators(this.indicator_saved);
+          this.listenStreaming(this.indicator_saved);
         })
           .catch((err) => {
             this.TriggerConnectSocket();
@@ -97,11 +92,14 @@ export class IndicatorComponent implements OnInit, OnChanges {
     })
   }
 
-  listenIndicators(list: IRecive_Indicator) {
+  listenStreaming(list: ICamera_Recive) {
     this.Connect_Socket().then(() => {
+      
       this.socket.emit('joinGroup', { groupName: list.groupname }); // Unirse al grupo
       this.socket.on(list.groupname, (data: string) => {
-        this.data = data;
+        console.log("Datos de streaming camera")
+        console.log(data);
+        this.streaming_data = data;
       });
       this.socket.on("disconnect", () => {
         this.status = false;
@@ -113,71 +111,32 @@ export class IndicatorComponent implements OnInit, OnChanges {
       })
 
     }).catch((err) => {
+      alert("No se conecto")
       console.log("No se pudo conectar el socket")
     })
   }
 
-  public indicator_saved!: IRecive_Indicator;
+  public indicator_saved!: ICamera_Recive;
   ngOnChanges(changes: SimpleChanges): void {
     if (changes) {
       const idUserString = sessionStorage.getItem("idUser");
       if (idUserString) {
-        this.indicatorService.getOne(parseInt(idUserString), this.id_indicator).subscribe((data) => {
+        this.cameraService.getOne(parseInt(idUserString), this.id_camera).subscribe((data) => {
           this.indicator_saved = data;
+          console.log("DFsdfnsdfkjfb")
+          console.log(data)
           this.Connect_Socket().then(() => {
-            this.listenIndicators(data);
+            this.listenStreaming(data);
           })
           .catch((err) =>{
             console.log("_________________________")
             console.log(err);
           })
-          const actualIndicator = data;
-          this.title = actualIndicator.title;
-          this.description = actualIndicator.description;
-          this.symbol = actualIndicator.symbol;
-          this.dashboard = actualIndicator.dashboard;
-          this.type_data_in = actualIndicator.type_data_in;
-          this.type_data_design = actualIndicator.type_data_design;
-          this.groupName = actualIndicator.groupname;
-
-          switch (this.type_data_design) {
-            case 'light': {
-              this.backgroundColor = "#F0E47A"
-              break;
-            }
-            case 'motor': {
-              this.backgroundColor = "rgb(240, 157, 85)"
-              break;
-            }
-            case 'machine': {
-              this.backgroundColor = "#E4F0E8"
-              break;
-            }
-            case 'air': {
-              this.backgroundColor = "#D5E8F0"
-              break;
-            }
-            case 'temperature': {
-              this.backgroundColor = "rgb(237, 108, 108)"
-              break;
-            }
-            case 'wet': {
-              this.backgroundColor = "rgb(148, 200, 254)"
-              break;
-            }
-            case 'status': {
-              this.backgroundColor = "rgb(165, 224, 116)"
-              break;
-            }
-            case 'other': {
-              this.backgroundColor = "#e9cca4"
-              break;
-            }
-            default: {
-              this.backgroundColor = "red"
-              break;
-            }
-          }
+          const actualCamera = data;
+          this.title = actualCamera.title;
+          this.description = actualCamera.description;
+          this.dashboard = actualCamera.dashboard;
+          this.groupName = actualCamera.groupname;
         }, (err: HttpErrorResponse) => {
           this.alertService.setMessageAlert("No se pudo obtener el indicador, intentalo mas tarde." + err.message);
         })

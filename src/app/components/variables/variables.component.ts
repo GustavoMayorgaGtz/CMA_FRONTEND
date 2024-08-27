@@ -5,12 +5,14 @@ import { CalculatorExpression } from 'src/app/functions/calculatorExpression';
 import { JsonVariableClass } from 'src/app/functions/json_functions';
 import { ModbusVariableClass } from 'src/app/functions/modbus_functions';
 import { ICMA_ENDPOINT_CREATE_RESPONSE, ICMA_ENDPOINT_DATABASE } from 'src/app/interfaces/CMA_EndpointInterfaces/cma_endpointInterface';
+import { ICamera_Recive } from 'src/app/interfaces/CameraInterfaces/camera.interfaces';
 import { IIndicator_Var, IRecive_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
 import { IJsonVariable } from 'src/app/interfaces/JsonEndpointsInterfaces/JsonEndpointI';
 import { IMemoryVar, IModbusVar } from 'src/app/interfaces/Modbus.interfaces/ModbusInterfaces';
 import { AllVar } from 'src/app/interfaces/interfaces';
 import { AlertService } from 'src/app/service/alert.service';
 import { AllService } from 'src/app/service/all.service';
+import { CameraService } from 'src/app/service/camera_service';
 import { CMA_ENDPOINT_SERVICES } from 'src/app/service/cma_endpoints.service';
 import { IndicatorService } from 'src/app/service/indicators_service';
 import { VarsService } from 'src/app/service/vars';
@@ -40,6 +42,7 @@ export class VariablesComponent implements OnInit, AfterViewInit {
     private varsService: VarsService,
     private router: Router,
     private indicatorsService: IndicatorService,
+    private cameraService: CameraService,
     private cma_endpointService: CMA_ENDPOINT_SERVICES) {
     this.server = server;
   }
@@ -67,9 +70,10 @@ export class VariablesComponent implements OnInit, AfterViewInit {
     const id_user = sessionStorage.getItem("idUser");
     if (token && id_user) {
       this.indicatorsService.getAll(token, parseInt(id_user)).subscribe((indicadores) => {
-        console.log("Variables de indicador");
-        console.log(indicadores)
         this.indicatorsVariables = indicadores;
+      })
+      this.cameraService.getAll(token, parseInt(id_user)).subscribe((camaras) => {
+        this.cameraVariables = camaras;
       })
     } else {
       sessionStorage.removeItem("id_user")
@@ -118,6 +122,7 @@ export class VariablesComponent implements OnInit, AfterViewInit {
   public modbusVariables: IModbusVar[] = [];
   public memoryVariables: IMemoryVar[] = []
   public indicatorsVariables: IRecive_Indicator[] = [];
+  public cameraVariables: ICamera_Recive[] = [];
   public variablesEndpoint: ICMA_ENDPOINT_DATABASE[] = []
   public Vars_names: string[] = [];
   public vars!: AllVar[];

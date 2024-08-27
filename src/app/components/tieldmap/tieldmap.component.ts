@@ -1,15 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { TokenType } from '@angular/compiler';
 import { Component, ElementRef, Input, OnChanges, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { io } from 'socket.io-client';
-import { IRecive_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
 import { IConfigurationShadow } from 'src/app/interfaces/TieldmapInterfaces/tieldmapinterfaces';
+import { CameraService } from 'src/app/service/camera_service';
 import { finalizeService } from 'src/app/service/finalize.service';
 import { IndicatorService } from 'src/app/service/indicators_service';
 import { LineChartService } from 'src/app/service/linechart_service';
 import { SimpleButtonService } from 'src/app/service/simple_button_service';
-import { ws_server } from 'src/environments/environment';
 
 @Component({
   selector: 'app-tieldmap',
@@ -59,7 +56,6 @@ export class TieldmapComponent implements OnChanges {
         })
         //--------
         this.indicators_Service.getAll_Dashboard(token, parseInt(idUser), this.id_dashboard).subscribe((response) => {
-           this.listenIndicators(response);
           response.forEach((data) => {
             this.shadow_container.push({
               name: data.title,
@@ -76,7 +72,25 @@ export class TieldmapComponent implements OnChanges {
         }, (err: HttpErrorResponse) => {
           console.log(err);
         })
-      } else {
+        //-----------
+
+        this.camera_Service.getAll_Dashboard(token, parseInt(idUser), this.id_dashboard).subscribe((response) => {
+          response.forEach((data) => {
+            this.shadow_container.push({
+              name: data.title,
+              width: data.width ? data.width : 300,
+              height: data.height ? data.height : 150,
+              x: data.x ? data.x : 0,
+              y: data.y ? data.y : 0,
+              type: 'streaming',
+              id: data.id_camera
+            })
+
+          })
+          console.log(this.shadow_container)
+        }, (err: HttpErrorResponse) => {
+          console.log(err);
+        })      } else {
         this.router.navigate(['/'])
       }
     }
@@ -85,6 +99,7 @@ export class TieldmapComponent implements OnChanges {
   constructor(private linechart_Service: LineChartService,
     private simplebutton_Service: SimpleButtonService,
     private indicators_Service: IndicatorService,
+    private camera_Service: CameraService,
     private router: Router,
     private finalizeServices: finalizeService) {
 
@@ -325,13 +340,47 @@ export class TieldmapComponent implements OnChanges {
 
   public propiedadAplicada: number[] = [];
   setChanges(shadow: HTMLDivElement, idShadow: number, tieldmap: HTMLDivElement) {
-    shadow.setAttribute("style", `position: absolute;
-    top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
-    left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
-    width: ${this.shadow_container[idShadow].width}px; 
-    height: ${this.shadow_container[idShadow].height}px;
-    background-color: white;
-    border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 5px;`);
+    // console.log("Datos de la sombra: ",);
+    const type = this.shadow_container[idShadow].type;
+    switch(type){
+      case 'indicator':{
+        shadow.setAttribute("style", `position: absolute;
+        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+        left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
+        max-width: 300px; 
+        height: 70px;
+        min-width: 250px;
+        width: 100%;
+        background-color: white;
+        border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 5px;`);
+        break;
+      }
+      case 'linechart':{
+        shadow.setAttribute("style", `position: absolute;
+        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+        left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
+        width: ${this.shadow_container[idShadow].width}px; 
+        height: ${this.shadow_container[idShadow].height}px;
+        background-color: white;
+        font-size: clamp(6px, 100%, 24px);
+        border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 5px;`);
+        break;
+      }
+      case 'simplebutton':{
+        // const container = document.querySelector('.container');
+        const fontSize = shadow.offsetWidth / 8;  // Puedes ajustar el divisor según sea necesario
+        // shadow.style.fontSize = `${fontSize}px`;
+        shadow.setAttribute("style", `position: absolute;
+        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+        left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
+        width: ${this.shadow_container[idShadow].width}px; 
+        height: ${this.shadow_container[idShadow].height}px;
+        background-color: none;
+        border: none;
+        font-size: ${fontSize}px`);
+        break;
+      }
+    }
 
     if (this.propiedadAplicada.indexOf(idShadow) == -1) {
       this.propiedadAplicada.push(idShadow);
@@ -419,6 +468,12 @@ export class TieldmapComponent implements OnChanges {
           this.indicators_Service.updatePositionAndSizeIndicators(shadow).subscribe((response) => {
           })
         }
+
+        
+        if (shadow.type == 'streaming') {
+          this.camera_Service.updatePositionAndSizeIndicators(shadow).subscribe((response) => {
+          })
+        }
       })
       this.Update = false;
     }
@@ -452,7 +507,6 @@ export class TieldmapComponent implements OnChanges {
           }
         }
         this.router.navigate(['/blobdata'], navigationExtras);
-
       }
     })
   }

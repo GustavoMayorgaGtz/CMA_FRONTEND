@@ -2,14 +2,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IDashboardGet } from 'src/app/interfaces/DasboardInterface/dashboard.interface';
-import { IRecive_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
 import { AlertService } from 'src/app/service/alert.service';
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { ExitService } from 'src/app/service/exit.service';
 import { SignalService } from 'src/app/service/signal_websocket.service';
-import { io } from 'socket.io-client';
-import { ws_server } from 'src/environments/environment';
-import { IndicatorService } from 'src/app/service/indicators_service';
 
 @Component({
   selector: 'app-dashboard',

@@ -12,6 +12,8 @@
       </div>
    </div>
    <div class="right">
+      <div class="status_enabled" *ngIf="status">conectado</div>
+      <div class="status_disabled" *ngIf="!status">desconectado</div>
       <div class="container-content">
           <div class="title">{{title}}</div>
           <div class="content">  {{data}}<span class="symbol">{{symbol}}</span></div>
