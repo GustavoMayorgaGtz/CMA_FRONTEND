@@ -16,7 +16,6 @@ export class SignalService {
 
   groupName(groupName: string) {
     this.socket.emit('joinGroup', { groupName }); // Unirse al grupo
-    console.log(groupName)
     this.socket.on(groupName, (data: string) => {
       this.dataRecive.emit(data);
     });

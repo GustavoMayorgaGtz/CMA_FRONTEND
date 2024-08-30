@@ -4,6 +4,6 @@ export interface IConfigurationShadow{
     y: number;
     width: number;
     height: number;
-    type: 'linechart' | 'simplebutton' | 'indicator' | 'streaming',
+    type: 'linechart' | 'simplebutton' | 'indicator' | 'streaming' | 'pulsacion',
     id: number
 }

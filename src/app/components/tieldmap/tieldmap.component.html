@@ -20,6 +20,8 @@
 
             <app-simple-button *ngIf="shadow.type === 'simplebutton'" [idSimpleButton]=shadow.id></app-simple-button>
             <app-camera_view *ngIf="shadow.type === 'streaming'" [id_camera]=shadow.id></app-camera_view>
+            <app-pulsacion *ngIf="shadow.type === 'pulsacion'" [id_pulsacion]=shadow.id></app-pulsacion>
+            
 
             <div class="opendata" *ngIf="shadow.type === 'linechart'" (click)="openData(shadow.id)">
                 <img src="./assets/open.svg">

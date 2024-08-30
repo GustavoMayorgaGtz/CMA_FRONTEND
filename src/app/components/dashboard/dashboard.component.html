@@ -3,7 +3,7 @@
         <div class="nav">
             Dashboards
 
-            <div class="btn-create" (click)="set_menu_tool = 6">
+            <div class="btn-create" (click)="set_menu_tool = 10">
                 Crear dashboard
             </div>
         </div>
@@ -39,19 +39,19 @@
                 <div class="box-graph" (click)="set_menu_tool = 2">
                     <img src="./assets/graphs/line_chart.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
-                        <div class="title">Grafica linear</div>
+                        <div class="title">Gráfica linear</div>
                     </div>
                 </div>
                 <div class="box-graph disabled">
                     <img src="./assets/graphs/bar_chart.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
-                        <div class="title">Grafica de barra</div>
+                        <div class="title">Gráfica  ica de barras</div>
                     </div>
                 </div>
                 <div class="box-graph disabled">
                     <img src="./assets/graphs/traffic.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
-                        <div class="title">Semaforo</div>
+                        <div class="title">Semáforo</div>
                     </div>
                 </div>
                 <div class="box-graph disabled">
@@ -70,7 +70,7 @@
                 <div class="box-graph" (click)="set_menu_tool = 3">
                     <img src="./assets/graphs/switch.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
-                        <div class="title">Boton simple</div>
+                        <div class="title">Botón simple</div>
                     </div>
                 </div>
                 <div class="box-graph disabled">
@@ -88,7 +88,13 @@
                 <div class="box-graph" (click)="set_menu_tool = 5">
                     <img src="./assets/graphs/camera.svg" alt="camera" class="image_contet">
                     <div class="title-content">
-                        <div class="title">Camara</div>
+                        <div class="title">Cámara</div>
+                    </div>
+                </div>
+                <div class="box-graph" (click)="set_menu_tool = 6">
+                    <img src="./assets/graphs/pulse.svg" alt="pulse" class="image_contet">
+                    <div class="title-content">
+                        <div class="title">Pulsación</div>
                     </div>
                 </div>
                 <div class="box-graph disabled">
@@ -115,6 +121,9 @@
     <app-configure-camera  style="width: 100%;" [id_dashboard_selected]="selectedDashboard"></app-configure-camera>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 6">
+    <app-configure-pulsacion  style="width: 100%;" [id_dashboard_selected]="selectedDashboard"></app-configure-pulsacion>
+</div>
+<div class="primary-container" *ngIf="menu_tool == 10">
     <div class="create-dashboard">
         <div class="nav_btn" (click)="set_menu_tool = 0">Cancelar</div>
 

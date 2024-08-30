@@ -29,6 +29,8 @@ import { AccesosApiComponent } from './cuenta/accesos-api/accesos-api.component'
 import { ConfigureIndicatorComponent } from './configure_tools_components/configure-indicator/configure-indicator.component';
 import { ConfigureCaneraComponent } from './configure_tools_components/configure-camera/configure-camera.component';
 import { CameraViewComponent } from './dashboard_tools/camera_view/camera_view.component';
+import { PulsacionComponent } from './dashboard_tools/pulsacion/pulsacion.component';
+import { ConfigurePulsacionComponent } from './configure_tools_components/configure-pulsacion/configure-pulsacion.component';
 
 const components = [NavComponent,
   MenuComponent,
@@ -48,6 +50,7 @@ const components = [NavComponent,
   ConfigureLinearGraphComponent,
   ConfigureSimpleButtonComponent,
   ConfigureIndicatorComponent,
+  ConfigurePulsacionComponent,
   LineChartComponent,
   TieldmapComponent,
   TieldmapSequenceComponent,
@@ -55,7 +58,8 @@ const components = [NavComponent,
   GestionCuentasComponent,
   AccesosApiComponent,
   ConfigureCaneraComponent,
-  CameraViewComponent]
+  CameraViewComponent,
+  PulsacionComponent]
 
 @NgModule({
   declarations: components,

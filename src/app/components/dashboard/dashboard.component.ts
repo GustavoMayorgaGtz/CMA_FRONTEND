@@ -13,7 +13,7 @@ import { SignalService } from 'src/app/service/signal_websocket.service';
   styleUrls: ['./dashboard.component.scss', './dashboard.component.mobile.scss']
 })
 export class DashboardComponent implements OnInit {
-  public menu_tool: number = 0;
+  public menu_tool: number = 2;
 
   set set_menu_tool(option: number) {
     this.menu_tool = option;
@@ -95,7 +95,6 @@ export class DashboardComponent implements OnInit {
 
     this.signalsService.groupName("streaming");
     this.signalsService.dataRecive.subscribe((buffer) => {
-      console.log(buffer)
       const blob = new Blob([buffer.data], { type: 'image/jpeg' });
       this.src = URL.createObjectURL(blob);
     })

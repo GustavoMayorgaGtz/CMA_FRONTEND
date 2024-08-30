@@ -42,7 +42,6 @@ export class IndicatorComponent implements OnInit, OnChanges {
         
         this.Connect_Socket().then(() => {
           //El socket funciono correctamente
-          console.log("Volviendo a conectar");
           this.listenIndicators(this.indicator_saved);
         })
           .catch((err) => {
@@ -128,7 +127,6 @@ export class IndicatorComponent implements OnInit, OnChanges {
             this.listenIndicators(data);
           })
           .catch((err) =>{
-            console.log("_________________________")
             console.log(err);
           })
           const actualIndicator = data;

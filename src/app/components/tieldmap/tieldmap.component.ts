@@ -6,6 +6,7 @@ import { CameraService } from 'src/app/service/camera_service';
 import { finalizeService } from 'src/app/service/finalize.service';
 import { IndicatorService } from 'src/app/service/indicators_service';
 import { LineChartService } from 'src/app/service/linechart_service';
+import { PulsacionService } from 'src/app/service/pulsacion.service';
 import { SimpleButtonService } from 'src/app/service/simple_button_service';
 
 @Component({
@@ -68,12 +69,10 @@ export class TieldmapComponent implements OnChanges {
             })
 
           })
-          console.log(this.shadow_container)
         }, (err: HttpErrorResponse) => {
           console.log(err);
         })
         //-----------
-
         this.camera_Service.getAll_Dashboard(token, parseInt(idUser), this.id_dashboard).subscribe((response) => {
           response.forEach((data) => {
             this.shadow_container.push({
@@ -85,12 +84,27 @@ export class TieldmapComponent implements OnChanges {
               type: 'streaming',
               id: data.id_camera
             })
-
           })
-          console.log(this.shadow_container)
         }, (err: HttpErrorResponse) => {
           console.log(err);
-        })      } else {
+        })
+        //-----------
+        this.pulsacion_Service.getAll_Dashboard(token, parseInt(idUser), this.id_dashboard).subscribe((response) => {
+          response.forEach((data) => {
+            this.shadow_container.push({
+              name: data.title,
+              width: data.width ? data.width : 300,
+              height: data.height ? data.height : 150,
+              x: data.x ? data.x : 0,
+              y: data.y ? data.y : 0,
+              type: 'pulsacion',
+              id: data.id_pulsacion
+            })
+          })
+        }, (err: HttpErrorResponse) => {
+          console.log(err);
+        })
+      } else {
         this.router.navigate(['/'])
       }
     }
@@ -100,6 +114,7 @@ export class TieldmapComponent implements OnChanges {
     private simplebutton_Service: SimpleButtonService,
     private indicators_Service: IndicatorService,
     private camera_Service: CameraService,
+    private pulsacion_Service: PulsacionService,
     private router: Router,
     private finalizeServices: finalizeService) {
 
@@ -107,7 +122,7 @@ export class TieldmapComponent implements OnChanges {
 
   }
 
-  
+
 
 
   /**
@@ -142,8 +157,8 @@ export class TieldmapComponent implements OnChanges {
     if (this.isMove && (positionX <= tieldmap_positionX_End - 20)) {
       const y_new_position = parseInt((positionY / lastBloqueWidth).toString())
       const x_new_position = parseInt((positionX / lastBloqueWidth).toString())
-      this.shadow_container[this.idShadowMove].x = x_new_position >= 0? x_new_position: 0;
-      this.shadow_container[this.idShadowMove].y = y_new_position >= 0? y_new_position: 0;
+      this.shadow_container[this.idShadowMove].x = x_new_position >= 0 ? x_new_position : 0;
+      this.shadow_container[this.idShadowMove].y = y_new_position >= 0 ? y_new_position : 0;
     } else {
 
       this.isMove = false
@@ -322,13 +337,7 @@ export class TieldmapComponent implements OnChanges {
       //Si estamos ocupando el area de otro contenedor hay que recorrer el contenedor actual
       if (inX && inY) {
         //recorrer hacia abajo
-        console.log("----------")
-        console.log(y_end)
-        console.log(this.lastBloqueWidth)
-        console.log(this.lastBloqueWidth)
         let newPositionY = parseInt(((y_end + (this.lastBloqueWidth)) / this.lastBloqueWidth).toString());
-        console.log(newPositionY);
-        console.log("----------")
         this.shadow_container[idShadow].y = newPositionY;
         this.validacion_overarea(shadow_container, idShadow);
       }
@@ -342,8 +351,8 @@ export class TieldmapComponent implements OnChanges {
   setChanges(shadow: HTMLDivElement, idShadow: number, tieldmap: HTMLDivElement) {
     // console.log("Datos de la sombra: ",);
     const type = this.shadow_container[idShadow].type;
-    switch(type){
-      case 'indicator':{
+    switch (type) {
+      case 'indicator': {
         shadow.setAttribute("style", `position: absolute;
         top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
         left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
@@ -355,7 +364,7 @@ export class TieldmapComponent implements OnChanges {
         border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 5px;`);
         break;
       }
-      case 'linechart':{
+      case 'linechart': {
         shadow.setAttribute("style", `position: absolute;
         top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
         left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
@@ -366,7 +375,7 @@ export class TieldmapComponent implements OnChanges {
         border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 5px;`);
         break;
       }
-      case 'simplebutton':{
+      case 'simplebutton': {
         // const container = document.querySelector('.container');
         const fontSize = shadow.offsetWidth / 8;  // Puedes ajustar el divisor según sea necesario
         // shadow.style.fontSize = `${fontSize}px`;
@@ -375,8 +384,33 @@ export class TieldmapComponent implements OnChanges {
         left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
         width: ${this.shadow_container[idShadow].width}px; 
         height: ${this.shadow_container[idShadow].height}px;
-        background-color: none;
-        border: none;
+      
+        font-size: ${fontSize}px`);
+        break;
+      }
+      case 'streaming': {
+
+        // const container = document.querySelector('.container');
+        shadow.setAttribute("style", `position: absolute;
+        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+        left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
+        width: ${this.shadow_container[idShadow].width}px; 
+        height: ${this.shadow_container[idShadow].height}px;
+        overflow: hidden;
+        background-color: white;
+        padding: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 5px;`);
+        break;
+      }
+      case 'pulsacion': {
+        // const container = document.querySelector('.container');
+        const fontSize = shadow.offsetWidth / 8;  // Puedes ajustar el divisor según sea necesario
+        // shadow.style.fontSize = `${fontSize}px`;
+        shadow.setAttribute("style", `position: absolute;
+        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+        left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
+        width: ${this.shadow_container[idShadow].width}px; 
+        height: ${this.shadow_container[idShadow].height}px;
         font-size: ${fontSize}px`);
         break;
       }
@@ -469,9 +503,14 @@ export class TieldmapComponent implements OnChanges {
           })
         }
 
-        
+
         if (shadow.type == 'streaming') {
           this.camera_Service.updatePositionAndSizeIndicators(shadow).subscribe((response) => {
+          })
+        }
+        
+        if (shadow.type == 'pulsacion') {
+          this.pulsacion_Service.updatePositionAndSizeIndicators(shadow).subscribe((response) => {
           })
         }
       })

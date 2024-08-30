@@ -1,31 +1,90 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { DefaultEventsMap } from '@socket.io/component-emitter';
 import { io, Socket } from 'socket.io-client';
-import { ICamera_Recive } from 'src/app/interfaces/CameraInterfaces/camera.interfaces';
+import { IPulsacion_Recive } from 'src/app/interfaces/PulsacionInterfaces/pulsacion.interfaces';
 import { AlertService } from 'src/app/service/alert.service';
-import { CameraService } from 'src/app/service/camera_service';
+import { PulsacionService } from 'src/app/service/pulsacion.service';
 import { ws_server } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-camera_view',
-  templateUrl: './camera_view.component.html',
-  styleUrls: ['./camera_view.component.scss']
+  selector: 'app-pulsacion',
+  templateUrl: './pulsacion.component.html',
+  styleUrls: ['./pulsacion.component.scss']
 })
-export class CameraViewComponent implements OnInit, OnChanges {
-  @Input() id_camera!: number;
+export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
+  @Input() id_pulsacion!: number;
   title: string = "";
   description: string = "";
   dashboard!: number;
   groupName: string = "";
 
+  @ViewChild("button") buttonRef!: ElementRef<HTMLDivElement>;
+  private button!: HTMLDivElement;
 
-  constructor(private cameraService: CameraService,
+  constructor(private pulsacionService: PulsacionService,
     private alertService: AlertService
   ) { }
 
+  ngAfterViewInit(): void {
+    if (this.buttonRef && this.buttonRef.nativeElement) {
+      this.button = this.buttonRef.nativeElement;
+    }
+  }
+
   ngOnInit(): void {
-   
+
+  }
+
+  public style_button: number = 0;
+  setStyle_Button(style_input: string, button: HTMLDivElement) {
+    // if (style_input === 'circle' || style_input === 'normal') {
+    this.style_button = parseInt(style_input);
+    this.setChangesButton(button);
+    // }
+  }
+
+  public text_color: string = "#000000";
+  setText_Color(color: string, buttonInput: HTMLDivElement) {
+    this.text_color = color;
+    this.setChangesButton(buttonInput);
+  }
+
+
+
+  private fill_color: string = "#5d7794";
+  setFill_Color(color: string, buttonInput: HTMLDivElement) {
+    this.fill_color = color;
+    this.setChangesButton(buttonInput);
+  }
+
+
+  setChangesButton(button: HTMLDivElement) {
+    const style = `
+    color: ${this.text_color};
+    background-color: ${this.fill_color};
+    border-radius: ${this.style_button}%;
+    font-weight: ${this.isSaveBlobData ? 'bold;' : 'normal;'}
+    `;
+    button.setAttribute("style", style);
+    return {};
+  }
+
+  private isSaveBlobData: boolean = false;
+  set_isSaveBlobData(value: boolean, button: HTMLDivElement) {
+    this.isSaveBlobData = value;
+    this.setChangesButton(button)
+  }
+
+  setFillColor() {
+    return { fill: this.text_color }
+  }
+
+  public isIcon: string = "null";
+  setIcon(icon: string, buttonInput: HTMLDivElement) {
+    this.isIcon = icon;
+    console.log(icon);
+    this.setChangesButton(buttonInput);
   }
 
 
@@ -34,7 +93,7 @@ export class CameraViewComponent implements OnInit, OnChanges {
   TriggerConnectSocket() {
     if (this.socket) {
       if (this.socket.disconnected == true) {
-        
+
         this.Connect_Socket().then(() => {
           //El socket funciono correctamente
           this.listenStreaming(this.indicator_saved);
@@ -91,7 +150,7 @@ export class CameraViewComponent implements OnInit, OnChanges {
     })
   }
 
-  listenStreaming(list: ICamera_Recive) {
+  listenStreaming(list: IPulsacion_Recive) {
     this.Connect_Socket().then(() => {
       this.socket.emit('joinGroup', { groupName: list.groupname }); // Unirse al grupo
       this.socket.on(list.groupname, (data: ArrayBuffer) => {
@@ -101,29 +160,40 @@ export class CameraViewComponent implements OnInit, OnChanges {
       });
       this.socket.on("disconnect", () => {
         this.status = false;
+        console.log("Se desconecto la conexion")
         if (this.intentosReconexion < 3) {
           this.TriggerConnectSocket();
           this.intentosReconexion++;
         }
       })
+
     }).catch((err) => {
       console.log("No se pudo conectar el socket")
     })
   }
 
-  public indicator_saved!: ICamera_Recive;
+  public indicator_saved!: IPulsacion_Recive;
   ngOnChanges(changes: SimpleChanges): void {
     if (changes) {
       const idUserString = sessionStorage.getItem("idUser");
       if (idUserString) {
-        this.cameraService.getOne(parseInt(idUserString), this.id_camera).subscribe((data) => {
+        this.pulsacionService.getOne(parseInt(idUserString), this.id_pulsacion).subscribe((data) => {
           this.indicator_saved = data;
+          this.style_button = data.border_radius;
+          this.text_color = data.text_color;
+          this.fill_color = data.fill_color;
+          this.isSaveBlobData = data.bold;
+
+          this.setChangesButton(this.button)
+
+
+          console.log(data);
           this.Connect_Socket().then(() => {
             this.listenStreaming(data);
           })
-          .catch((err) =>{
-            console.log(err);
-          })
+            .catch((err) => {
+              console.log(err);
+            })
           const actualCamera = data;
           this.title = actualCamera.title;
           this.description = actualCamera.description;

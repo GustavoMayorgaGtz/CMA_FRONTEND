@@ -1,25 +1,20 @@
 
 .content-button {
-    // border-radius: 5px;
-    // box-shadow: -5px 5px  5px rgba(0, 0, 0, 0.103);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position:relative;
-    align-items: center;
-    box-sizing: border-box;
+    border: 1px solid black;
 
     .title_container {
-        position: absolute;
-        top: 0px;
-        left: 0px;
         display: flex;
         flex-direction: column;
         height: 40px;
-        min-height: 40px;
-        max-height: 40px;
         width: 100%;
         padding: 5px;
     }
@@ -34,12 +29,27 @@
     }
 
     .canvas {
-        margin-top: 40px;
         width: 100%;
-        height: calc(100% - 40px);
+        height: 100%;
         background-color: gray;
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .focus{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top:0px;
+        left: 0px;
+        background-color:rgba(0, 0, 0, 0);
+        transition: all 0.2s;
+        cursor: pointer;
+
+        &:hover{
+            transition: all 0.2s;
+            background-color:rgba(255, 255, 255, 0.152);
+        }
     }
 }
