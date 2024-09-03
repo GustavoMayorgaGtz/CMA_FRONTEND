@@ -93,14 +93,28 @@
         <div class="card-variable" *ngFor="let camaraVar of cameraVariables; let j = index">
             <div class="header">
                 <div class="title">{{camaraVar.title}}</div>
-                <div class="type" style="color: #95a314;">Camara</div>
+                <div class="type" style="color: #a31414;">Camara</div>
             </div>
             <div class="value_var" style="color: rgb(54, 54, 54); font-size: 10px;">
                 {{camaraVar.description}}
             </div>
             <div class="value_var" style="display: flex; flex-direction: column;">
                 <!-- {{memoryVar.result}} -->
-                 <span class="groupName" style="color: #95a314;">{{camaraVar.groupname}}</span>
+                 <span class="groupName" style="color: #a31414;">{{camaraVar.groupname}}</span>
+
+            </div>
+        </div>
+        <div class="card-variable" *ngFor="let pulseVar of pulseVariables; let j = index">
+            <div class="header">
+                <div class="title">{{pulseVar.title}}</div>
+                <div class="type" style="color: #a31414;">Pulso</div>
+            </div>
+            <div class="value_var" style="color: rgb(54, 54, 54); font-size: 10px;">
+                {{pulseVar.description}}
+            </div>
+            <div class="value_var" style="display: flex; flex-direction: column;">
+                <!-- {{memoryVar.result}} -->
+                 <span class="groupName" style="color: #a31414;">{{pulseVar.groupname}}</span>
 
             </div>
         </div>

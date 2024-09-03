@@ -1,4 +1,5 @@
-<div class="content-button" #button>
+<div class="content-button" #button  (touchstart)="push()" 
+(touchend)="unpush()" (mousedown)="push()" (mouseup)="unpush()">
     <span class="title" *ngIf="indicator_saved && indicator_saved.icon == 'null'">
         {{indicator_saved?indicator_saved.title:""}}
     </span>

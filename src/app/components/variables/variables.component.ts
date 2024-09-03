@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { Token } from '@angular/compiler';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CalculatorExpression } from 'src/app/functions/calculatorExpression';
@@ -9,12 +10,14 @@ import { ICamera_Recive } from 'src/app/interfaces/CameraInterfaces/camera.inter
 import { IIndicator_Var, IRecive_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
 import { IJsonVariable } from 'src/app/interfaces/JsonEndpointsInterfaces/JsonEndpointI';
 import { IMemoryVar, IModbusVar } from 'src/app/interfaces/Modbus.interfaces/ModbusInterfaces';
+import { IPulsacion_Recive } from 'src/app/interfaces/PulsacionInterfaces/pulsacion.interfaces';
 import { AllVar } from 'src/app/interfaces/interfaces';
 import { AlertService } from 'src/app/service/alert.service';
 import { AllService } from 'src/app/service/all.service';
 import { CameraService } from 'src/app/service/camera_service';
 import { CMA_ENDPOINT_SERVICES } from 'src/app/service/cma_endpoints.service';
 import { IndicatorService } from 'src/app/service/indicators_service';
+import { PulsacionService } from 'src/app/service/pulsacion.service';
 import { VarsService } from 'src/app/service/vars';
 import { server } from 'src/environments/environment';
 
@@ -43,6 +46,7 @@ export class VariablesComponent implements OnInit, AfterViewInit {
     private router: Router,
     private indicatorsService: IndicatorService,
     private cameraService: CameraService,
+    private pulseService: PulsacionService,
     private cma_endpointService: CMA_ENDPOINT_SERVICES) {
     this.server = server;
   }
@@ -75,6 +79,10 @@ export class VariablesComponent implements OnInit, AfterViewInit {
       this.cameraService.getAll(token, parseInt(id_user)).subscribe((camaras) => {
         this.cameraVariables = camaras;
       })
+      this.pulseService.getAll(token, parseInt(id_user)).subscribe((data) => {
+        this.pulseVariables = data
+      })
+
     } else {
       sessionStorage.removeItem("id_user")
       sessionStorage.removeItem("token")
@@ -123,6 +131,7 @@ export class VariablesComponent implements OnInit, AfterViewInit {
   public memoryVariables: IMemoryVar[] = []
   public indicatorsVariables: IRecive_Indicator[] = [];
   public cameraVariables: ICamera_Recive[] = [];
+  public pulseVariables: IPulsacion_Recive[] = [];
   public variablesEndpoint: ICMA_ENDPOINT_DATABASE[] = []
   public Vars_names: string[] = [];
   public vars!: AllVar[];
@@ -135,7 +144,7 @@ export class VariablesComponent implements OnInit, AfterViewInit {
       this.vars = vars;
 
       this.Vars_names = vars.map((vars) => {
-        
+
         return vars.name;
       })
     });

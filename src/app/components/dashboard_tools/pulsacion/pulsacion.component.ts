@@ -149,10 +149,36 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
       })
     })
   }
+  
+  shortPulse: boolean = false;
+  idCounterPulseTime!: NodeJS.Timeout;
+  timePulse: number = 0;
+  push(){
+    console.log("Incrementando")
+    this.Connect_Socket().then(() => {
+      this.socket.emit('sendMessageToGroup', { groupName: this.indicator_saved.groupname , message: "on"}); // Unirse al grupo
+    })
+    this.idCounterPulseTime = setTimeout(()=>{
+
+    }, 250);
+  }
+
+  unpush(){
+    setTimeout(()=>{
+      console.log("Decrementand")
+      this.Connect_Socket().then(() => {
+        this.socket.emit('sendMessageToGroup', { groupName: this.indicator_saved.groupname , message: "off"}); // Unirse al grupo
+      })
+    }, 100);
+  }
 
   listenStreaming(list: IPulsacion_Recive) {
     this.Connect_Socket().then(() => {
-      this.socket.emit('joinGroup', { groupName: list.groupname }); // Unirse al grupo
+      // array.add("sendMessageToGroup");
+      // JsonObject param1 = array.createNestedObject();
+      // param1["groupName"] = "feedbackGroup";
+      // param1["message"] = "servo_positions"
+
       this.socket.on(list.groupname, (data: ArrayBuffer) => {
         const blob_data = new Blob([data])
         const buffer_blob = URL.createObjectURL(blob_data);
@@ -187,13 +213,13 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
           this.setChangesButton(this.button)
 
 
-          console.log(data);
-          this.Connect_Socket().then(() => {
-            this.listenStreaming(data);
-          })
-            .catch((err) => {
-              console.log(err);
-            })
+          // console.log(data);
+          // this.Connect_Socket().then(() => {
+          //   this.listenStreaming(data);
+          // })
+          //   .catch((err) => {
+          //     console.log(err);
+          //   })
           const actualCamera = data;
           this.title = actualCamera.title;
           this.description = actualCamera.description;
