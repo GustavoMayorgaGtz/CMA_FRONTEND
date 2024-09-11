@@ -743,7 +743,7 @@ export class LineGraph {
       }
       this.idInterval = setInterval(() => {
         this.cma_endpoint.getOneEndpointById(idEndpoint, this.no_de_elementos_recibidos, this.muestreo)
-          .pipe(timeout(time < 3000 ? 3000 : time))
+          // .pipe(timeout(time < 3000 ? 3000 : time))
           .subscribe((blobdata) => {
             if (blobdata && blobdata.length > 0) {
               if (blobdata[0]) {

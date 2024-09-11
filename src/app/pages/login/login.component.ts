@@ -48,24 +48,28 @@ export class LoginComponent {
  
 
 
+  public validAuthLoading: boolean = false;
   public isLoadingRegister: boolean = true;
   changeLogin_Status() {
     this.isLogin = !this.isLogin;
   }
 
   loggear() {
+    this.validAuthLoading = true;
     if (this.loginGroup.valid) {
       const username = this.loginGroup.controls.nombre_usuario.value;
       const password = this.loginGroup.controls.password.value;
       this.servicios.login_user({ nombre_usuario: username, password }).subscribe((res) => {
         sessionStorage.setItem("token", res.token);
         sessionStorage.setItem("idUser", res.user.toString());
+        this.validAuthLoading = true;
         if(res){
           this.router.navigate(['/dashboard'])
         }else{
           this.alertService.setMessageAlert("Datos incorrectos, vuelve a intentarlo")
         }
       }, (err: HttpErrorResponse) => {
+        this.validAuthLoading = false;
         if(err.status == 401){
           this.alertService.setMessageAlert("Datos incorrectos, vuelve a intentarlo")
         }else{
@@ -73,6 +77,7 @@ export class LoginComponent {
         }
       })
     } else {
+      this.validAuthLoading = false
       alert("Llena todos los campos");
     }
   }

@@ -7,8 +7,22 @@
     border-bottom: 1px solid #b1b1b1;
     display: flex;
     padding: 0px 20px;
+    box-sizing: border-box;
     align-items: center; 
+    display: flex;
+    justify-content: space-between;
     .title{
         font-size: 1em;
+    }
+
+    img{
+        transition: all 0.2s;
+        
+
+        &:hover{
+            transition: all 0.5s;
+            transform:scale(1.1);
+            cursor: pointer;
+        }
     }
 }

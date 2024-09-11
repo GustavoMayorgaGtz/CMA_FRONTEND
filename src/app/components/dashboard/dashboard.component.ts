@@ -13,7 +13,7 @@ import { SignalService } from 'src/app/service/signal_websocket.service';
   styleUrls: ['./dashboard.component.scss', './dashboard.component.mobile.scss']
 })
 export class DashboardComponent implements OnInit {
-  public menu_tool: number = 2;
+  public menu_tool: number = 0;
 
   set set_menu_tool(option: number) {
     this.menu_tool = option;

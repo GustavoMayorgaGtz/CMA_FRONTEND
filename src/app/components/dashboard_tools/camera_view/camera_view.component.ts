@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DefaultEventsMap } from '@socket.io/component-emitter';
+import { connect } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { ICamera_Recive } from 'src/app/interfaces/CameraInterfaces/camera.interfaces';
 import { AlertService } from 'src/app/service/alert.service';
@@ -34,7 +35,7 @@ export class CameraViewComponent implements OnInit, OnChanges {
   TriggerConnectSocket() {
     if (this.socket) {
       if (this.socket.disconnected == true) {
-        
+
         this.Connect_Socket().then(() => {
           //El socket funciono correctamente
           this.listenStreaming(this.indicator_saved);
@@ -92,14 +93,20 @@ export class CameraViewComponent implements OnInit, OnChanges {
   }
 
   listenStreaming(list: ICamera_Recive) {
-    this.Connect_Socket().then(() => {
-      this.socket.emit('joinGroup', { groupName: list.groupname }); // Unirse al grupo
-      this.socket.on(list.groupname, (data: ArrayBuffer) => {
+    this.Connect_Socket().then((connection) => {
+      console.log(connection)
+      console.log("UNIENDO A GRUPO: ", list.groupname)
+      this.socket.emit('joinGroup', { group: list.groupname }); // Unirse al grupo
+      this.socket.on(list.groupname, (data) => {
+        console.log("Datos recibidos", data)
         const blob_data = new Blob([data])
         const buffer_blob = URL.createObjectURL(blob_data);
         this.streaming_data = buffer_blob;
       });
-      this.socket.on("disconnect", () => {
+
+      this.socket.on("disconnect", (err) => {
+        console.log(err)
+        this.alertService.setMessageAlert("Desconectado de streaming");
         this.status = false;
         if (this.intentosReconexion < 3) {
           this.TriggerConnectSocket();
@@ -107,6 +114,7 @@ export class CameraViewComponent implements OnInit, OnChanges {
         }
       })
     }).catch((err) => {
+      console.log(err);
       console.log("No se pudo conectar el socket")
     })
   }
@@ -118,7 +126,9 @@ export class CameraViewComponent implements OnInit, OnChanges {
       if (idUserString) {
         this.cameraService.getOne(parseInt(idUserString), this.id_camera).subscribe((data) => {
           this.indicator_saved = data;
+          console.log("Obteniendo todooo");
           this.Connect_Socket().then(() => {
+            console.log("Ahi vieneeeee")
             this.listenStreaming(data);
           })
           .catch((err) =>{

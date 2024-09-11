@@ -18,7 +18,6 @@ export class AuthService {
       token: string
     }
     return this.http.post<dataResponse>( server+"auth/login", body)
-      .pipe(timeout(5000));
   }
 
 
@@ -26,7 +25,7 @@ export class AuthService {
   //peticion para registrar usuario
   register_user(body: object) {
     return this.http.post<Object>(server+"auth/register", body)
-      .pipe(timeout(5000));
+      // .pipe(timeout(5000));
   }
 
 

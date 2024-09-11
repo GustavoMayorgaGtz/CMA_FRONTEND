@@ -1,8 +1,6 @@
 <main>   
     <section class="formulario">
-        <div class="container-icon">
-            <img src="./assets/" alt="" class="icon">
-        </div>
+     
         <!--------------------------------->
         <form *ngIf="isLogin" [formGroup]="loginGroup">
             <div class="form-title">Inicio de sesión</div>
@@ -25,9 +23,12 @@
                 </div> -->
             </div>
             <div class="btn-login" >
-                <span class="back">Comenzar!</span>
-                <div class="front">Iniciar sesión</div>
-                <div class="focus" (click)="loggear()"></div>
+                <span *ngIf="validAuthLoading == false" class="back">Comenzar!</span>
+                <div class="front" *ngIf="validAuthLoading == false">Iniciar sesión</div>
+                <div class="focus" (click)="loggear()" *ngIf="validAuthLoading == false"></div>
+                
+                <span *ngIf="validAuthLoading == true" class="back">Espera un momento!</span>
+                <div class="front" *ngIf="validAuthLoading == true">Validando credenciales...</div>
             </div>
 
             <div class="register" (click)="changeLogin_Status()">

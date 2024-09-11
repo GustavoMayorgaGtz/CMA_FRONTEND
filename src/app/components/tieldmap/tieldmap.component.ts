@@ -310,16 +310,13 @@ export class TieldmapComponent implements OnChanges {
       const shadow_container_y_end = shadow_container.y * this.lastBloqueWidth + shadow_container.height;
       const y_init = temp_shadow.y * this.lastBloqueWidth;
       const y_end = temp_shadow.y * this.lastBloqueWidth + ((typeof temp_shadow.height == 'string') ? parseFloat(temp_shadow.height) : temp_shadow.height);
-      // console.log("================")
-      // console.log(temp_shadow.y)
-      // console.log(this.lastBloqueWidth)
-      // console.log(temp_shadow.height)
-      // console.log(y_end)
-      // console.log("================")
       const x_init = temp_shadow.x * this.lastBloqueWidth;
       const x_end = temp_shadow.x * this.lastBloqueWidth + temp_shadow.width;
       let inX = false;
       let inY = false;
+      console.log("validacion overflow shadow")
+      console.log("Datos de la sombra 1: ", this.shadow_container[idShadow]);
+      console.log("Datos de la sombra 2: ", temp_shadow);
       //dos validaciones para x
       if (shadow_container_x >= x_init && shadow_container_x <= x_end) {
         inX = true;
@@ -406,6 +403,9 @@ export class TieldmapComponent implements OnChanges {
         // const container = document.querySelector('.container');
         const fontSize = shadow.offsetWidth / 8;  // Puedes ajustar el divisor según sea necesario
         // shadow.style.fontSize = `${fontSize}px`;
+
+        // console.log("Este es el valor de la pulsacion")
+        // console.log(this.shadow_container[idShadow])
         shadow.setAttribute("style", `position: absolute;
         top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
         left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
