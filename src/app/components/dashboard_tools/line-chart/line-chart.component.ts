@@ -1,7 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
-import { combineLatest, config } from 'rxjs';
-import { auth_class } from 'src/app/graphs_class/auth_class';
 import { LineGraph } from 'src/app/graphs_class/line_chart';
 import { IlineChartConfiguration, getParamsLineChart } from 'src/app/interfaces/Line_ChartInterfaces/line_chartInterface';
 import { AllVar } from 'src/app/interfaces/interfaces';
