@@ -168,7 +168,7 @@ export class TieldmapComponent implements OnChanges {
     if (this.shadow_container[this.idShadowResize]) {
       let tieldmap_width_last = parseInt(((positionX / lastBloqueWidth) - this.shadow_container[this.idShadowResize].x).toString()) * lastBloqueWidth;
       const position_shadow_x_end = this.shadow_container[this.idShadowMove].x + tieldmap_width_last + tieldmap.getBoundingClientRect().x;
-      if (this.isResize && (position_shadow_x_end <= tieldmap_positionX_End - 50)) {
+      if (this.isResize && (position_shadow_x_end <= tieldmap_positionX_End - 10)) {
         let tieldmap_height_last = parseInt(((positionY / lastBloqueWidth) - this.shadow_container[this.idShadowResize].y).toString()) * lastBloqueWidth;
         if (parseInt(((positionX / lastBloqueWidth) - this.init_x).toString()) <= 0) {
           tieldmap_width_last = lastBloqueWidth;
@@ -245,8 +245,8 @@ export class TieldmapComponent implements OnChanges {
       // this.validacion_overarea(shadow_container, idShadow);
     }
     //Validacion 2 y 3
-    if (shadow_container_x_end >= (tieldmap_x_end - 364)) { //TODO: Hay que checar esta validacion
-      const restante = shadow_container_x_end - (tieldmap_x_end - 364); //Este restante nos sirve para restar al shadow init x
+    if (shadow_container_x_end >= (tieldmap_x_end - 250)) { //TODO: Hay que checar esta validacion
+      const restante = shadow_container_x_end - (tieldmap_x_end - 250); //Este restante nos sirve para restar al shadow init x
       const new_shadow_container_x_init = shadow_container_x - restante; //Esta es la nueva posicion del shadow container en el eje X hay que validar si es menor a la del tieldmap
 
       if (new_shadow_container_x_init <= tieldmap.getBoundingClientRect().x) {
@@ -418,7 +418,7 @@ export class TieldmapComponent implements OnChanges {
 
     if (this.propiedadAplicada.indexOf(idShadow) == -1) {
       this.propiedadAplicada.push(idShadow);
-      this.setPropietiesShadow(shadow, idShadow, tieldmap);
+      //this.setPropietiesShadow(shadow, idShadow, tieldmap);
     }
 
     return { backgroundColor: "" }

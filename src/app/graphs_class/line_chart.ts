@@ -907,7 +907,10 @@ export class LineGraph {
           }
           this.var1_dataset.push(parseFloat(value as string));
           this.var1_labels.push(this.parsearFecha(dateNow));
+          console.log("before error: ", value);
+          if(this.copyDataBlobData)
           this.copyDataBlobData.push(parseFloat(value as string));
+          if(this.copyDateBlobData)
           this.copyDateBlobData.push(this.parsearFecha(dateNow));
           if (this.groupByDateOption > 0) {
             this.groupByDate(this.groupByDateOption)

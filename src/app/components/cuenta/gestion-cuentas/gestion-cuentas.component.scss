@@ -9,6 +9,26 @@
     overflow-y: scroll;
     background-color: #ecefec;
 
+    .users-containers{
+        display: flex;
+        gap: 20px;
+        height: 100%;
+        width: 100%;
+        padding: 20px;
+        .card{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 200px;
+            height: 75px;
+            border-radius: 5px;
+            background-color: white;
+            border: 1px solid black;
+            box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.132);
+        }
+    }
+
     .nav {
         display: flex;
         align-items: center;

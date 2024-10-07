@@ -1,15 +1,36 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { Output } from "@angular/core";
 import { access_functions } from "src/app/interfaces/GestionUsuarios/GestionUsuarios.Interface";
+import { AlertService } from "src/app/service/alert.service";
+import { AuthService } from "src/app/service/auth.service";
 
 export class Add_User_Secundary_Class {
 
   // @Output()
 
-  contructor() {
+  constructor(private authService: AuthService,
+    private alert: AlertService
+  ) {
   }
 
-  add_user(){
-    // if()
+  add_user(primaryUser: number, token: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      if (primaryUser && token && this.correo.includes("@")) {
+        this.authService.registerSecondaryUser(this.nombre_usuario,
+          this.correo, this.password, this.telefono, primaryUser, this.access_functions)
+          .subscribe((response) => {
+            this.alert.setMessageAlert("Usuario creado");
+            resolve(true)
+          }, (err: HttpErrorResponse) => {
+            console.log(err);
+            this.alert.setMessageAlert("Usuario no creado");
+            reject(false);
+          })
+      } else {
+        this.alert.setMessageAlert("Define correctamente el correo.")
+        resolve(false);
+      }
+    })
   }
 
   /*________________ENTRADA DE DATOS________________*/
@@ -40,35 +61,35 @@ export class Add_User_Secundary_Class {
 
   //Entrada para access_functions
   private access_functions: access_functions = {
-    edit_json_connection: false,
-    drop_json_connection: false,
+    edit_json_connection: false,  //
+    drop_json_connection: false, //
     modify_json_connection: false,
     use_json_connection: false,
-    edit_modbus_connection: false,
-    drop_modbus_connection: false,
+    edit_modbus_connection: false, //
+    drop_modbus_connection: false, //
     modify_modbus_connection: false,
     use_modbus_connection: false,
-    edit_memory_connection: false,
-    drop_memory_connection: false,
+    edit_memory_connection: false, //
+    drop_memory_connection: false,//
     modify_memory_connection: false,
     use_memory_connection: false,
-    edit_endpoint_connection: false,
-    drop_endpoint_connection: false,
+    edit_endpoint_connection: false, //
+    drop_endpoint_connection: false,//
     modify_endpoint_connection: false,
     use_endpoint_connection: false,
-    create_line_graph: false,
+    create_line_graph: false, //
     drop_line_graph: false,
     edit_line_graph: false,
     modify_line_graph: false,
-    create_simple_button: false,
+    create_simple_button: false, //
     drop_simple_button: false,
     edit_simple_button: false,
     modify_simple_button: false,
-    create_alert_sms: false,
+    create_alert_sms: false, //
     edit_alert_sms: false,
     drop_alert_sms: false,
-    view_alert_sms_logs: false,
-    modify_tieldmap: false
+    view_alert_sms_logs: false, //
+    modify_tieldmap: false //
   }
 
 
@@ -116,6 +137,11 @@ export class Add_User_Secundary_Class {
   }
 
 
+  // //Entrada para modificar json enxdpoint
+  // set input_update_variable_endpoint(status: boolean) {
+  //   this.access_functions.drop_endpoint_connection = status;
+  // }
+
 
 
 
@@ -145,14 +171,12 @@ export class Add_User_Secundary_Class {
   //# PERMISOS DE ALERTAS
 
   //Entrada para ver los eventos de una alerta sms
-  set input_logs_alertas_sms(status: boolean)
-  {
+  set input_logs_alertas_sms(status: boolean) {
     this.access_functions.view_alert_sms_logs = status;
   }
 
   //Entrada para crear alertas sms
-  set input_crear_alertas_sms(status: boolean)
-  {
+  set input_crear_alertas_sms(status: boolean) {
     this.access_functions.create_alert_sms = status;
   }
 
