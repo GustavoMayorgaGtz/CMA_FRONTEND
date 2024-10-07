@@ -6,10 +6,11 @@ export interface ISimpleButtonConfiguration{
    title: string,
    description: string,
    idVariableJson: number| null,
+   idDashboard: number,
    idVariableModbus: number| null,
    background_color: string,
    text_color: string,
-   style_button: "normal"|"circle"
+   style_button: "normal"|"circle",
 }
 
 

@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { _DeepPartialObject } from 'chart.js/types/utils';
 import { BaseChartDirective } from 'ng2-charts';
 import { JsonVariableClass } from 'src/app/functions/json_functions';
@@ -34,6 +35,7 @@ export class ConfigureSimpleButtonComponent implements OnInit {
     private varsService: VarsService,
     private simplebuttonService: SimpleButtonService,
     private finalizeServices: finalizeService,
+    private router: Router,
     private exitService: ExitService,
     private cma_endpointService: CMA_ENDPOINT_SERVICES) {
   }
@@ -102,19 +104,28 @@ export class ConfigureSimpleButtonComponent implements OnInit {
       this.alert.setMessageAlert("Define el estilo del boton");
       readyToSave = false;
     }
-    if (readyToSave) {
+
+    if(!this.id_dashboard_selected){
+      this.alert.setMessageAlert("No hay un dashboard seleccioando");
+      readyToSave = false;
+    }
+
+    if (readyToSave && this.id_dashboard_selected) {
       this.simple_button_configuration =
       {
         title: this.title,
         description: this.description,
         idVariableJson: this.idJsonVariable,
         idVariableModbus: this.idModbusVariable,
+        idDashboard: this.id_dashboard_selected,
         background_color: this.fill_color,
         text_color: this.text_color,
         style_button: this.style_button
       }
-
-      this.simplebuttonService.create_SimpleButton(this.simple_button_configuration)
+      const token = sessionStorage.getItem("token");
+      const id_user = sessionStorage.getItem("idUser");
+      if (token && id_user) {
+      this.simplebuttonService.create_SimpleButton(this.simple_button_configuration, parseInt(id_user), this.id_dashboard_selected,  token)
         .subscribe((data) => {
           this.alert.setMessageAlert("Se registro la configuracion del boton");
           window.location.reload();
@@ -123,6 +134,9 @@ export class ConfigureSimpleButtonComponent implements OnInit {
           this.enableToSave = true;
           this.alert.setMessageAlert(err.message);
         })
+      }else{
+        this.router.navigate(['/login'])
+      }
     } else {
       this.enableToSave = true;
     }

@@ -11,8 +11,12 @@ export class SimpleButtonService {
   constructor(private http: HttpClient) { }
 
 
-  create_SimpleButton(simpleButton: ISimpleButtonConfiguration) {
-    return this.http.post<ISimpleButtonConfiguration>(server + "simplebutton/create", simpleButton);
+  create_SimpleButton(simpleButton: ISimpleButtonConfiguration, id_user: number, id_dashboard: number, token: string) {
+        // Agrega el token Bearer al encabezado de la solicitud
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${token}`
+        });
+    return this.http.post<ISimpleButtonConfiguration>(server + "simplebutton/create", {...simpleButton, id_user, id_dashboard}, {headers});
   }
 
   getAll_SimpleButton(token: string, id_user: number, id_dashboard: number) {
@@ -25,8 +29,12 @@ export class SimpleButtonService {
   }
 
 
-  getOneById_SimpleButton(idSimpleButton: number){
-    return this.http.get<ISimpleButtonDatabase[]>(server + `simplebutton/getOneById?idSimpleButton=${idSimpleButton}`);
+  getOneById_SimpleButton(idSimpleButton: number, id_user: number, token: string){
+    // Agrega el token Bearer al encabezado de la solicitud
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<ISimpleButtonDatabase[]>(server + `simplebutton/getOneById?idSimpleButton=${idSimpleButton}&id_user=${id_user}`, {headers});
   }
 
   updatePositionAndSizeSimpleButtons(params: IConfigurationShadow){

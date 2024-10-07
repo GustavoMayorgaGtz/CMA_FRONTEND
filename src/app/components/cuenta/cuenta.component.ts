@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class CuentaComponent {
   public menuCuenta: number = 2; //1 = mi cuenta, 2 = gestion de cuentas, 3 = accesos api
+
+
+  changeMenuCuenta(option: number){
+     this.menuCuenta = option;
+  }
 }

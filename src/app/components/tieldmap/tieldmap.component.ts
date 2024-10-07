@@ -508,7 +508,7 @@ export class TieldmapComponent implements OnChanges {
           this.camera_Service.updatePositionAndSizeIndicators(shadow).subscribe((response) => {
           })
         }
-        
+
         if (shadow.type == 'pulsacion') {
           this.pulsacion_Service.updatePositionAndSizeIndicators(shadow).subscribe((response) => {
           })
@@ -535,18 +535,25 @@ export class TieldmapComponent implements OnChanges {
    */
   openData(idShadow: number) {
     this.finalizeServices.finalizeAllPolling_Event();
-    this.linechart_Service.getOneById(idShadow).subscribe((line_chart) => {
-      if (line_chart.issaveblobdata) {
-        const idblobdata = line_chart.idblobdata;
-        const navigationExtras: NavigationExtras = {
-          queryParams: {
-            idblobdata: idblobdata,
-            type: "line",
-            idgraph: idShadow
+    const token = sessionStorage.getItem("token");
+    const id_user = sessionStorage.getItem("idUser");
+    if (token && id_user) {
+      this.linechart_Service.getOneById(idShadow, parseInt(id_user), token).subscribe((line_chart) => {
+        if (line_chart.issaveblobdata) {
+          const idblobdata = line_chart.idblobdata;
+          const navigationExtras: NavigationExtras = {
+            queryParams: {
+              idblobdata: idblobdata,
+              type: "line",
+              idgraph: idShadow
+            }
           }
+          this.router.navigate(['/blobdata'], navigationExtras);
         }
-        this.router.navigate(['/blobdata'], navigationExtras);
-      }
-    })
+      })
+    } else {
+      //TODO:Mandar a login
+      this.router.navigate(['/login'])
+    }
   }
 }

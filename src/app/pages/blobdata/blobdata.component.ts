@@ -49,9 +49,9 @@ export class BlobdataComponent implements OnInit {
     private blobdataServices: BlobDataService,
     private finalizeServices: finalizeService,
     private cma_endpointServices: CMA_ENDPOINT_SERVICES,
-    private authService: AuthService) { 
-      this.authClass.validateUser();
-    }
+    private authService: AuthService) {
+    this.authClass.validateUser();
+  }
 
 
 
@@ -67,73 +67,77 @@ export class BlobdataComponent implements OnInit {
       let idgraph = params['idgraph']; //Este es el id de la grafica
       let type = params['type']; //Este es el tipo de la grafica
 
-      
+
       this.blobdataServices.getOneBlobDataById(idblobdata).subscribe((blobdata) => {
-        if(blobdata && blobdata.value){
+        if (blobdata && blobdata.value) {
           blobdata.value.forEach((valor, idx) => {
-              this.blobdataInformation.push({valor: valor, fecha: blobdata.register_date[idx]});
-          }) 
+            this.blobdataInformation.push({ valor: valor, fecha: blobdata.register_date[idx] });
+          })
         }
       }, (err: HttpErrorResponse) => {
         console.log(err)
       })
-      
-      //Validar que tipo de grafica se va a mostrar por el momento
-      this.typeChart = type;
-      this.linechart.getOneById(idgraph).subscribe((graph_line) => {
-        this.title = graph_line.title;
-        this.description = graph_line.description;
-        this.samplingNumber = graph_line.sampling_number;
-        const linear_chart_configuration: IlineChartConfiguration = {
-          id_usuario: graph_line.id_usuario,
-          id_dashboard: graph_line.id_dashboard,
-          general: {
-            title: graph_line.title,
-            description: graph_line.description,
-            idVariableModbus: graph_line.idvariablemodbus,
-            idVariableJson: graph_line.idvariablejson,
-            idVariableMemory: graph_line.idvariablememory,
-            idVariableEndpoint: graph_line.idvariableendpoint,
-            sampling_number: graph_line.sampling_number,
-            isArray: graph_line.isarray,
-            issaveblobdata: graph_line.issaveblobdata,
-            idblobdata: idblobdata,
-            polling: {
-              time: graph_line.polling_time,
-              type: graph_line.polling_type
-            }
-          },
-          styles: {
-            fill: graph_line.fill,
-            fill_color: graph_line.fill_color,
-            line: graph_line.line,
-            line_color: graph_line.line_color,
-            line_size: graph_line.line_size,
-            line_tension: graph_line.line_tension,
-            line_stepped: graph_line.line_stepped,
-            point_style: graph_line.point_style,
-            point_color: graph_line.point_color,
-            point_border_color: graph_line.point_border_color,
-            point_border_size: graph_line.point_border_size,
-            point_width: graph_line.point_width
-          }
-        }
-        this.grafica_linear.reloadData(linear_chart_configuration);
-        this.grafica_linear.eventData.subscribe((graph_configuration) => {
-          this.linear1 = graph_configuration;
-          if (this.canvas_chart) {
-            this.canvas_chart.chart?.update()
-          }
-        });
 
-      }, (err: HttpErrorResponse) => {
-        console.log(err);
-      })
+      //Validar que tipo de grafica se va a mostrar por el momento
+      const token = sessionStorage.getItem("token");
+      const id_user = sessionStorage.getItem("idUser");
+      if (token && id_user) {
+        this.typeChart = type;
+        this.linechart.getOneById(idgraph, parseInt(id_user),  token).subscribe((graph_line) => {
+          this.title = graph_line.title;
+          this.description = graph_line.description;
+          this.samplingNumber = graph_line.sampling_number;
+          const linear_chart_configuration: IlineChartConfiguration = {
+            id_usuario: graph_line.id_usuario,
+            id_dashboard: graph_line.id_dashboard,
+            general: {
+              title: graph_line.title,
+              description: graph_line.description,
+              idVariableModbus: graph_line.idvariablemodbus,
+              idVariableJson: graph_line.idvariablejson,
+              idVariableMemory: graph_line.idvariablememory,
+              idVariableEndpoint: graph_line.idvariableendpoint,
+              sampling_number: graph_line.sampling_number,
+              isArray: graph_line.isarray,
+              issaveblobdata: graph_line.issaveblobdata,
+              idblobdata: idblobdata,
+              polling: {
+                time: graph_line.polling_time,
+                type: graph_line.polling_type
+              }
+            },
+            styles: {
+              fill: graph_line.fill,
+              fill_color: graph_line.fill_color,
+              line: graph_line.line,
+              line_color: graph_line.line_color,
+              line_size: graph_line.line_size,
+              line_tension: graph_line.line_tension,
+              line_stepped: graph_line.line_stepped,
+              point_style: graph_line.point_style,
+              point_color: graph_line.point_color,
+              point_border_color: graph_line.point_border_color,
+              point_border_size: graph_line.point_border_size,
+              point_width: graph_line.point_width
+            }
+          }
+          this.grafica_linear.reloadData(linear_chart_configuration);
+          this.grafica_linear.eventData.subscribe((graph_configuration) => {
+            this.linear1 = graph_configuration;
+            if (this.canvas_chart) {
+              this.canvas_chart.chart?.update()
+            }
+          });
+
+        }, (err: HttpErrorResponse) => {
+          console.log(err);
+        })
+      }
     });
   }
 
   public groupByDataOption: number = 1;
-  groupByData(option: number){
+  groupByData(option: number) {
     this.groupByDataOption = option;
     this.grafica_linear.groupByDate(option);
   }

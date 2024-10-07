@@ -13,17 +13,69 @@ export class Add_User_Secundary_Class {
   ) {
   }
 
+  /**
+   * @description Funcion para añadir un usuario al usuario secundario
+   * @param primaryUser Usuario que va a crear
+   * @param token token de acceso del usuario que va a crear
+   * @returns 
+   */
   add_user(primaryUser: number, token: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (primaryUser && token && this.correo.includes("@")) {
         this.authService.registerSecondaryUser(this.nombre_usuario,
-          this.correo, this.password, this.telefono, primaryUser, this.access_functions)
+          this.correo, this.password, this.telefono, primaryUser, this.access_functions, token)
           .subscribe((response) => {
             this.alert.setMessageAlert("Usuario creado");
             resolve(true)
           }, (err: HttpErrorResponse) => {
-            console.log(err);
-            this.alert.setMessageAlert("Usuario no creado");
+            console.log(err.error);
+            switch (err.error.status) {
+              case 1: {
+                this.alert.setMessageAlert(err.error.message);
+                break;
+              }
+              case 2: {
+                this.alert.setMessageAlert("Usuario no creado por error desconocido");
+                break;
+              }
+            }
+
+            reject(false);
+          })
+      } else {
+        this.alert.setMessageAlert("Define correctamente el correo.")
+        resolve(false);
+      }
+    })
+  }
+
+
+  /**
+ * @description Funcion para añadir un usuario al usuario secundario
+ * @param primaryUser Usuario que se va a actualizar
+ * @param primaryUser Usuario que va a crear
+ * @param token token de acceso del usuario que va a crear
+ * @returns 
+ */
+  update_user(id_user_selected: number, primaryUser: number, token: string) {
+    return new Promise((resolve, reject) => {
+      if (primaryUser && token && this.correo.includes("@")) {
+        this.authService.updateUser(this.nombre_usuario,
+          this.correo, this.password, this.telefono, primaryUser, id_user_selected, this.access_functions, token)
+          .subscribe((response) => {
+            this.alert.setMessageAlert("Usuario actualizado");
+            resolve(true)
+          }, (err: HttpErrorResponse) => {
+            console.log(err.error);
+            switch (err.error.status) {
+              case 1: {
+                this.alert.setMessageAlert(err.error.message);
+                break;
+              }
+              case 2: {
+                break;
+              }
+            }
             reject(false);
           })
       } else {
@@ -96,6 +148,9 @@ export class Add_User_Secundary_Class {
 
   //# PERMISOS DE VARIABLES
 
+  set set_all_params(params: access_functions) {
+    this.access_functions = params;
+  }
   //Entrada para editar las variables json
   set input_crear_variable_json(status: boolean) {
     this.access_functions.edit_json_connection = status;

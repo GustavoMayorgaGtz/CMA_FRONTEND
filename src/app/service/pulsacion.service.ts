@@ -11,8 +11,11 @@ export class PulsacionService {
   constructor(private http: HttpClient) { }
 
 
-  create_pulsacion(payload: ICreate_Pulsacion) {
-    return this.http.post<String>(server + "pulse/create", payload);
+  create_pulsacion(payload: ICreate_Pulsacion, token: string) {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post<String>(server + "pulse/create", payload, {headers});
   }
 
 
@@ -34,8 +37,11 @@ export class PulsacionService {
     return this.http.get<IPulsacion_Recive[]>(server + `pulse/getAll?id_user=${id_user}`, {headers});
   }
 
-  getOne(primary_user: number, id_pulsacion: number){
-    return this.http.get<IPulsacion_Recive>(server + `pulse/getOne?primary_user=${primary_user}&id_pulsacion=${id_pulsacion}`);
+  getOne(primary_user: number, id_pulsacion: number, token: string){
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<IPulsacion_Recive>(server + `pulse/getOne?primary_user=${primary_user}&id_pulsacion=${id_pulsacion}`, {headers});
   }
 
   updatePositionAndSizeIndicators(params: IConfigurationShadow){

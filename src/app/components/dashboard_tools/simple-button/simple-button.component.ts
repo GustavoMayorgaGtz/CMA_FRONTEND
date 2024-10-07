@@ -40,11 +40,15 @@ export class SimpleButtonComponent implements OnChanges, AfterViewInit {
   public simpleButton!: ISimpleButtonDatabase;
   ngOnChanges(changes: SimpleChanges): void {
     if (changes) {
+      const token = sessionStorage.getItem("token");
+      const id_user = sessionStorage.getItem("idUser");
+      if (token && id_user) {
       //Realizar peticion de cambios
-      this.simpleButtonService.getOneById_SimpleButton(this.idSimpleButton).subscribe((simpleButton) => {
+      this.simpleButtonService.getOneById_SimpleButton(this.idSimpleButton, parseInt(id_user), token).subscribe((simpleButton) => {
         this.simpleButton = simpleButton[0];
         this.setChangesButton(this.button_container);
       })
+    }
     }
   }
 

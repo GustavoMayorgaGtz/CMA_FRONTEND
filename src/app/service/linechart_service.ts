@@ -10,7 +10,6 @@ export class LineChartService {
 
   constructor(private http: HttpClient) { }
 
-
   getAllLineChart(token: string, id_user: number, id_dashboard: number) {
     // Agrega el token Bearer al encabezado de la solicitud
     const headers = new HttpHeaders({
@@ -29,8 +28,11 @@ export class LineChartService {
     return this.http.post<any>(server + "linechart/create", line_chart_configuration, {headers})
   }
 
-  getOneById(idlinealchart: number) {
-    return this.http.get<LineChartConfigurationDatabase>(server + `linechart/getOne?idlinechart=${idlinealchart}`)
+  getOneById(idlinealchart: number, id_user: number, token: string) {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<LineChartConfigurationDatabase>(server + `linechart/getOne?idlinechart=${idlinealchart}&id_user=${id_user}`, {headers})
   }
   updatePositionAndSizeLineChart(params: IConfigurationShadow) {
     return this.http.post(server + "linechart/positions", params);

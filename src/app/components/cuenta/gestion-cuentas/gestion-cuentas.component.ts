@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/service/auth.service';
 import { AlertService } from 'src/app/service/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { access_functions, Users } from 'src/app/interfaces/GestionUsuarios/GestionUsuarios.Interface';
+import { count } from 'rxjs';
 
 @Component({
   selector: 'app-gestion-cuentas',
@@ -15,7 +16,12 @@ export class GestionCuentasComponent {
 
   public secundary_user_functions = new Add_User_Secundary_Class(this.authService, this.alert);
   private token!: string;
-  private id_user!: number;
+  public id_user!: number;
+  public users: Users[] = [];
+  public userSelected!: Users | null;
+  public menu: number = 1;
+
+
   constructor(private router: Router, private authService: AuthService, private alert: AlertService) {
     const token = sessionStorage.getItem("token");
     const id_user = sessionStorage.getItem("idUser");
@@ -30,15 +36,17 @@ export class GestionCuentasComponent {
     }
   }
 
-  public users: Users[] = [];
+
+  /**
+   * Obtener todos los usuarios by id_usuario_primario
+   */
   getUsers() {
     if (this.token && this.id_user) {
       this.authService.getUsers(this.id_user, this.token).subscribe((users) => {
         this.alert.setMessageAlert("Usuarios cargados...");
         this.users = [];
         users.forEach(user => {
-         
-          const functionsacces = user.access_functions.replaceAll(/[()]/g, "").split(",").map((v) => v == 't'? true:false);
+          const functionsacces = user.access_functions.replaceAll(/[()]/g, "").split(",").map((v) => v == 't' ? true : false);
           const access_functions_this: access_functions = {
             edit_json_connection: functionsacces[0],
             drop_json_connection: functionsacces[1],
@@ -70,30 +78,27 @@ export class GestionCuentasComponent {
             view_alert_sms_logs: functionsacces[27],
             modify_tieldmap: functionsacces[28]
           }
-        
-          const userTransform: Users = {...user, access_functions:access_functions_this }
+
+          const userTransform: Users = { ...user, access_functions: access_functions_this }
           this.users.push(userTransform);
         })
-       
+
       }, (err: HttpErrorResponse) => {
-         this.alert.setMessageAlert("No se ha podido recuperar los usuarios")
+        this.alert.setMessageAlert("No se ha podido recuperar los usuarios")
       })
     }
   }
 
 
-
-  public userSelected!: Users;
-  getOneUser(find_id_user: number){
+  /**
+   * @description funcion para obtener un usuario por su id de usuario
+   * @param find_id_user 
+   */
+  getOneUser(find_id_user: number) {
     if (this.token && this.id_user) {
       this.authService.getOneUser(this.id_user, find_id_user, this.token).subscribe((user) => {
         this.alert.setMessageAlert("Usuarios cargado");
-        console.log("usuario seleccionado")
-        console.log(user[0].access_functions)
-        console.log(user[0].access_functions.replaceAll(/[()]/g, ""))
-        const functionsacces = user[0].access_functions.replaceAll(/[()]/g, "").split(",").map((v) => v == 't'? true:false);
-        console.log("Size: ", functionsacces.length)
-        console.log(functionsacces)
+        const functionsacces = user[0].access_functions.replaceAll(/[()]/g, "").split(",").map((v) => v == 't' ? true : false);
         const access_functions_this = {
           edit_json_connection: functionsacces[0],
           drop_json_connection: functionsacces[1],
@@ -125,14 +130,18 @@ export class GestionCuentasComponent {
           view_alert_sms_logs: functionsacces[27],
           modify_tieldmap: functionsacces[28]
         }
-        console.log(access_functions_this)
-      
-        const userTransform: Users = {...user[0], access_functions:access_functions_this }
+        const userTransform: Users = { ...user[0], access_functions: access_functions_this }
         this.userSelected = userTransform;
-        
+
+        //Estableciendo los valores de actualizacion
+        this.secundary_user_functions.input_correo = userTransform.correo;
+        this.secundary_user_functions.input_nombre_usuario = userTransform.nombre_usuario;
+        this.secundary_user_functions.input_telefono = userTransform.telefono;
+        this.secundary_user_functions.set_all_params = access_functions_this;
+
         this.menu = 2;
       }, (err: HttpErrorResponse) => {
-         this.alert.setMessageAlert("No se ha podido recuperar los usuarios")
+        this.alert.setMessageAlert("No se ha podido recuperar los usuarios")
       })
     }
   }
@@ -142,12 +151,19 @@ export class GestionCuentasComponent {
   * Funcion para cambiar el estado de la variable menu que permite regresar, crear o refrescar las vars de la pagina principal
   * @param menu 
   */
-  public menu: number = 1;
   changeStatusMenu(menu: number) {
+    if (menu == 1) {
+      this.getUsers();
+      this.userSelected = null;
+    }
     this.menu = menu;
   }
 
 
+
+  /**
+   * Creacion de un usuario nuevo
+   */
   saveUser() {
     this.secundary_user_functions.add_user(this.id_user, this.token)
       .then((response) => {
@@ -160,6 +176,43 @@ export class GestionCuentasComponent {
       .catch((err) => {
         this.menu = 1;
       })
+  }
+
+
+
+  /**
+   * Actualizacion de un usuario
+   */
+  updateUser() {
+    if (this.userSelected)
+      this.secundary_user_functions.update_user(this.userSelected?.id_usuario, this.id_user, this.token)
+        .then((response) => {
+          if (response) {
+            this.menu = 1;
+          } else {
+
+          }
+        })
+        .catch((err) => {
+          this.menu = 1;
+        })
+  }
+
+public search_user_value: string = "";
+  searchUser(search_user: string){
+    this.search_user_value = search_user;
+  }
+
+
+  getPermissionsCount(user: Users): number{
+    let counter = 0;
+    Object.keys(user.access_functions).forEach((key) => {
+      const access = user.access_functions[key as keyof typeof user.access_functions];
+      if(access){
+        counter++;
+      }
+    });
+    return counter;
   }
 
 }

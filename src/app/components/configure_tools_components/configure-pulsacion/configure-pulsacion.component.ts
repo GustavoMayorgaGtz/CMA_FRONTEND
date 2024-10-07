@@ -122,7 +122,7 @@ export class ConfigurePulsacionComponent implements OnInit {
             icon: this.isIcon,
             border_radius: this.style_button
           }
-          this.pulsacionService.create_pulsacion(object).subscribe((response) => {
+          this.pulsacionService.create_pulsacion(object, token).subscribe((response) => {
             this.alertService.setMessageAlert("Se creo el boton pulsación correctamente.");
             this.show_save_button = true;
             window.location.reload();

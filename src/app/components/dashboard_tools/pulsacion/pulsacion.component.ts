@@ -149,25 +149,25 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
       })
     })
   }
-  
+
   shortPulse: boolean = false;
   idCounterPulseTime!: NodeJS.Timeout;
   timePulse: number = 0;
-  push(){
+  push() {
     console.log("Incrementando")
     this.Connect_Socket().then(() => {
-      this.socket.emit('sendMessageToGroup', { groupName: this.indicator_saved.groupname , message: "on"}); // Unirse al grupo
+      this.socket.emit('sendMessageToGroup', { groupName: this.indicator_saved.groupname, message: "on" }); // Unirse al grupo
     })
-    this.idCounterPulseTime = setTimeout(()=>{
+    this.idCounterPulseTime = setTimeout(() => {
 
     }, 250);
   }
 
-  unpush(){
-    setTimeout(()=>{
+  unpush() {
+    setTimeout(() => {
       console.log("Decrementand")
       this.Connect_Socket().then(() => {
-        this.socket.emit('sendMessageToGroup', { groupName: this.indicator_saved.groupname , message: "off"}); // Unirse al grupo
+        this.socket.emit('sendMessageToGroup', { groupName: this.indicator_saved.groupname, message: "off" }); // Unirse al grupo
       })
     }, 100);
   }
@@ -202,24 +202,15 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes) {
       const idUserString = sessionStorage.getItem("idUser");
-      if (idUserString) {
-        this.pulsacionService.getOne(parseInt(idUserString), this.id_pulsacion).subscribe((data) => {
+      const token = sessionStorage.getItem("token");
+      if (idUserString && token) {
+        this.pulsacionService.getOne(parseInt(idUserString), this.id_pulsacion, token).subscribe((data) => {
           this.indicator_saved = data;
           this.style_button = data.border_radius;
           this.text_color = data.text_color;
           this.fill_color = data.fill_color;
           this.isSaveBlobData = data.bold;
-
           this.setChangesButton(this.button)
-
-
-          // console.log(data);
-          // this.Connect_Socket().then(() => {
-          //   this.listenStreaming(data);
-          // })
-          //   .catch((err) => {
-          //     console.log(err);
-          //   })
           const actualCamera = data;
           this.title = actualCamera.title;
           this.description = actualCamera.description;

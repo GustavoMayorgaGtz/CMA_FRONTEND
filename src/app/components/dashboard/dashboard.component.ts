@@ -43,6 +43,7 @@ export class DashboardComponent implements OnInit {
           this.dashboardService.createDashboardUser(title.value, description.value, parseInt(idUser), token).subscribe((data) => {
             this.dashboards = data;
             this.alertService.setMessageAlert("Dashboard creado correctamente.");
+            this.getDashboard();
             setTimeout(() => {
               this.menu_tool = 0;
             }, 2000);
@@ -89,27 +90,31 @@ export class DashboardComponent implements OnInit {
     this.exitService.exitConfigurationGraphLine.subscribe(() => {
       this.set_menu_tool = 0;
     })
-    const idUser = sessionStorage.getItem("idUser");
-    const token = sessionStorage.getItem("token");
-
 
     this.signalsService.groupName("streaming");
     this.signalsService.dataRecive.subscribe((buffer) => {
       const blob = new Blob([buffer.data], { type: 'image/jpeg' });
       this.src = URL.createObjectURL(blob);
     })
-    
+
+    this.getDashboard();
+
+  }
+
+
+
+  getDashboard() {
+    const idUser = sessionStorage.getItem("idUser");
+    const token = sessionStorage.getItem("token");
     if (idUser && token) {
       this.dashboardService.getDashboardsUser(parseInt(idUser), token).subscribe((data) => {
         this.dashboards = data;
       }, (err: HttpErrorResponse) => {
         console.log(err)
       })
-
     } else {
       this.router.navigate(['/'])
     }
-
   }
 
 
