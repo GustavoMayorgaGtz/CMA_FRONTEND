@@ -5,7 +5,6 @@ export interface IJsonBodyVariable_Constructor {
 }
 
 export interface IJsonVariable_Create{
-
     name:string;
     url:string;
     method:string;

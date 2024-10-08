@@ -4,6 +4,7 @@ import { VarsService } from 'src/app/service/vars';
 import { AlertService } from "../service/alert.service";
 import { IJsonBodyVariable_Constructor, IJsonVariable, IJsonVariable_Create } from "../interfaces/JsonEndpointsInterfaces/JsonEndpointI";
 import { EventEmitter } from "@angular/core";
+import { Router } from "@angular/router";
 
 export class JsonVariableClass {
 
@@ -31,6 +32,7 @@ export class JsonVariableClass {
     
     constructor
         (private vars_service: VarsService
+            , private router: Router
             , private alertService: AlertService
         ) {}
 
@@ -68,14 +70,19 @@ export class JsonVariableClass {
         if( enableName !== -1){
             this.alertService.setMessageAlert("Nombre repetido, cambia el nombre de la variable.");
         }else{
-            this.vars_service.create_Json_Var(body_toCreate).subscribe((data) => {
-                this.alertService.setMessageAlert("Variable creada");
-                this.output_show_variableCreada.emit(true);
-                this.clearData();
-            }, (err: HttpErrorResponse) => {
-                console.log("Error al crear la variable json")
-                this.alertService.setMessageAlert("La variable no fue creada");
-            });
+            const id_user = sessionStorage.getItem('idUser');
+            if(id_user){
+                this.vars_service.create_Json_Var(body_toCreate, parseInt(id_user)).subscribe((data) => {
+                    this.alertService.setMessageAlert("Variable creada");
+                    this.output_show_variableCreada.emit(true);
+                    this.clearData();
+                }, (err: HttpErrorResponse) => {
+                    console.log("Error al crear la variable json")
+                    this.alertService.setMessageAlert("La variable no fue creada");
+                });
+            }else{
+                this.router.navigate(['/login']);
+            }
         }
     }
 

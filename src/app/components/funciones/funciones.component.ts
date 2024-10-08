@@ -21,7 +21,7 @@ export class FuncionesComponent {
   set setMenu(option: number) {
     this.menu = option;
     this.clearInputs();
-   
+
   }
 
 
@@ -38,7 +38,7 @@ export class FuncionesComponent {
   }
 
   public allAlertasSMS: IAlertSMS_Database[] = [];
-  getAllAlertsSMS(){
+  getAllAlertsSMS() {
     this.alertSMS_Service.getAllAlertSMS().subscribe((alertas) => {
       this.allAlertasSMS = alertas;
     })
@@ -50,10 +50,14 @@ export class FuncionesComponent {
   getAllVars() {
     this.allVars = [];
     this.allVarsCopy = [];
-    this.varsService.getAllVars().subscribe((vars) => {
-      this.allVars = vars;
-      this.allVarsCopy = vars;
-    })
+    const token = sessionStorage.getItem("token");
+    const id_user = sessionStorage.getItem("idUser");
+    if (token && id_user) {
+      this.varsService.getAllVars(parseInt(id_user)).subscribe((vars) => {
+        this.allVars = vars;
+        this.allVarsCopy = vars;
+      })
+    }
   }
 
 
@@ -225,7 +229,7 @@ export class FuncionesComponent {
 
 
   clearInputs() {
-    this.numeros = [{code: 0, phone: 0}];
+    this.numeros = [{ code: 0, phone: 0 }];
     this.allVars = this.allVarsCopy;
     this.idxVariableSelected = null;
     this.max_enable = false;
@@ -247,7 +251,7 @@ export class FuncionesComponent {
     let enable_alertaSMS = false;
 
 
- 
+
 
     if (this.equal_enable) {
       //Necesito this.equal para que funcione el registro
@@ -264,7 +268,7 @@ export class FuncionesComponent {
       message = "No haz definido la entrada valor maximo o la entrada valor minimo";
     }
 
-  
+
     //Validar los numeros
     if (this.numeros.length <= 0) {
       enable_alertaSMS = false;
@@ -290,7 +294,7 @@ export class FuncionesComponent {
     let numeros: number[] = [];
     this.numeros.forEach((numero) => {
       // let finalNumber = numero.code + "" + numero.phone;
-      let finalNumber = ""+numero.phone;
+      let finalNumber = "" + numero.phone;
       numeros.push(parseInt(finalNumber))
     })
     if (method_evaluation) {
@@ -336,13 +340,13 @@ export class FuncionesComponent {
       message = "No se ha definido el nombre de la alerta";
     }
 
-      //Ver si tengo una variable definida
-      if (!this.idVariableSelectInVars || this.idVariableSelectInVars == null) {
-        enable_alertaSMS = false;
-        message = "No haz definido la variable de evaluacion";
-      }
+    //Ver si tengo una variable definida
+    if (!this.idVariableSelectInVars || this.idVariableSelectInVars == null) {
+      enable_alertaSMS = false;
+      message = "No haz definido la variable de evaluacion";
+    }
 
-      
+
     //Validar metodo de evaluacion 
     if (!this.equal_enable && !this.max_enable && !this.min_enable) {
       enable_alertaSMS = false;

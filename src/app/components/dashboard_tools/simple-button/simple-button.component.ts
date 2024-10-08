@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { JsonVariableClass } from 'src/app/functions/json_functions';
 import { auth_class } from 'src/app/graphs_class/auth_class';
 import { ISimpleButtonDatabase } from 'src/app/interfaces/SimpleButtonInterfaces/SimpleButtonInterface';
@@ -19,13 +20,14 @@ export class SimpleButtonComponent implements OnChanges, AfterViewInit {
   @Input() idSimpleButton!: number;
 
   //Se define la variable que define los datos que se van a capturar
-  public jsonBuilder = new JsonVariableClass(this.varsService, this.alert);
+  public jsonBuilder = new JsonVariableClass(this.varsService,this.router, this.alert);
 
   
   constructor(
     private all: AllService,
     private alert: AlertService,
     private varsService: VarsService,
+    private router: Router,
     private simpleButtonService: SimpleButtonService) {
     
   }
@@ -77,17 +79,22 @@ export class SimpleButtonComponent implements OnChanges, AfterViewInit {
 
   clickEvent() {
     if (this.simpleButton.idvariablejson) {
-      //Realizar la peticion de jsonendpoint
-      this.varsService.getJsonVarById(this.simpleButton.idvariablejson).subscribe((variable) => {
-        
-        this.jsonBuilder.doQuery(variable[0])
-          .then((data) => {
-            this.alert.setMessageAlert("Exito");
-          })
-          .catch((err) => {
-            this.alert.setMessageAlert(err);
-          })
-      })
+      const idUser = sessionStorage.getItem("idUser")
+      if(idUser){
+        //Realizar la peticion de jsonendpoint
+        this.varsService.getJsonVarById(this.simpleButton.idvariablejson, parseInt(idUser)).subscribe((variable) => {
+          
+          this.jsonBuilder.doQuery(variable[0])
+            .then((data) => {
+              this.alert.setMessageAlert("Exito");
+            })
+            .catch((err) => {
+              this.alert.setMessageAlert(err);
+            })
+        })
+      }else{
+        this.router.navigate(['/login'])
+      }
     } else if (this.simpleButton.idvariablemodbus) {
       //Realizar la peticion de modbusendpoint
 

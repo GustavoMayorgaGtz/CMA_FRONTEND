@@ -4,6 +4,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { AllVar } from "../interfaces/interfaces";
 import { JsonVariableClass } from "./json_functions";
 import { IMemoryVar } from "../interfaces/Modbus.interfaces/ModbusInterfaces";
+import { Router } from "@angular/router";
 
 export class CalculatorExpression {
 
@@ -12,13 +13,15 @@ export class CalculatorExpression {
      * 
      * @param {string} expresion //expresion usada para parsear la informacion
      */
-    constructor(private varsService: VarsService) {
+    constructor(private varsService: VarsService
+        ,  private router: Router
+    ) {
 
     }
 
 
 
-      
+
 
 
     /**
@@ -43,26 +46,33 @@ export class CalculatorExpression {
             let contadorVariablesObtenidas = 0;
             variablesIncluidas.forEach((variable) => {
                 if (variable.type == 'json') {
-                    this.varsService.getJsonVarById(variable.id).subscribe((variableJson) => {
-                        jsonBuilder.doQuery(variableJson[0])
-                            .then((value) => {
-                                if (typeof value == 'number') {
-                                    expresion = expresion.replace("{" + variable.name + "}", (value.toString().includes("-") ? ("(0" + value.toString() + ")") : value.toString()));
-                                    contadorVariablesObtenidas++;
-                                    if(contadorVariablesObtenidas == noVariables){
-                                        resolve(expresion);
-                                        this.separarDelimitadores(expresion);
+                    const token = sessionStorage.getItem("token");
+                    const id_user = sessionStorage.getItem("idUser");
+                    if (token && id_user) {
+                        this.varsService.getJsonVarById(variable.id, parseInt(id_user)).subscribe((variableJson) => {
+                            jsonBuilder.doQuery(variableJson[0])
+                                .then((value) => {
+                                    if (typeof value == 'number') {
+                                        expresion = expresion.replace("{" + variable.name + "}", (value.toString().includes("-") ? ("(0" + value.toString() + ")") : value.toString()));
+                                        contadorVariablesObtenidas++;
+                                        if (contadorVariablesObtenidas == noVariables) {
+                                            resolve(expresion);
+                                            this.separarDelimitadores(expresion);
+                                        }
+                                    } else {
+                                        reject(`La variable ${variable.name}de valor no es un numero.`)
                                     }
-                                }else{
-                                    reject(`La variable ${variable.name}de valor no es un numero.`)
-                                }
-                            })
-                            .catch((err) => {
-                                reject("No se pudo obtener el valor de la variable "+variable.name)
-                            })
-                    }, ((err) => {
-                        reject(`No se pudo obtener la variable ${variable.name}`);
-                    }))
+                                })
+                                .catch((err) => {
+                                    reject("No se pudo obtener el valor de la variable " + variable.name)
+                                })
+                        }, ((err) => {
+                            reject(`No se pudo obtener la variable ${variable.name}`);
+                        }))
+                    }else{
+                        //TODO
+                        this.router.navigate(['/login']);
+                    }
                 }
                 if (variable.type == 'modbus') {
                     this.varsService.getModbusVarById(variable.id).subscribe((variableModbus) => {
@@ -70,17 +80,17 @@ export class CalculatorExpression {
                         if (typeof value == "number") {
                             expresion = expresion.replace("{" + variable.name + "}", (value.toString().includes("-") ? ("(0" + value.toString() + ")") : value.toString()));
                             contadorVariablesObtenidas++;
-                            if(contadorVariablesObtenidas == noVariables){
+                            if (contadorVariablesObtenidas == noVariables) {
                                 resolve(expresion);
                                 this.separarDelimitadores(expresion);
                             }
-                        }else{
+                        } else {
                             reject(`La variable ${variable.name}de valor no es un numero.`)
                         }
                     }, (err: HttpErrorResponse) => {
-                         reject("No se pudo obtener el valor de la variable "+variable.name)
+                        reject("No se pudo obtener el valor de la variable " + variable.name)
                     })
-                } 
+                }
             })
         })
     }

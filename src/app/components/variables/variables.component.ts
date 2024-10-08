@@ -36,7 +36,7 @@ export class VariablesComponent implements OnInit, AfterViewInit {
   public url!: HTMLInputElement;
   @ViewChild('metodo') MetodoElementRef!: ElementRef<HTMLSelectElement>;
   public metodo!: HTMLSelectElement;
-  public jsonBuilder = new JsonVariableClass(this.varsService, this.alertService);
+  public jsonBuilder = new JsonVariableClass(this.varsService, this.router, this.alertService);
   public modbusBuilder = new ModbusVariableClass(this.varsService, this.alertService);
 
   public server: string = "";
@@ -140,29 +140,33 @@ export class VariablesComponent implements OnInit, AfterViewInit {
    * 
    */
   getVariables() {
-    this.varsService.getAllVars().subscribe((vars) => {
-      this.vars = vars;
+    const token = sessionStorage.getItem("token");
+    const id_user = sessionStorage.getItem("idUser");
+    if (token && id_user) {
+      this.varsService.getAllVars(parseInt(id_user)).subscribe((vars) => {
+        this.vars = vars;
 
-      this.Vars_names = vars.map((vars) => {
+        this.Vars_names = vars.map((vars) => {
 
-        return vars.name;
+          return vars.name;
+        })
+      });
+      this.varsService.getAllVarsJson(parseInt(id_user)).subscribe((variables) => {
+        this.jsonVariables = variables.json;
+        // this.modbusVariables = variables.modbus;
+        variables.json.forEach((variable, idx) => {
+          this.jsonBuilder.doQuery(variable)
+            .then((value) => {
+              this.jsonVariables[idx].value = value;
+            })
+            .catch((err) => {
+              console.log("Error al realizar la peticion: ", err)
+            })
+        })
+      }, (err: HttpErrorResponse) => {
+        console.log(err);
       })
-    });
-    this.varsService.getAllVarsJson().subscribe((variables) => {
-      this.jsonVariables = variables.json;
-      // this.modbusVariables = variables.modbus;
-      variables.json.forEach((variable, idx) => {
-        this.jsonBuilder.doQuery(variable)
-          .then((value) => {
-            this.jsonVariables[idx].value = value;
-          })
-          .catch((err) => {
-            console.log("Error al realizar la peticion: ", err)
-          })
-      })
-    }, (err: HttpErrorResponse) => {
-      console.log(err);
-    })
+    }
     this.varsService.getAllVarsModbus().subscribe((variables_modbus) => {
       this.modbusVariables = variables_modbus;
     }, (err: HttpErrorResponse) => {
@@ -198,7 +202,7 @@ export class VariablesComponent implements OnInit, AfterViewInit {
    * @param size 
    */
   getNextResultMemoryVar(vars: IMemoryVar[], id: number, size: number) {
-    const newRegex = new CalculatorExpression(this.varsService);
+    const newRegex = new CalculatorExpression(this.varsService, this.router);
     newRegex.parserRegexVars(vars[id].expression, this.vars, this.Vars_names, this.jsonBuilder)
     newRegex.getMessage.subscribe((result) => {
       vars[id].result = parseFloat(result);
@@ -315,7 +319,7 @@ export class VariablesComponent implements OnInit, AfterViewInit {
 
 
 
-  public regex = new CalculatorExpression(this.varsService);
+  public regex = new CalculatorExpression(this.varsService, this.router);
   /**
    * 
    * @param name 

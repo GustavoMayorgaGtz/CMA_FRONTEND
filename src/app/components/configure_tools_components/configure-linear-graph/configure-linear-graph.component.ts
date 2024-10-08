@@ -14,6 +14,7 @@ import { IMemoryVar, IModbusVar } from 'src/app/interfaces/Modbus.interfaces/Mod
 import { AllVar } from 'src/app/interfaces/interfaces';
 import { AlertService } from 'src/app/service/alert.service';
 import { AllService } from 'src/app/service/all.service';
+import { AuthService } from 'src/app/service/auth.service';
 import { CMA_ENDPOINT_SERVICES } from 'src/app/service/cma_endpoints.service';
 import { ExitService } from 'src/app/service/exit.service';
 import { finalizeService } from 'src/app/service/finalize.service';
@@ -29,26 +30,31 @@ export class ConfigureLinearGraphComponent implements OnInit {
 
   //Se define la variable que define los datos que se van a capturar
   private linear_chart_configuration!: IlineChartConfiguration;
-  public jsonBuilder = new JsonVariableClass(this.varsService, this.alert);
+  public jsonBuilder = new JsonVariableClass(this.varsService, this.router,  this.alert);
   @Input() id_dashboard_selected!: number|undefined;
   @ViewChild(BaseChartDirective) canvas_chart!: BaseChartDirective;
 
   constructor(
     private all: AllService,
     private alert: AlertService,
+
     private varsService: VarsService,
     private linechartService: LineChartService,
     private finalizeServices: finalizeService,
     private exitService: ExitService,
+    private authService: AuthService,
     private endpointService: CMA_ENDPOINT_SERVICES,
     private router: Router
   ) {
 
 
   }
-  public grafica_linear = new LineGraph(this.all,
+  public grafica_linear = new LineGraph(
     this.alert,
-    this.varsService, this.finalizeServices, this.endpointService);
+    this.varsService, 
+    this.authService,
+    this.router,
+    this.finalizeServices, this.endpointService);
 
   public linear1!: getParamsLineChart;
 
@@ -68,14 +74,16 @@ export class ConfigureLinearGraphComponent implements OnInit {
   public Vars_names: string[] = [];
   public vars!: AllVar[];
   getVariables() {
-    this.varsService.getAllVars().subscribe((vars) => {
-      this.vars = vars;
-      this.Vars_names = vars.map((vars) => {
-        return vars.name;
-      })
-    });
+    const idUser = sessionStorage.getItem("idUser")
+    if(idUser){
+      this.varsService.getAllVars(parseInt(idUser)).subscribe((vars) => {
+        this.vars = vars;
+        this.Vars_names = vars.map((vars) => {
+          return vars.name;
+        })
+      });
 
-    this.varsService.getAllVarsJson().subscribe((variables) => {
+    this.varsService.getAllVarsJson(parseInt(idUser)).subscribe((variables) => {
       this.jsonVariables = variables.json;
     }, (err: HttpErrorResponse) => {
       console.log(err);
@@ -102,9 +110,11 @@ export class ConfigureLinearGraphComponent implements OnInit {
     })
   }
 
+  }
+
 
   getNextResultMemoryVar(vars: IMemoryVar[], id: number, size: number) {
-    const newRegex = new CalculatorExpression(this.varsService);
+    const newRegex = new CalculatorExpression(this.varsService, this.router);
     newRegex.parserRegexVars(vars[id].expression, this.vars, this.Vars_names, this.jsonBuilder)
     newRegex.getMessage.subscribe((result) => {
       vars[id].result = parseFloat(result);

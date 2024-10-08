@@ -6,25 +6,81 @@ import { IMemoryVar, IModbusVar, IModbusVar_Create, IModbusVar_Test } from '../i
 import { AllVar } from '../interfaces/interfaces';
 import { Observable, ObservableLike } from 'rxjs';
 import { IBlobData, IBlobData_Database } from '../interfaces/BlobData/blobdatainterfaces';
+import { PRIMARY_OUTLET, Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
 export class VarsService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private router: Router
+  ) { }
 
-  getAllVars() {
-    return this.http.get<AllVar[]>(server + "vars/get");
+
+  /**
+   * Observable para obtener todas las variables de un usuario
+   * @param primary_user 
+   * @returns {Observable<AllVar[]>}
+   */
+  getAllVars(primary_user: number) {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/login'])
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<AllVar[]>(server + `vars/get?primary_user=${primary_user}`, { headers });
   }
-  getAllVarsJson() {
+
+
+  /**
+   * Observable para obener todas las variables json de un usuario
+   * @param primary_user 
+   * @returns {Observable<AllVar>}
+   */
+  getAllVarsJson(primary_user: number) {
     interface AllVar {
       json: IJsonVariable[]
     }
-    return this.http.get<AllVar>(server + "jsonvars/getAll");
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/login'])
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<AllVar>(server + `jsonvars/getAll?primary_user=${primary_user}`, { headers });
   }
 
-  getJsonVarById(idJsonVariable: number) {
-    return this.http.get<IJsonVariable[]>(server + "jsonvars/getOne?idjsonvar=" + idJsonVariable);
+
+  /**
+   * Observable para obtener una variable json por su id
+   * @param idJsonVariable 
+   * @param primary_user 
+   * @returns 
+   */
+  getJsonVarById(idJsonVariable: number, primary_user: number) {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/login'])
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<IJsonVariable[]>(server + `jsonvars/getOne?idjsonvar=${idJsonVariable}&primary_user=${primary_user}`, { headers });
+  }
+
+
+  create_Json_Var(body: IJsonVariable_Create, primary_user: number) {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/login'])
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post(server + "jsonvars/create", { ...body, primary_user }, { headers });
   }
 
 
@@ -37,7 +93,6 @@ export class VarsService {
         'Origin': url
       }
     };
-
     return this.http.post<any>(url, body, options);
   }
   type_PUT(url: string, body: object) {
@@ -56,26 +111,49 @@ export class VarsService {
     return this.http.head<Object>(url, body);
   }
 
-  create_Json_Var(body: IJsonVariable_Create) {
-    return this.http.post(server + "jsonvars/create", body);
-  }
+
 
 
   test_Modbus_var(body: IModbusVar_Test) {
+    
     return this.http.post(server + "modbusvars/testConnection", body);
   }
 
   getAllVarsModbus() {
-    return this.http.get<IModbusVar[]>(server + "modbusvars/getAll");
+    const idUser = sessionStorage.getItem('idUser')
+    const token = sessionStorage.getItem("token")
+    if(!idUser || !token){
+       this.router.navigate(['/login'])
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<IModbusVar[]>(server + `modbusvars/getAll?id_user=${idUser}`, {headers});
   }
 
 
   getModbusVarById(idmodbusvar: number) {
-    return this.http.get<IModbusVar[]>(server + "modbusvars/getOne?idmodbusvar=" + idmodbusvar);
+    const idUser = sessionStorage.getItem('idUser')
+    const token = sessionStorage.getItem("token")
+    if(!idUser || !token){
+       this.router.navigate(['/login'])
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<IModbusVar[]>(server + `modbusvars/getOne?idmodbusvar=${idmodbusvar}&id_user=${idUser}`, {headers});
   }
 
   create_Modbus_var(body: IModbusVar_Create) {
-    return this.http.post<any>(server + "modbusvars/create", body);
+    const id_user = sessionStorage.getItem('idUser')
+    const token = sessionStorage.getItem("token")
+    if(!id_user || !token){
+       this.router.navigate(['/login'])
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post<any>(server + "modbusvars/create", {...body, id_user}, {headers});
   }
 
   create_memory_var(name: string, expression: string) {

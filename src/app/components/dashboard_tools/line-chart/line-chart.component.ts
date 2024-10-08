@@ -6,6 +6,7 @@ import { IlineChartConfiguration, getParamsLineChart } from 'src/app/interfaces/
 import { AllVar } from 'src/app/interfaces/interfaces';
 import { AlertService } from 'src/app/service/alert.service';
 import { AllService } from 'src/app/service/all.service';
+import { AuthService } from 'src/app/service/auth.service';
 import { CMA_ENDPOINT_SERVICES } from 'src/app/service/cma_endpoints.service';
 import { finalizeService } from 'src/app/service/finalize.service';
 import { LineChartService } from 'src/app/service/linechart_service';
@@ -19,9 +20,11 @@ import { VarsService } from 'src/app/service/vars';
 export class LineChartComponent implements OnInit, OnChanges {
 
   @Input('idlinechart') id!: number;
-  public grafica_linear = new LineGraph(this.all,
+  public grafica_linear = new LineGraph(
     this.alert,
     this.varsService,
+    this.authService,
+    this.router,
     this.finalizeService,
     this.cma_endpointService);
   private linear_chart_configuration!: IlineChartConfiguration;
@@ -35,6 +38,7 @@ export class LineChartComponent implements OnInit, OnChanges {
     private alert: AlertService,
     private varsService: VarsService,
     private router: Router,
+    private authService: AuthService,
     private linechartservice: LineChartService,
     private finalizeService: finalizeService,
     private cma_endpointService: CMA_ENDPOINT_SERVICES) {
@@ -45,12 +49,16 @@ export class LineChartComponent implements OnInit, OnChanges {
   public Vars_names: string[] = [];
   public vars!: AllVar[];
   getVariables() {
-    this.varsService.getAllVars().subscribe((vars) => {
-      this.vars = vars;
-      this.Vars_names = vars.map((vars) => {
-        return vars.name;
-      })
-    });
+    const idUser = sessionStorage.getItem("idUser")
+    if(idUser){
+      this.varsService.getAllVars(parseInt(idUser)).subscribe((vars) => {
+        this.vars = vars;
+        this.Vars_names = vars.map((vars) => {
+          return vars.name;
+        })
+      });
+    }
+  
   }
 
   ngOnChanges(changes: SimpleChanges): void {

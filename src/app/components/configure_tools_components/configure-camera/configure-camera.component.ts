@@ -65,7 +65,6 @@ export class ConfigureCaneraComponent implements OnInit {
         //Obtener el id del usuario
         this.authClass.validateUser();
         const idUser = sessionStorage.getItem("idUser")
-        const token = sessionStorage.getItem("token")
         if (idUser) {
           //Crear objeto
           let object: ICreate_Camera = {

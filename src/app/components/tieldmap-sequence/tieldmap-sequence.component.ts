@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Router } from '@angular/router';
 import { JsonVariableClass } from 'src/app/functions/json_functions';
 import { IConfigurationShadow } from 'src/app/interfaces/TieldmapInterfaces/tieldmapinterfaces';
 import { AlertService } from 'src/app/service/alert.service';
@@ -16,18 +17,14 @@ import { VarsService } from 'src/app/service/vars';
   styleUrls: ['./tieldmap-sequence.component.scss']
 })
 export class TieldmapSequenceComponent implements OnInit {
-  public jsonBuilder = new JsonVariableClass(this.varsService, this.alertService);
+  public jsonBuilder = new JsonVariableClass(this.varsService, this.router, this.alertService);
   public menu_tool: number = 1;
   
 
-  constructor(private service: AllService,
+  constructor(private router: Router,
     private alertService: AlertService,
     private varsService: VarsService,
-    private linechart_Service: LineChartService,
-    private simplebutton_Service: SimpleButtonService,
-    private finalizeServices: finalizeService,
-    private exitService: ExitService,
-    private cma_endpointService: CMA_ENDPOINT_SERVICES) {
+    ) {
     const idUser = sessionStorage.getItem("idUser");
     const token = sessionStorage.getItem("token");
     if (idUser && parseInt(idUser) > 0 && token) {

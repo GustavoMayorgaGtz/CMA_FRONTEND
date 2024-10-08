@@ -13,11 +13,13 @@ import { BLOBDATA } from '../functions/blobdata_class';
 import { finalizeService } from '../service/finalize.service';
 import { CMA_ENDPOINT_SERVICES } from '../service/cma_endpoints.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { timeout } from 'rxjs';
-import { BlobdataModule } from '../pages/blobdata/blobdata.module';
+import { AuthService } from '../service/auth.service';
+import { Router } from '@angular/router';
+import { auth_class } from './auth_class';
+
 
 export class LineGraph {
-  public jsonBuilder = new JsonVariableClass(this.varsService, this.alertService);
+  public jsonBuilder = new JsonVariableClass(this.varsService, this.router, this.alertService);
   public blobData = new BLOBDATA(this.varsService);
   private title = "Lineal";
 
@@ -54,10 +56,10 @@ export class LineGraph {
       //   text: 'Custom Chart Title'
       // },
       subtitle: {
-        display: true, 
-        fullSize:  true,
+        display: true,
+        fullSize: true,
         padding: 10,
-        font: {weight: 'bold'},
+        font: { weight: 'bold' },
         text: ''
       },
 
@@ -85,57 +87,17 @@ export class LineGraph {
     }
   };
 
-  // public lineChartOptions: ChartOptions<'line'> = {
-  //   responsive: true,
-  //   plugins: {
-  //     title: {
-  //       display: true,
-  //       text: 'Custom Chart Title'
-  //     },
-  //     subtitle: {
-  //       display: true,
-  //       text: 'Custom Chart Subtitle'
-  //     },
-  //     legend: {
-  //       display: false,
-  //       maxWidth: 0,
-  //       labels: {
-  //           color: 'rgb(255, 99, 132)'
-  //       }
-  //     }
-  //   },
-  //   maintainAspectRatio: false, // Esto permite que el gráfico no mantenga un aspecto de cuadrado
-  //   scales: {
-  //     x: {
-  //       alignToPixels: true,
-  //       beginAtZero: false,
-  //       // stacked: true,        
-  //       // display: false,
-  //       ticks: {
-  //         maxRotation: 100,
-  //         autoSkip: true,
-  //         minRotation: 35
-  //       }
-  //     },
-  //     y: {
-  //       // display: false,
-  //       // stacked: true,
-  //       beginAtZero: false,
-  //       ticks: {
 
-  //         // stepSize: .1  // Paso entre cada marca en el eje Y
-  //       }
-  //     }
-  //   }
-  // };
+  public authClass = new auth_class(this.router, this.authService, this.alertService);
 
-  constructor(private service: AllService,
-    private alertService: AlertService,
+  constructor(private alertService: AlertService,
     private varsService: VarsService,
+    private authService: AuthService,
+    private router: Router,
     private finalizeService: finalizeService,
     private cma_endpoint: CMA_ENDPOINT_SERVICES) {
     //Simulador de destructor desde otros lados
-    finalizeService.finalizeAllPolling.subscribe(() => {
+    this.finalizeService.finalizeAllPolling.subscribe(() => {
       if (this.idInterval) {
         clearInterval(this.idInterval);
       }
@@ -642,7 +604,7 @@ export class LineGraph {
   getNextResultMemoryVar(vars: IMemoryVar[], id: number, size: number, allvars: AllVar[], varsName: string[]) {
     const date = new Date();
     const dateNow = date.toLocaleString().replace(",", "").replaceAll("/", "-");
-    const newRegex = new CalculatorExpression(this.varsService);
+    const newRegex = new CalculatorExpression(this.varsService, this.router);
     newRegex.parserRegexVars(vars[id].expression, allvars, varsName, this.jsonBuilder)
     newRegex.getMessage.subscribe((result) => {
       const result_number = parseFloat(result);
@@ -678,9 +640,16 @@ export class LineGraph {
   public var1_labels: string[] = [];
   public var1_dataset: number[] = [];
   getVariableJson(idJsonVar: number, time: number) {
-    this.varsService.getJsonVarById(idJsonVar).subscribe((jsonVar) => {
-      this.pollingQueryJSON(jsonVar[0], time);
-    })
+    const idUser = sessionStorage.getItem("idUser");
+
+    this.authClass.validateUser();
+
+    if (idUser) {
+      this.varsService.getJsonVarById(idJsonVar, parseInt(idUser)).subscribe((jsonVar) => {
+        this.pollingQueryJSON(jsonVar[0], time);
+      })
+    }
+
   }
 
 
@@ -908,10 +877,10 @@ export class LineGraph {
           this.var1_dataset.push(parseFloat(value as string));
           this.var1_labels.push(this.parsearFecha(dateNow));
           console.log("before error: ", value);
-          if(this.copyDataBlobData)
-          this.copyDataBlobData.push(parseFloat(value as string));
-          if(this.copyDateBlobData)
-          this.copyDateBlobData.push(this.parsearFecha(dateNow));
+          if (this.copyDataBlobData)
+            this.copyDataBlobData.push(parseFloat(value as string));
+          if (this.copyDateBlobData)
+            this.copyDateBlobData.push(this.parsearFecha(dateNow));
           if (this.groupByDateOption > 0) {
             this.groupByDate(this.groupByDateOption)
           } else {

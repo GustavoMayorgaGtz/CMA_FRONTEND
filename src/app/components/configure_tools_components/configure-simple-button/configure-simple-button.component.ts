@@ -11,6 +11,7 @@ import { IModbusVar } from 'src/app/interfaces/Modbus.interfaces/ModbusInterface
 import { ISimpleButtonConfiguration } from 'src/app/interfaces/SimpleButtonInterfaces/SimpleButtonInterface';
 import { AlertService } from 'src/app/service/alert.service';
 import { AllService } from 'src/app/service/all.service';
+import { AuthService } from 'src/app/service/auth.service';
 import { CMA_ENDPOINT_SERVICES } from 'src/app/service/cma_endpoints.service';
 import { ExitService } from 'src/app/service/exit.service';
 import { finalizeService } from 'src/app/service/finalize.service';
@@ -24,7 +25,7 @@ import { VarsService } from 'src/app/service/vars';
 })
 export class ConfigureSimpleButtonComponent implements OnInit {
   //Se define la variable que define los datos que se van a capturar
-  public jsonBuilder = new JsonVariableClass(this.varsService, this.alert);
+  public jsonBuilder = new JsonVariableClass(this.varsService, this.router, this.alert);
   @ViewChild(BaseChartDirective) canvas_chart!: BaseChartDirective;
   @Input() id_dashboard_selected!: number|undefined;
 
@@ -36,13 +37,16 @@ export class ConfigureSimpleButtonComponent implements OnInit {
     private simplebuttonService: SimpleButtonService,
     private finalizeServices: finalizeService,
     private router: Router,
+    private authService: AuthService,
     private exitService: ExitService,
     private cma_endpointService: CMA_ENDPOINT_SERVICES) {
   }
 
-  public grafica_linear = new LineGraph(this.all,
+  public grafica_linear = new LineGraph(
     this.alert,
     this.varsService,
+    this.authService,
+    this.router,
     this.finalizeServices,
     this.cma_endpointService
   );
@@ -57,17 +61,20 @@ export class ConfigureSimpleButtonComponent implements OnInit {
   public jsonVariables: IJsonVariable[] = [];
   public modbusVariables: IModbusVar[] = [];
   getVariables() {
-    this.varsService.getAllVarsJson().subscribe((variables) => {
-      this.jsonVariables = variables.json;
-    }, (err: HttpErrorResponse) => {
-      console.log(err);
-    })
-
-    this.varsService.getAllVarsModbus().subscribe((variables) => {
-      this.modbusVariables = variables;
-    }, (err: HttpErrorResponse) => {
-      console.log(err);
-    })
+    const idUser = sessionStorage.getItem("idUser")
+    if(idUser){
+      this.varsService.getAllVarsJson(parseInt(idUser)).subscribe((variables) => {
+        this.jsonVariables = variables.json;
+      }, (err: HttpErrorResponse) => {
+        console.log(err);
+      })
+  
+      this.varsService.getAllVarsModbus().subscribe((variables) => {
+        this.modbusVariables = variables;
+      }, (err: HttpErrorResponse) => {
+        console.log(err);
+      })
+    }
   }
 
 

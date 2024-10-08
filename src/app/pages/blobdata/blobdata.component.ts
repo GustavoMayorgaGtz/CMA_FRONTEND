@@ -28,9 +28,11 @@ export class BlobdataComponent implements OnInit {
   public description: string = "";
 
 
-  public grafica_linear = new LineGraph(this.all,
+  public grafica_linear = new LineGraph(
     this.alert,
     this.varsServices,
+    this.authService,
+    this.router,
     this.finalizeServices,
     this.cma_endpointServices);
   @ViewChild(BaseChartDirective) canvas_chart!: BaseChartDirective;
