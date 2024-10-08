@@ -155,6 +155,7 @@ export class VariablesComponent implements OnInit, AfterViewInit {
         this.jsonVariables = variables.json;
         // this.modbusVariables = variables.modbus;
         variables.json.forEach((variable, idx) => {
+          if(variable)
           this.jsonBuilder.doQuery(variable)
             .then((value) => {
               this.jsonVariables[idx].value = value;

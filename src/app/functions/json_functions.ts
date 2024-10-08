@@ -181,6 +181,7 @@ export class JsonVariableClass {
      * @param variable 
      */
     doQuery(variable: IJsonVariable) {
+        
         const method = variable.method
         const url = variable.url;
         const body = variable.body;

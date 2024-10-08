@@ -73,7 +73,7 @@ export class SimpleButtonComponent implements OnChanges, AfterViewInit {
     } else {
       const styles_aplied = button.style;
       const style = `
-      
+
       color: ${this.simpleButton.text_color};
       background-color: ${this.simpleButton.background_color};
       border-radius: 5px;
@@ -94,7 +94,7 @@ export class SimpleButtonComponent implements OnChanges, AfterViewInit {
       if (idUser) {
         //Realizar la peticion de jsonendpoint
         this.varsService.getJsonVarById(this.simpleButton.idvariablejson, parseInt(idUser)).subscribe((variable) => {
-
+          if(variable[0])
           this.jsonBuilder.doQuery(variable[0])
             .then((data) => {
               this.alert.setMessageAlert("Exito");

@@ -827,6 +827,7 @@ export class LineGraph {
   private idInterval!: NodeJS.Timeout;
 
   pollingQueryJSON(jsonVar: IJsonVariable, time: number) {
+    if(jsonVar)
     this.jsonBuilder.doQuery(jsonVar)
       .then((value) => {
         const date = new Date();
@@ -864,6 +865,7 @@ export class LineGraph {
 
     //Iniciamos el intervalo
     this.idInterval = setInterval(() => {
+      if(jsonVar)
       this.jsonBuilder.doQuery(jsonVar)
         .then((value) => {
           const date = new Date();

@@ -50,6 +50,7 @@ export class CalculatorExpression {
                     const id_user = sessionStorage.getItem("idUser");
                     if (token && id_user) {
                         this.varsService.getJsonVarById(variable.id, parseInt(id_user)).subscribe((variableJson) => {
+                            if(variableJson[0])
                             jsonBuilder.doQuery(variableJson[0])
                                 .then((value) => {
                                     if (typeof value == 'number') {

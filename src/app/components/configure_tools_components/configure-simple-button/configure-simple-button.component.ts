@@ -234,6 +234,7 @@ export class ConfigureSimpleButtonComponent implements OnInit {
     if (this.idJsonVariable) {
       //Realizar la peticion de jsonendpoint
       const variable = this.jsonVariables[this.idInArray];
+      if(variable)
       this.jsonBuilder.doQuery(variable)
         .then((data) => {
           this.alert.setMessageAlert("Exito");

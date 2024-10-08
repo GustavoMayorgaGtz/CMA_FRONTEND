@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, Input, OnChanges, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { IConfigurationShadow } from 'src/app/interfaces/TieldmapInterfaces/tieldmapinterfaces';
+import { AlertService } from 'src/app/service/alert.service';
 import { CameraService } from 'src/app/service/camera_service';
 import { finalizeService } from 'src/app/service/finalize.service';
 import { IndicatorService } from 'src/app/service/indicators_service';
@@ -116,6 +117,7 @@ export class TieldmapComponent implements OnChanges {
     private indicators_Service: IndicatorService,
     private camera_Service: CameraService,
     private pulsacion_Service: PulsacionService,
+    private alertService: AlertService,
     private router: Router,
     private finalizeServices: finalizeService) {
 
@@ -550,6 +552,8 @@ export class TieldmapComponent implements OnChanges {
             }
           }
           this.router.navigate(['/blobdata'], navigationExtras);
+        }else{
+          this.alertService.setMessageAlert("No se puede abrir esta grafica")
         }
       })
     } else {
