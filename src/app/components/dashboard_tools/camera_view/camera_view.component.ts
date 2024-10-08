@@ -30,7 +30,7 @@ export class CameraViewComponent implements OnInit, OnChanges {
   }
 
 
-  public streaming_data: string = "";
+  public streaming_data: string = "./assets/disconnect.svg";
   public status: boolean = false;
   TriggerConnectSocket() {
     if (this.socket) {
@@ -94,11 +94,8 @@ export class CameraViewComponent implements OnInit, OnChanges {
 
   listenStreaming(list: ICamera_Recive) {
     this.Connect_Socket().then((connection) => {
-      console.log(connection)
-      console.log("UNIENDO A GRUPO: ", list.groupname)
       this.socket.emit('joinGroup', { group: list.groupname }); // Unirse al grupo
       this.socket.on(list.groupname, (data) => {
-        console.log("Datos recibidos", data)
         const blob_data = new Blob([data])
         const buffer_blob = URL.createObjectURL(blob_data);
         this.streaming_data = buffer_blob;
@@ -126,13 +123,11 @@ export class CameraViewComponent implements OnInit, OnChanges {
       if (idUserString) {
         this.cameraService.getOne(parseInt(idUserString), this.id_camera).subscribe((data) => {
           this.indicator_saved = data;
-          console.log("Obteniendo todooo");
           this.Connect_Socket().then(() => {
-            console.log("Ahi vieneeeee")
             this.listenStreaming(data);
           })
           .catch((err) =>{
-            console.log(err);
+            console.log(err); 
           })
           const actualCamera = data;
           this.title = actualCamera.title;

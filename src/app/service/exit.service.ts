@@ -7,7 +7,7 @@ export class ExitService {
   public exitConfigurationGraphLine :EventEmitter<boolean> = new EventEmitter<boolean>();
   constructor() { }
 
-  setExitConfigurationGraphLine(){
-    this.exitConfigurationGraphLine.emit(true);
+  setExitConfigurationGraphLine(option: boolean){
+    this.exitConfigurationGraphLine.emit(option);
   }
 }

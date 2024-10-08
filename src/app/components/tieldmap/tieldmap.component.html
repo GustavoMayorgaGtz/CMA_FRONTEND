@@ -1,5 +1,16 @@
 <div class="container-primary">
+    <div class="move-tieldmap">
+        <div class="campo">
+            <b style="text-decoration: underline; color: rgb(106, 134, 60)">{{name_dashboard}}</b> / Modificar datos
+            <div class="checkbox-wrapper-2">
+                <input type="checkbox" #modify_check class="sc-gJwTLC ikxBAC">
+            </div>
+        </div>
 
+        <div class="nota" *ngIf="modify_check.checked">
+            Puedes modificar las herramientas de la interfaz; las modificaciones se guardarán automáticamente.
+        </div>
+    </div>
     <div class="tieldmap" #tieldmap (mousemove)="getPosition($event, tieldmap)" (mouseleave)="endAllEvents()"
         (mouseup)="endAllEvents()">
         <div class="contenido" #contenido [ngStyle]="setContenidoElement(contenido)"></div>
@@ -10,29 +21,27 @@
             No hay herramientas creadas.</span>
         <div class="shadow" *ngFor="let shadow of shadow_container; let idShadow = index;" #shadow_container
             [ngStyle]="setChanges(shadow_container, idShadow, tieldmap)">
-             <span class="title" *ngIf="shadow.type === 'linechart'" >
+            <span class="title" *ngIf="shadow.type === 'linechart'">
                 {{shadow.name}}
             </span>
-             <!-- <span class="subtitle" *ngIf="shadow.type === 'linechart'" >Description</span> -->
             <app-line-chart *ngIf="shadow.type === 'linechart'" [idlinechart]=shadow.id></app-line-chart>
-
             <app-indicator *ngIf="shadow.type === 'indicator'" [id_indicator]=shadow.id></app-indicator>
-
             <app-simple-button *ngIf="shadow.type === 'simplebutton'" [idSimpleButton]=shadow.id></app-simple-button>
             <app-camera_view *ngIf="shadow.type === 'streaming'" [id_camera]=shadow.id></app-camera_view>
             <app-pulsacion *ngIf="shadow.type === 'pulsacion'" [id_pulsacion]=shadow.id></app-pulsacion>
-            
+
 
             <div class="opendata" *ngIf="shadow.type === 'linechart'" (click)="openData(shadow.id)">
                 <img src="./assets/open.svg">
             </div>
-            <div class="erased" (click)="erasedShadow(idShadow)">
+            <div class="erased" (click)="erasedShadow(idShadow)" *ngIf="modify_check.checked">
                 <img src="./assets/x-makeme.svg" draggable="false">
             </div>
-            <div class="resize" *ngIf="shadow.type != 'indicator'" (mousedown)="enableResizeShadow(idShadow)" (mouseup)="endResizeShadow()">
+            <div class="resize" *ngIf="shadow.type != 'indicator' && modify_check.checked" (mousedown)="enableResizeShadow(idShadow)"
+                (mouseup)="endResizeShadow()">
                 <img src="./assets/resize-makeme.svg" draggable="false">
             </div>
-            <div class="move" (mousedown)="enableMoveShadow(idShadow)" (mouseup)="endMoveShadow()">
+            <div class="move" (mousedown)="enableMoveShadow(idShadow)" *ngIf="modify_check.checked" (mouseup)="endMoveShadow()">
                 <img src="./assets/move-makeme.svg" draggable="false">
             </div>
         </div>

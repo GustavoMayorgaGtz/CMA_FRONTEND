@@ -23,10 +23,7 @@ export class AuthService {
 
 
 
-  //peticion para registrar usuario
-  register_user(body: object) {
-    return this.http.post<Object>(server+"auth/register", body)
-  }
+
 
 
  //Peticion para registrar un usuario primario

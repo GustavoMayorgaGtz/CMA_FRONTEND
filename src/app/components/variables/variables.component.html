@@ -42,7 +42,7 @@
     </div>
     <div class="variables" *ngIf="menu === 1">
         <span
-            *ngIf="jsonVariables.length === 0 && modbusVariables.length === 0 && memoryVariables.length === 0 && variablesEndpoint.length === 0 "
+            *ngIf="pulseVariables.length && cameraVariables.length && indicatorsVariables.length === 0 && jsonVariables.length === 0 && modbusVariables.length === 0 && memoryVariables.length === 0 && variablesEndpoint.length === 0 "
             style="width: 100%; height: 100%; display: flex; justify-content: center; margin-top: 15%;">No hay variables
             creadas</span>
         <div class="card-variable" *ngFor="let jsonVar of jsonVariables; let j = index">

@@ -3,7 +3,8 @@
       <span class="title">{{title}}</span>
       <span class="description">{{description}}</span>
    </div>
-   <img [src]="streaming_data" alt="No hay streaming actualmente" class="canvas">
-   <!-- <div class="status_enabled" *ngIf="status">conectado</div>
-   <div class="status_disabled" *ngIf="!status">desconectado</div> -->
+   <img [src]="streaming_data" class="canvas-no-stream" *ngIf="!streaming_data || streaming_data == './assets/disconnect.svg'" >
+   <img [src]="streaming_data" class="canvas" *ngIf="streaming_data && streaming_data != './assets/disconnect.svg'" >
+   
+   <span class="title_no_stream" *ngIf="!streaming_data || streaming_data == './assets/disconnect.svg'">No hay streaming actualmente</span>
 </div>

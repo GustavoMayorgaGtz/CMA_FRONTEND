@@ -98,8 +98,6 @@ export class IndicatorComponent implements OnInit, OnChanges {
 
   listenIndicators(list: IRecive_Indicator) {
     this.Connect_Socket().then((connection) => {
-      console.log(connection)
-      console.log("UNIENDO A GRUPO: ", list.groupname)
       this.socket.emit('joinGroup', { group
         : list.groupname }); // Unirse al grupo
       this.socket.on(list.groupname, (data: string) => {

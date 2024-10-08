@@ -535,6 +535,6 @@ export class ConfigureLinearGraphComponent implements OnInit {
    * Funcion para regresar al menu principal y salir del modo configuracion
    */
   return() {
-    this.exitService.setExitConfigurationGraphLine();
+    this.exitService.setExitConfigurationGraphLine(false);
   }
 }

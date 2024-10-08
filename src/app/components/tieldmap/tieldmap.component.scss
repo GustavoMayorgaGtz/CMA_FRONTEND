@@ -2,7 +2,9 @@
     user-select: none;
     box-sizing: border-box;
 }
+
 $SPACE_TITLE: 30px;
+
 .container-primary {
     display: flex;
     justify-content: center;
@@ -11,6 +13,100 @@ $SPACE_TITLE: 30px;
     height: 100%;
     overflow: hidden;
     padding: 10px;
+    flex-direction: column;
+
+
+
+    .move-tieldmap {
+        margin: 5px;
+        display: flex;
+        padding: 20px;
+        align-items: center;
+        gap: 20px;
+        height: 50px;
+        width: 100%;
+        border-radius: 5px;
+        background-color: white;
+        border: 1px solid rgb(214, 214, 214);
+
+        .campo {
+            display: flex;
+            gap: 20px;
+            width: min-content;
+            font-size: 14px;
+            white-space: nowrap;
+
+            .checkbox-wrapper-2 .ikxBAC {
+                appearance: none;
+                background-color: #dfe1e4;
+                border-radius: 72px;
+                border-style: none;
+                flex-shrink: 0;
+                height: 20px;
+                margin: 0;
+                position: relative;
+                // width: 30px;
+                width: 40px;
+            }
+
+            .checkbox-wrapper-2 .ikxBAC::before {
+                bottom: -6px;
+                content: "";
+                left: -6px;
+                position: absolute;
+                right: -6px;
+                top: -6px;
+            }
+
+            .checkbox-wrapper-2 .ikxBAC,
+            .checkbox-wrapper-2 .ikxBAC::after {
+                transition: all 100ms ease-out;
+            }
+
+            .checkbox-wrapper-2 .ikxBAC::after {
+                background-color: #fff;
+                border-radius: 50%;
+                content: "";
+                height: 14px;
+                left: 3px;
+                position: absolute;
+                top: 3px;
+                width: 14px;
+            }
+
+            .checkbox-wrapper-2 input[type=checkbox] {
+                cursor: default;
+            }
+
+            .checkbox-wrapper-2 .ikxBAC:hover {
+                background-color: #c9cbcd;
+                transition-duration: 0s;
+            }
+
+            .checkbox-wrapper-2 .ikxBAC:checked {
+                background-color: #75d66e;
+            }
+
+            .checkbox-wrapper-2 .ikxBAC:checked::after {
+                background-color: #fff;
+                left: 23px;
+            }
+
+            .checkbox-wrapper-2 :focus:not(.focus-visible) {
+                outline: 0;
+            }
+
+            .checkbox-wrapper-2 .ikxBAC:checked:hover {
+                background-color: #5bb855;
+            }
+
+        }
+        
+        .nota{
+            font-size: 14px;
+            white-space: nowrap;
+        }
+    }
 }
 
 .tieldmap {
@@ -18,14 +114,13 @@ $SPACE_TITLE: 30px;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    border: 1px solid black;
-    // background-color: rgba(255, 255, 255, 0.356);
-    background-color: #f9f9f9;
-    // background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ebebeb' fill-opacity='0.59'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    // border: 1px solid black;    
+    // background-color: #f9f9f9;
+    // background-color: white;
+    border: 1px solid rgb(214, 214, 214);
     border-radius: 5px;
     overflow-x: hidden;
     padding-bottom: 200px;
-    // overflow-y: scroll;
 
 }
 
@@ -33,123 +128,141 @@ $SPACE_TITLE: 30px;
     position: relative;
     // box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.041);
     padding: $SPACE_TITLE 10px 10px 10px;
-    overflow: hidden;
+    // overflow: hidden;
     min-width: 50px;
     min-height: 50px;
     // display: flex;
     // flex-direction: column;
 
 
-    &:hover{
-        background-color: white;
-        box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.041);
-        border: 1px solid black;
-        
-    .opendata {
-        transition: all 0.2;
-        opacity: 100%;
-        position: absolute;
-        position: absolute;
-        bottom: 5px;
-        left: 5px;
-        width: 15px;
-        cursor: open;
-        height: 15px;
-        filter: invert(0.9);
+    &:hover {
+        // background-color: white;
+        // box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.041);
+        // border: 2px solid black;
 
-        img {
-            width: 100%;
-            height: 100%;
+        .opendata {
+            transition: all 0.2;
+            opacity: 100%;
+            position: absolute;
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            width: 15px;
+            height: 15px;
+            cursor: open;
+            filter: invert(0.9);
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+
+
+            &:hover {
+                filter: invert(0);
+                transform: scale(1.1);
+            }
         }
 
+        .move {
+            transition: all 0.2;
+            opacity: 100%;
+            position: absolute;
+            cursor: move;
+            z-index: 2;
+            top: 3px;
+            left: 5px;
+            width: 15px;
+            height: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            // background-color: red;
+            filter: invert(0.1);
 
-        &:hover {
-            filter: invert(0);
-            transform: scale(1.1);
+            img {
+                width: 100%;
+                height: 100%;
+            }
+
+
+            &:hover {
+                filter: invert(0);
+                transform: scale(1.1);
+            }
+        }
+
+        .resize {
+            transition: all 0.2;
+            opacity: 100%;
+            z-index: 2;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 10px;
+            height: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            cursor: se-resize;
+            filter: invert(0.1);
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+
+            &:hover {
+                filter: invert(0);
+                transform: scale(1.1);
+            }
+        }
+
+        .erased {
+            transition: all 0.2;
+            opacity: 100%;
+            z-index: 2;
+            position: absolute;
+            top: 3px;
+            right: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+            filter: invert(0.1);
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+
+            &:hover {
+                filter: invert(0);
+                transform: scale(1.1);
+            }
         }
     }
 
-    .move {
-        transition: all 0.2;
-        opacity: 100%;
-        position: absolute;
-        cursor: move;
-        z-index: 2;
-        top: 3px;
-        left: 5px;
-        width: 10px;
-        height: 10px;
-        // background-color: red;
-        filter: invert(0.1);
-
-        img {
-            width: 100%;
-            height: 100%;
-        }
-
-
-        &:hover {
-            filter: invert(0);
-            transform: scale(1.1);
-        }
-    }
-
-    .resize {
-        transition: all 0.2;
-        opacity: 100%;
-        z-index: 2;
-        position: absolute;
-        bottom: 10px;
-        right: 5px;
-        width: 10px;
-        height: 10px;
-        cursor: se-resize;
-        filter: invert(0.1);
-
-        img {
-            width: 100%;
-            height: 100%;
-        }
-
-        &:hover {
-            filter: invert(0);
-            transform: scale(1.1);
-        }
-    }
-
-    .erased {
-        transition: all 0.2;
-        opacity: 100%;
-        z-index: 2;
-        position: absolute;
-        top: 3px;
-        right: 5px;
-        width: 10px;
-        height: 10px;
-        cursor: pointer;
-        filter: invert(0.1);
-
-        img {
-            width: 100%;
-            height: 100%;
-        }
-
-        &:hover {
-            filter: invert(0);
-            transform: scale(1.1);
-        }
-    }
-    }
     .title {
         font-family: 'Mukta', sans-serif;
         position: absolute;
-         font-weight: 200;
+        font-weight: 200;
         // border: 1px solid #ececec;
         background-color: white;
         border-radius: 0px 0px 10px 10px;
-        top:0px;
+        top: 0px;
         height: $SPACE_TITLE;
-        font-size: calc(0.8vw + 6px);
+        font-size: 0.8em;
+        // font-size: calc(0.8vw + 6px);
         font-weight: bold;
         left: 0px;
         width: 100%;

@@ -19,6 +19,7 @@ export class TieldmapComponent implements OnChanges {
   @ViewChildren('shadow_container') shadow_containers!: QueryList<ElementRef>;
   @ViewChild('tieldmap') tieldmap!: ElementRef<HTMLDivElement>;
   @Input() id_dashboard!: number;
+  @Input() name_dashboard!: string;
 
   public shadow_container: IConfigurationShadow[] = []
   ngOnChanges(changes: SimpleChanges): void {

@@ -25,21 +25,56 @@
     }
 
     .title{
-        font-size: 14px;
+        font-size: 0.8em;
         font-weight: bold;
     }
 
     .description {
-        font-size: 12px;
+        font-size: 0.6em;
     }
 
     .canvas {
-        margin-top: 40px;
+        margin-top: 50px;
         width: 100%;
-        height: calc(100% - 40px);
-        background-color: gray;
+        border-radius: 5px;
+        max-height: calc(100% - 40px);
+        min-height: calc(100% - 40px);
+        height: 100%;
+        background-color: rgb(233, 233, 233);
         display: flex;
         justify-content: center;
         align-items: center;
+        text-align: center;
+        padding: 3px;
+        box-sizing: border-box;
+        justify-content: center;
+        overflow: hidden;
+        align-items: center;
+        position: relative;
+    }
+
+    .canvas-no-strean {
+        margin-top: 50px;
+        width: 100%;
+        border-radius: 5px;
+        height: 60%;
+        background-color: rgb(233, 233, 233);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 3px;
+        box-sizing: border-box;
+        justify-content: center;
+        overflow: hidden;
+        align-items: center;
+        position: relative;
+    }
+
+    .title_no_stream{
+        padding: 2px 0px;
+        font-size: 0.8em;
+        font-weight: bold;
+        color: rgb(162, 32, 32);
     }
 }

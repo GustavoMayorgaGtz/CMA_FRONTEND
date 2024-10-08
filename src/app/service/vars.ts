@@ -157,25 +157,65 @@ export class VarsService {
   }
 
   create_memory_var(name: string, expression: string) {
-    return this.http.post<any>(server + "memoryvars/create", { name, expression });
+    const id_user = sessionStorage.getItem('idUser')
+    const token = sessionStorage.getItem("token")
+    if(!id_user || !token){
+       this.router.navigate(['/login'])
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post<any>(server + "memoryvars/create", { name, expression, id_user }, {headers});
   }
 
 
   getAllVarsMemory() {
-    return this.http.get<IMemoryVar[]>(server + "memoryvars/getAll");
+    const id_user = sessionStorage.getItem('idUser')
+    const token = sessionStorage.getItem("token")
+    if(!id_user || !token){
+       this.router.navigate(['/login'])
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<IMemoryVar[]>(server + `memoryvars/getAll?id_user=${id_user}`, {headers});
   }
 
 
   getMemoryVarById(idmemoryvar: number) {
-    return this.http.get<IMemoryVar[]>(server + "memoryvars/getOne?idmemoryvar=" + idmemoryvar);
+    const id_user = sessionStorage.getItem('idUser')
+    const token = sessionStorage.getItem("token")
+    if(!id_user || !token){
+       this.router.navigate(['/login'])
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<IMemoryVar[]>(server + `memoryvars/getOne?idmemoryvar=${idmemoryvar}&id_user=${id_user}`);
   }
 
   setValueBlobData(body: IBlobData) {
-    return this.http.post<any>(server + "blobdata/insertValue", body);
+    const id_user = sessionStorage.getItem('idUser')
+    const token = sessionStorage.getItem("token")
+    if(!id_user || !token){
+       this.router.navigate(['/login'])
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post<any>(server + "blobdata/insertValue", {...body, id_user}, {headers} );
   }
 
   getBlobDataById(idblobdata: number) {
-    return this.http.post<IBlobData_Database>(server + "blobdata/getById", { idblobdata });
+    const id_user = sessionStorage.getItem('idUser')
+    const token = sessionStorage.getItem("token")
+    if(!id_user || !token){
+       this.router.navigate(['/login'])
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post<IBlobData_Database>(server + "blobdata/getById", { idblobdata, id_user }, {headers});
   }
 }
 

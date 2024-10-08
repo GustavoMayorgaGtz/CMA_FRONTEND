@@ -77,9 +77,13 @@ export class DashboardComponent implements OnInit {
 
 
   public selectedDashboard!: number | undefined;
-  selectDashboard(id_dashboard: number) {
+  public name_dashboard: string = "";
+  selectDashboard(id_dashboard: number, name_dashboard: string) {
     this.set_menu_tool = 1;
     this.selectedDashboard = id_dashboard;
+    this.name_dashboard = name_dashboard;
+    sessionStorage.setItem("id_dashboard", "" + id_dashboard);
+    sessionStorage.setItem("name_dashboard", name_dashboard);
   }
 
 
@@ -87,15 +91,36 @@ export class DashboardComponent implements OnInit {
   public dashboards: IDashboardGet[] = [];
   public src: string = "";
   ngOnInit(): void {
-    this.exitService.exitConfigurationGraphLine.subscribe(() => {
-      this.set_menu_tool = 0;
+    this.exitService.exitConfigurationGraphLine.subscribe((option) => {
+      if (option) {
+        sessionStorage.setItem("id_dashboard", "0");
+        sessionStorage.setItem("name_dashboard", "");
+        this.set_menu_tool = 0;
+      } else {
+        this.set_menu_tool = 1;
+        let id_dashboard = sessionStorage.getItem("id_dashboard");
+        let name_dashboard = sessionStorage.getItem("name_dashboard");
+
+        if (id_dashboard && name_dashboard) {
+          this.selectedDashboard = parseInt(id_dashboard);
+          this.name_dashboard = name_dashboard;
+        }
+      }
     })
 
-    this.signalsService.groupName("streaming");
-    this.signalsService.dataRecive.subscribe((buffer) => {
-      const blob = new Blob([buffer.data], { type: 'image/jpeg' });
-      this.src = URL.createObjectURL(blob);
-    })
+    let id_dashboard = sessionStorage.getItem("id_dashboard");
+    let name_dashboard = sessionStorage.getItem("name_dashboard");
+
+    if (id_dashboard && name_dashboard) {
+      this.set_menu_tool = 1;
+      this.selectedDashboard = parseInt(id_dashboard);
+      this.name_dashboard = name_dashboard;
+    }
+    // this.signalsService.groupName("streaming");
+    // this.signalsService.dataRecive.subscribe((buffer) => {
+    //   const blob = new Blob([buffer.data], { type: 'image/jpeg' });
+    //   this.src = URL.createObjectURL(blob);
+    // })
 
     this.getDashboard();
 

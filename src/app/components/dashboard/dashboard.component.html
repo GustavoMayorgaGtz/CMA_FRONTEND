@@ -10,7 +10,7 @@
         <div class="container_dashboards">
             <!-- <img [src]="src" alt="nose que pasa"  > -->
             <div class="card-dashboard" *ngFor="let dashboard of dashboards; let idx = index"
-                (click)="selectDashboard(dashboard.id_dashboard)">
+                (click)="selectDashboard(dashboard.id_dashboard, dashboard.title)">
                 <span class="title">
                     {{dashboard.title}}
                 </span>
@@ -23,9 +23,9 @@
 </div>
 <div class="primary-container" *ngIf="menu_tool == 1">
     <div class="main">
-        <div class="nav_btn" (click)="set_menu_tool = 0">Regresar | Dashboard</div>
+        <div class="nav_btn" (click)="set_menu_tool = 0">Regresar | Dashboards</div>
         <div class="content">
-            <app-tieldmap [id_dashboard]="(selectedDashboard? selectedDashboard:0)" style="width: 100%; height: 100%;">
+            <app-tieldmap [id_dashboard]="(selectedDashboard? selectedDashboard:0)"  [name_dashboard]="name_dashboard" style="width: 100%; height: 100%;">
             </app-tieldmap>
 
         </div>

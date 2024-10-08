@@ -4,6 +4,7 @@
     top: 0px;
     left: 0px;
     display: flex;
+    flex-direction: column;
     box-sizing: border-box;
     justify-content: center;
     align-items: center;
@@ -19,11 +20,18 @@
         padding: 5px;
     }
 
-    .title{
+    .title-normal{
         font-size: 14px;
         font-weight: bold;
     }
 
+    .title-icon{
+        font-size: 1.5em;
+        position: absolute;
+        white-space: nowrap;
+        top: -50%;
+        font-weight: bold;
+    }
     .description {
         font-size: 12px;
     }
