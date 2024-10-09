@@ -76,7 +76,6 @@ export class ConfigurePulsacionComponent implements OnInit {
   public isIcon: string = "null";
   setIcon(icon: string, buttonInput: HTMLDivElement) {
     this.isIcon = icon;
-    console.log(icon);
     this.setChangesButton(buttonInput);
   }
 

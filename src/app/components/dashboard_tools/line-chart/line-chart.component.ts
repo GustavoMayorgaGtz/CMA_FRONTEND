@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseChartDirective } from 'ng2-charts';
 import { LineGraph } from 'src/app/graphs_class/line_chart';
@@ -17,7 +17,7 @@ import { VarsService } from 'src/app/service/vars';
   templateUrl: './line-chart.component.html',
   styleUrls: ['./line-chart.component.scss']
 })
-export class LineChartComponent implements OnInit, OnChanges {
+export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input('idlinechart') id!: number;
   public grafica_linear = new LineGraph(
@@ -43,6 +43,9 @@ export class LineChartComponent implements OnInit, OnChanges {
     private finalizeService: finalizeService,
     private cma_endpointService: CMA_ENDPOINT_SERVICES) {
     this.getVariables();
+  }
+  ngOnDestroy(): void {
+    this.grafica_linear.closeBlobData();
   }
 
 

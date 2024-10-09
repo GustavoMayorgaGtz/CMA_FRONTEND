@@ -83,7 +83,6 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
   public isIcon: string = "null";
   setIcon(icon: string, buttonInput: HTMLDivElement) {
     this.isIcon = icon;
-    console.log(icon);
     this.setChangesButton(buttonInput);
   }
 
@@ -154,7 +153,6 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
   idCounterPulseTime!: NodeJS.Timeout;
   timePulse: number = 0;
   push() {
-    console.log("Incrementando")
     this.Connect_Socket().then(() => {
       this.socket.emit('sendMessageToGroup', { groupName: this.indicator_saved.groupname, message: "on" }); // Unirse al grupo
     })
@@ -165,7 +163,6 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
 
   unpush() {
     setTimeout(() => {
-      console.log("Decrementand")
       this.Connect_Socket().then(() => {
         this.socket.emit('sendMessageToGroup', { groupName: this.indicator_saved.groupname, message: "off" }); // Unirse al grupo
       })

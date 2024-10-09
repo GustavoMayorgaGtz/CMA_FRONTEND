@@ -302,7 +302,6 @@ export class VariablesComponent implements OnInit, AfterViewInit {
     if (!this.modbus_connection_value) {
       this.modbusBuilder.testConnection(ip, port, no_register, quantity, type_date, unidId);
       this.modbusBuilder.output_modbus_get_value.subscribe((value) => {
-        console.log(value);
         this.modbus_connection_value = value.message;
       })
     } else {

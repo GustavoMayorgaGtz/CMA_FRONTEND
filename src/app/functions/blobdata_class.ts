@@ -1,10 +1,11 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { IBlobData, IBlobData_Database } from "../interfaces/BlobData/blobdatainterfaces";
+import { IBlobData, IBlobData_Database, IStadistics } from "../interfaces/BlobData/blobdatainterfaces";
 import { VarsService } from "../service/vars";
 
 export class BLOBDATA {
 
     constructor(private vars: VarsService) { }
+
 
     /**
      * Funcion para retornar un conjunto de datos por medio de un espacio virtual, consulta por id

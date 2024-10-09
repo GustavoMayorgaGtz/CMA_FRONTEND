@@ -13,6 +13,7 @@
             <div class="information-table">
                 <img src="./assets/info.png" class="info-ico"> La tabla presenta los datos recopilados a lo largo del periodo establecido desde la creación del gráfico lineal.
             </div>
+
             <table>
                 <tr class="head">
                     <th>Fecha de registro</th>
@@ -33,7 +34,8 @@
             <div class="information-table">
                 <img src="./assets/info.png" class="info-ico"> Selecciona los datos que quieres visualizar y descarga los datos en excel.
             </div>
-            <div class="campo">
+      
+            <!-- <div class="campo">
                 <div class="subtitle">
                     Muestreo de datos
                 </div>
@@ -47,8 +49,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="line"></div>
+            </div> -->
+           
             <div class="campo">
                 <div class="subtitle">
                     Agrupar datos por fecha
@@ -101,6 +103,37 @@
                     </div>
                 </div>
             </div>
+            <div class="line"></div>
+            <table>
+                <tr class="head">
+                    <th>Valor minimo</th>
+                    <th>Valor maximo</th>
+                    <th>Promedio</th>
+                    <th>Rango intercuartílico (IQR)</th>
+                    <th>Límite inferior</th>
+                    <th>Límite superior</th>
+                </tr>
+                <tr>
+                    <td class="columna">
+                        {{stadistics.min}}
+                    </td>
+                    <td class="columna">
+                        {{stadistics.max}}
+                    </td>
+                    <td class="columna">
+                        {{stadistics.mean}}
+                    </td>
+                    <td class="columna">
+                        {{stadistics.iqr}}
+                    </td>
+                    <td class="columna">
+                        {{stadistics.limitMin}}
+                    </td>
+                    <td class="columna">
+                        {{stadistics.limitMax}}
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 

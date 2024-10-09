@@ -5,13 +5,23 @@ export interface IBlobData {
    date: string
 }
 
+export interface IStadistics {
+   min: number,
+   max: number,
+   mean: number,
+   iqr: number,
+   limitMin: number,
+   limitMax: number
+}
+
 //Esta informacion viene del servidor
 export interface IBlobData_Database {
    idblobdata: number,
    value: number[],
    register_date: string[],
    description: string,
-   full: boolean
+   full: boolean,
+   stadistic: IStadistics
 }
 
 //Esta informacion sirve para graficar en tabla

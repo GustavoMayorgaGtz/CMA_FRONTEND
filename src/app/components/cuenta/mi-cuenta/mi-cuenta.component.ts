@@ -22,8 +22,6 @@ export class MiCuentaComponent {
     const id_user = sessionStorage.getItem("idUser");
     if (token && id_user) {
       this.authService.authUser(parseInt(id_user), token ).subscribe((response) => { 
-        console.log("validacion")  ;
-        console.log(response);
         this.token = token;
         this.id_user = parseInt(id_user);
         this.getOneUser(parseInt(id_user));

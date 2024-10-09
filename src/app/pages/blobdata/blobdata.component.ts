@@ -1,12 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScatterDataPoint } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { BLOBDATA } from 'src/app/functions/blobdata_class';
 import { auth_class } from 'src/app/graphs_class/auth_class';
 import { LineGraph } from 'src/app/graphs_class/line_chart';
-import { IBlobData_Table } from 'src/app/interfaces/BlobData/blobdatainterfaces';
+import { IBlobData_Table, IStadistics } from 'src/app/interfaces/BlobData/blobdatainterfaces';
 import { getParamsLineChart, IlineChartConfiguration } from 'src/app/interfaces/Line_ChartInterfaces/line_chartInterface';
 import { AlertService } from 'src/app/service/alert.service';
 import { AllService } from 'src/app/service/all.service';
@@ -22,7 +22,7 @@ import { VarsService } from 'src/app/service/vars';
   templateUrl: './blobdata.component.html',
   styleUrls: ['./blobdata.component.scss']
 })
-export class BlobdataComponent implements OnInit {
+export class BlobdataComponent implements OnInit, OnDestroy{
 
   public title: string = "Grafica Lineal";
   public description: string = "";
@@ -56,10 +56,13 @@ export class BlobdataComponent implements OnInit {
   }
 
 
+  ngOnDestroy(): void {
+    this.grafica_linear.closeBlobData();
+  }
 
 
   public blobdataInformation: IBlobData_Table[] = [];
-
+  public stadistics!: IStadistics;
   public samplingNumber: number = 200;
   public typeChart !: 'line' | 'bar';
   ngOnInit(): void {
@@ -72,6 +75,8 @@ export class BlobdataComponent implements OnInit {
 
       this.blobdataServices.getOneBlobDataById(idblobdata).subscribe((blobdata) => {
         if (blobdata && blobdata.value) {
+          this.stadistics = blobdata.stadistic;
+
           blobdata.value.forEach((valor, idx) => {
             this.blobdataInformation.push({ valor: valor, fecha: blobdata.register_date[idx] });
           })
@@ -123,7 +128,7 @@ export class BlobdataComponent implements OnInit {
               point_width: graph_line.point_width
             }
           }
-          this.grafica_linear.reloadData(linear_chart_configuration);
+          this.grafica_linear.reloadData(linear_chart_configuration, undefined, undefined, true);
           this.grafica_linear.eventData.subscribe((graph_configuration) => {
             this.linear1 = graph_configuration;
             if (this.canvas_chart) {
@@ -157,6 +162,7 @@ export class BlobdataComponent implements OnInit {
 
 
   cerrar() {
+    this.grafica_linear.closeBlobData();
     this.router.navigate(['/dashboard']);
     this.finalizeServices.finalizeAllPolling_Event();
   }

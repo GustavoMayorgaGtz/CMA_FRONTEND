@@ -317,9 +317,7 @@ export class TieldmapComponent implements OnChanges {
       const x_end = temp_shadow.x * this.lastBloqueWidth + temp_shadow.width;
       let inX = false;
       let inY = false;
-      console.log("validacion overflow shadow")
-      console.log("Datos de la sombra 1: ", this.shadow_container[idShadow]);
-      console.log("Datos de la sombra 2: ", temp_shadow);
+    
       //dos validaciones para x
       if (shadow_container_x >= x_init && shadow_container_x <= x_end) {
         inX = true;
