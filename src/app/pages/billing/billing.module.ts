@@ -1,22 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BlobDataRoutingModule } from './blobdata-routing.module';
-import { BlobdataComponent } from './blobdata.component';
+import { BillingComponent } from './billing.component';
 import { ComponentModule } from "../../components/component.module";
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgChartsModule } from 'ng2-charts';
-
-
+import { BillingRoutingModule } from './billing.routing.module';
 
 @NgModule({
-    declarations: [BlobdataComponent
-    ],
+    declarations: [BillingComponent],
     imports: [
         CommonModule,
-        BlobDataRoutingModule,
+        BillingRoutingModule,
         ComponentModule,
         NgApexchartsModule,
         NgChartsModule
     ]
 })
-export class BlobdataModule { }
+export class BillingModule { }

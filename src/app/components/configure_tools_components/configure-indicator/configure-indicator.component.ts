@@ -16,6 +16,10 @@ import { IndicatorService } from 'src/app/service/indicators_service';
 })
 
 export class ConfigureIndicatorComponent implements OnInit {
+  public type_data_design: string = "";
+  public type_data_in: string = "";
+  public backgroundColor: string = "";
+
   @Input() id_dashboard_selected!: number|undefined;
   public show_save_button: boolean = true;
 
@@ -63,6 +67,44 @@ export class ConfigureIndicatorComponent implements OnInit {
   }
   public set set_indicator_type_data_design(type_data_design: string) {
     this.indicator_type_data_design = type_data_design;
+    switch (this.indicator_type_data_design) {
+      case 'light': {
+        this.backgroundColor = "#F0E47A"
+        break;
+      }
+      case 'motor': {
+        this.backgroundColor = "rgb(240, 157, 85)"
+        break;
+      }
+      case 'machine': {
+        this.backgroundColor = "#E4F0E8"
+        break;
+      }
+      case 'air': {
+        this.backgroundColor = "#D5E8F0"
+        break;
+      }
+      case 'temperature': {
+        this.backgroundColor = "rgb(237, 108, 108)"
+        break;
+      }
+      case 'wet': {
+        this.backgroundColor = "rgb(148, 200, 254)"
+        break;
+      }
+      case 'status': {
+        this.backgroundColor = "rgb(165, 224, 116)"
+        break;
+      }
+      case 'other': {
+        this.backgroundColor = "#e9cca4"
+        break;
+      }
+      default: {
+        this.backgroundColor = "red"
+        break;
+      }
+    }
   }
   /*-----*/
   //-   -   -   -   -   -   -   -   -   -   SAVE IN BLOBDATA
@@ -89,7 +131,9 @@ export class ConfigureIndicatorComponent implements OnInit {
 
 
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this.set_indicator_type_data_design = "light";
+  }
 
 
 

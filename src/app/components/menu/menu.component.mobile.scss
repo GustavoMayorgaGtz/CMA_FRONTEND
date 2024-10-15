@@ -2,14 +2,17 @@
     .container-menu{    
         padding-top: 0px;
         box-sizing: border-box;
-        position: relative;
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        z-index: 2;
         display: flex;
         justify-content: center;
         width: 100vw;
-        height: 50px;
+        height: 65px;
         background-color: #fafafa;
         border: none;
-        border-bottom: 1px solid black;
+        border-top: 1px solid black;
 
         .separador
         {
@@ -35,8 +38,8 @@
             }
     
             .icon{
-                width: 20px;
-                height: 20px;
+                width: 25px;
+                height: 25px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -53,7 +56,7 @@
                 width: 100%;
                 text-align: center;
                 height: 25px;
-                font-size: 0.70em;
+                font-size: 0.75em;
                 color: rgb(62, 62, 62);
              
             }

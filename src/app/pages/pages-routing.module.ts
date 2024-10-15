@@ -16,8 +16,12 @@ const routes: Routes = [
     loadChildren: () => import("./blobdata/blobdata.module").then((m) => m.BlobdataModule)
   },
   {
+    path:"pay",
+    loadChildren : () => import("./billing/billing.module").then(m => m.BillingModule)
+  },
+  {
     path: "**",
-    redirectTo: "login"
+    redirectTo: "payment"
   }
 ];
 

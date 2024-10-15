@@ -1,5 +1,4 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Token } from '@angular/compiler';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CalculatorExpression } from 'src/app/functions/calculatorExpression';
@@ -7,7 +6,7 @@ import { JsonVariableClass } from 'src/app/functions/json_functions';
 import { ModbusVariableClass } from 'src/app/functions/modbus_functions';
 import { ICMA_ENDPOINT_CREATE_RESPONSE, ICMA_ENDPOINT_DATABASE } from 'src/app/interfaces/CMA_EndpointInterfaces/cma_endpointInterface';
 import { ICamera_Recive } from 'src/app/interfaces/CameraInterfaces/camera.interfaces';
-import { IIndicator_Var, IRecive_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
+import { IRecive_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
 import { IJsonVariable } from 'src/app/interfaces/JsonEndpointsInterfaces/JsonEndpointI';
 import { IMemoryVar, IModbusVar } from 'src/app/interfaces/Modbus.interfaces/ModbusInterfaces';
 import { IPulsacion_Recive } from 'src/app/interfaces/PulsacionInterfaces/pulsacion.interfaces';
@@ -21,11 +20,10 @@ import { PulsacionService } from 'src/app/service/pulsacion.service';
 import { VarsService } from 'src/app/service/vars';
 import { server } from 'src/environments/environment';
 
-
 @Component({
   selector: 'app-variables',
   templateUrl: './variables.component.html',
-  styleUrls: ['./variables.component.scss']
+  styleUrls: ['./variables.component.scss', './variables.component.mobile.scss']
 })
 
 export class VariablesComponent implements OnInit, AfterViewInit {

@@ -1,0 +1,51 @@
+<div class="primary-container">
+  <div class="title">Tickets</div>
+  <div class="description">Soporte para usuarios</div>
+  <div class="description" >Tus tickets seran respondidos por medio de tu correo.</div>
+  <div class="line"></div>
+  <div class="ticket" *ngIf="isBuldingTicket">
+    <div class="title">
+      <span class="ticket-no">Ticket</span>
+      
+    </div>
+    <div class="message-title">
+      <select type="text" #type_ticket (change)="getTypeTicket(type_ticket.value)">
+         <option selected disabled>Tipo de ticket</option>
+         <option value="feedback">Feedback|Mejoras</option>
+         <option value="error">Error del sistema</option>
+         <option value="billing">Pagos</option>
+         <option value="help">Ayuda</option>
+         <option value="other">Otros</option>
+      </select>
+    </div>
+    <div class="message-title">
+      <input type="text" placeholder="titulo" #title_ticket (keyup)="getTitleTicket(title_ticket.value)" (change)="getTitleTicket(title_ticket.value)">
+    </div>
+    <textarea class="message" #message_ticket placeholder="Escribe aqui tu duda, problema o aportacion." (change)="getMessageTicket(message_ticket.value)" (keyup)="getMessageTicket(message_ticket.value)"></textarea>
+  </div>
+  <!-- <span class="description" *ngIf="!isBuldingTicket">Tu ticket sera respondido via email</span> -->
+  <div class="btn-create-tickets" (click)="btn_event(1)" *ngIf="!isBuldingTicket">
+    Crear nuevo ticket
+  </div>
+  <div class="container" style="display: flex; gap: 20px;">
+    <div class="btn-create-tickets" (click)="createTicket()" *ngIf="isBuldingTicket">
+      Mandar ticket
+    </div>
+    <div class="btn-create-tickets" style="background-color: rgb(245, 181, 181);" (click)="btn_event(0)" *ngIf="isBuldingTicket">
+      Cancelar
+    </div>
+  </div>
+  <div class="container-tickets">
+    <div class="ticket" *ngFor="let ticket of tickets">
+      <div class="title">
+        <span class="ticket-no">TICKET ID <span style="color: orange">{{ticket.id_ticket}}</span></span>
+        <span class="ticket-name">{{ticket.id_user_message}}</span>
+      </div>
+      <div class="message-title">{{ticket.title}}</div>
+      <div class="message">{{ticket.message}}</div>
+      <div class="time">{{ticket.create_at}}</div>
+    </div>
+    <br>
+    <br>
+  </div>
+</div>

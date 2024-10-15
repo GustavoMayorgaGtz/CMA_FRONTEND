@@ -31,6 +31,9 @@ import { ConfigureCaneraComponent } from './configure_tools_components/configure
 import { CameraViewComponent } from './dashboard_tools/camera_view/camera_view.component';
 import { PulsacionComponent } from './dashboard_tools/pulsacion/pulsacion.component';
 import { ConfigurePulsacionComponent } from './configure_tools_components/configure-pulsacion/configure-pulsacion.component';
+import { BillingComponent } from './billing/billing.component';
+import { TicketComponent } from './tickets/ticket.component';
+import { HttpClientModule } from '@angular/common/http';
 
 const components = [NavComponent,
   MenuComponent,
@@ -59,7 +62,9 @@ const components = [NavComponent,
   AccesosApiComponent,
   ConfigureCaneraComponent,
   CameraViewComponent,
-  PulsacionComponent]
+  PulsacionComponent,
+  BillingComponent,
+  TicketComponent]  
 
 @NgModule({
   declarations: components,
@@ -67,7 +72,8 @@ const components = [NavComponent,
     CommonModule,
     ReactiveFormsModule,
     NgApexchartsModule,
-    NgChartsModule
+    NgChartsModule,
+    HttpClientModule
   ],
   exports: components
 })
