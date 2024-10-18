@@ -1,8 +1,6 @@
 <div class="main">
-    <div class="content">
-        <span class="title">
-            VARIABLES
-        </span>
+    <div class="content_nav">
+        Variables
     </div>
     <div class="nav">
         <div class="opcion-nav" *ngIf="menu===1" (click)="changeStatusMenu(2)">
@@ -91,7 +89,7 @@
             </div>
             <div class="value_var" style="display: flex; flex-direction: column;">
                 <!-- {{memoryVar.result}} -->
-                 <span class="groupName" style="color: #a31414;">{{indicatorVar.groupname}}</span>
+                <span class="groupName" style="color: #a31414;">{{indicatorVar.groupname}}</span>
 
             </div>
         </div>
@@ -105,7 +103,7 @@
             </div>
             <div class="value_var" style="display: flex; flex-direction: column;">
                 <!-- {{memoryVar.result}} -->
-                 <span class="groupName" style="color: #a31414;">{{camaraVar.groupname}}</span>
+                <span class="groupName" style="color: #a31414;">{{camaraVar.groupname}}</span>
 
             </div>
         </div>
@@ -119,7 +117,7 @@
             </div>
             <div class="value_var" style="display: flex; flex-direction: column;">
                 <!-- {{memoryVar.result}} -->
-                 <span class="groupName" style="color: #a31414;">{{pulseVar.groupname}}</span>
+                <span class="groupName" style="color: #a31414;">{{pulseVar.groupname}}</span>
 
             </div>
         </div>
@@ -135,8 +133,8 @@
                     <b>token</b>={{cma_endpoint.token}}
                     <span class="endpoint-symbol">&</span>
                     <b>value</b>=Valor
-                  </p>
-                   
+                </p>
+
             </div>
         </div>
     </div>
@@ -317,7 +315,7 @@
                         <option>Binary</option>
                         <option>Float</option>
                         <option>Float inverse</option>
-                        <option>Double</option> 
+                        <option>Double</option>
                         <option>Double inverse</option>
                         <option>Long</option>
                         <option>Long inverse</option>

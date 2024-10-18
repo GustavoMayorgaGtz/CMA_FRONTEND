@@ -1,6 +1,11 @@
 <div class="primary-container">
-  <div class="title">Tickets</div>
-  <div class="description" style="background-color: #ffe5c5; width: min-content; white-space: nowrap; border-radius: 5px; padding: 0px 10px;">Soporte para usuarios</div>
+  <div class="content_nav">
+    Ticket
+  </div>
+  <div class="content">
+    <div class="description"
+    style="background-color: #ffe5c5; width: min-content; white-space: nowrap; border-radius: 5px; padding: 0px 10px;">
+    Soporte para usuarios</div>
   <div class="description">Tus tickets seran respondidos por medio de tu correo.</div>
 
   <div class="line"></div>
@@ -25,7 +30,7 @@
       <input type="text" placeholder="titulo" #title_ticket (keyup)="getTitleTicket(title_ticket.value)"
         (change)="getTitleTicket(title_ticket.value)">
     </div>
-    
+
     <textarea class="message" #message_ticket placeholder="Escribe aqui tu duda, problema o aportacion."
       (change)="getMessageTicket(message_ticket.value)" (keyup)="getMessageTicket(message_ticket.value)"></textarea>
   </div>
@@ -54,5 +59,6 @@
     </div>
     <br>
     <br>
+  </div>
   </div>
 </div>

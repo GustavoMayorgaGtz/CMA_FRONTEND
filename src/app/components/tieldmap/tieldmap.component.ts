@@ -146,13 +146,25 @@ export class TieldmapComponent implements OnChanges {
    * @param event 
    * @param tieldmap 
    */
-  getPosition(event: MouseEvent, tieldmap: HTMLDivElement) {
+  getPosition(event: MouseEvent| TouchEvent, tieldmap: HTMLDivElement) {
     const tieldmap_positionX = tieldmap.getBoundingClientRect().x;
     const tieldmap_positionY = tieldmap.getBoundingClientRect().y;
     const tieldmap_width = tieldmap.getBoundingClientRect().width;
     const tieldmap_positionX_End = tieldmap_positionX + tieldmap_width;
-    const positionX = event.clientX - tieldmap_positionX;
-    const positionY = (event.clientY - tieldmap_positionY) + tieldmap.scrollTop;
+    let positionX: number = 0;
+    let positionY: number = 0;
+  
+    if (event instanceof MouseEvent) {
+      // Si es un evento de mouse
+      positionX = event.clientX - tieldmap_positionX;
+      positionY = (event.clientY  - tieldmap_positionY) + tieldmap.scrollTop;
+    } else if (event instanceof TouchEvent) {
+      // Si es un evento táctil
+      positionX = event.touches[0].clientX - tieldmap_positionX;
+      positionY = (event.touches[0].clientY  - tieldmap_positionY) + tieldmap.scrollTop;
+    }
+    // const positionX = event.clientX - tieldmap_positionX;
+    // const positionY = (event.clientY - tieldmap_positionY) + tieldmap.scrollTop;
     const bloque_width = parseInt((tieldmap_width / 25).toString());
     const lastBloqueWidth = (tieldmap_width / bloque_width) >= 20 ? (tieldmap_width / bloque_width) : 25;
 

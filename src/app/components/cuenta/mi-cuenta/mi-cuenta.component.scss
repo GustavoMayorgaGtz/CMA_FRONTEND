@@ -5,6 +5,10 @@
     overflow-y: scroll;
     background-color: #ecefec;
 
+    .content_nav {
+        display: none;
+    }
+
     .create_user_container {
         display: flex;
         align-items: center;

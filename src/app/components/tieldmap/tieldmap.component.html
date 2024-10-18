@@ -11,8 +11,11 @@
             Puedes modificar las herramientas de la interfaz; las modificaciones se guardarán automáticamente.
         </div>
     </div>
-    <div class="tieldmap" #tieldmap (mousemove)="getPosition($event, tieldmap)" (mouseleave)="endAllEvents()"
-        (mouseup)="endAllEvents()">
+    <div class="tieldmap" #tieldmap (mousemove)="getPosition($event, tieldmap)" 
+    (touchmove)="getPosition($event, tieldmap)" 
+    (mouseleave)="endAllEvents()" 
+    (touchend)="endAllEvents()"
+    (mouseup)="endAllEvents()">
         <div class="contenido" #contenido [ngStyle]="setContenidoElement(contenido)"></div>
         <!-- <span class="Loading" style="margin: auto; display:flex; justify-content: center; 
          align-items: center; width: 100%; height: 100%;"> Cargando...</span> -->

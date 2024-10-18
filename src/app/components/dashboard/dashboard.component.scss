@@ -71,16 +71,16 @@
             padding: 10px;
             box-sizing: border-box;
             .title{
-                font-size: 1em;
+                font-size: 1.3em;
                 font-weight: bold;
             }
             .campo {
                 label{
-                    font-size: 0.9em;
+                    font-size: 1em;
                     font-weight: bold;
                 }
                 p{
-                    font-size: 0.7em;
+                    font-size: 0.8em;
                 }
                 display: flex;
                 flex-direction: column;
@@ -142,10 +142,6 @@
         font-weight: bold;
         height: 50px;
         border-bottom: 1px solid rgb(182, 182, 182);
-    }
-
-    .nav_btn{
-        @extend .nav;
     }
 
     .view_dashboards{

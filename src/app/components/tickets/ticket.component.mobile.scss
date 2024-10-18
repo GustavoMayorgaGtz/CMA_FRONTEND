@@ -4,6 +4,17 @@
             width: 90%;
             margin: auto;
         }
+        .content_nav {
+            width: 100vw;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: space-between;
+            padding: 0px 20px;
+            align-items: center;
+            font-weight: bold;
+            height: 50px;
+            border-bottom: 1px solid rgb(182, 182, 182);
+        }
     
         .btn-create-tickets {
             min-width: 35%;

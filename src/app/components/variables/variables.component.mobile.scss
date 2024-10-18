@@ -9,16 +9,15 @@
         overflow: hidden;
         overflow-y: scroll;
 
-        .content {
+        .content_nav{
+            background-color: #fafafa;
             display: flex;
-            border: 1px solid rgb(96, 96, 96);
-            padding: 10px;
-            box-sizing: border-box;
-
-            .title {
-                font-size: 1em;
-                font-weight: bold;
-            }
+            justify-content: space-between;
+            padding: 0px 20px;
+            align-items: center;
+            font-weight: bold;
+            height: 50px;
+            border-bottom: 1px solid rgb(182, 182, 182);
         }
 
         .nav {
