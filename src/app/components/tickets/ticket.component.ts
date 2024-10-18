@@ -8,7 +8,7 @@ import { TicketsService } from 'src/app/service/tickets.service';
 @Component({
   selector: 'app-tickets',
   templateUrl: './ticket.component.html',
-  styleUrls: ['./ticket.component.scss']
+  styleUrls: ['./ticket.component.scss', './ticket.component.mobile.scss']
 })
 
 export class TicketComponent implements OnInit {

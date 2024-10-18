@@ -31,7 +31,7 @@ export class IndicatorComponent implements OnInit, OnChanges {
 
   public data: any;
   ngOnInit(): void {
-   
+
   }
 
 
@@ -39,7 +39,7 @@ export class IndicatorComponent implements OnInit, OnChanges {
   TriggerConnectSocket() {
     if (this.socket) {
       if (this.socket.disconnected == true) {
-        
+
         this.Connect_Socket().then(() => {
           //El socket funciono correctamente
           this.listenIndicators(this.indicator_saved);
@@ -98,9 +98,11 @@ export class IndicatorComponent implements OnInit, OnChanges {
 
   listenIndicators(list: IRecive_Indicator) {
     this.Connect_Socket().then((connection) => {
-      this.socket.emit('joinGroup', { group
-        : list.groupname }); // Unirse al grupo
+      this.socket.emit('joinGroup', {
+        group: list.groupname
+      }); // Unirse al grupo
       this.socket.on(list.groupname, (data: string) => {
+        console.log(data)
         this.data = data;
       });
       this.socket.on("disconnect", () => {
@@ -127,9 +129,9 @@ export class IndicatorComponent implements OnInit, OnChanges {
           this.Connect_Socket().then(() => {
             this.listenIndicators(data);
           })
-          .catch((err) =>{
-            console.log(err);
-          })
+            .catch((err) => {
+              console.log(err);
+            })
           const actualIndicator = data;
           this.title = actualIndicator.title;
           this.description = actualIndicator.description;

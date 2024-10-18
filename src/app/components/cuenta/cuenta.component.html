@@ -12,7 +12,7 @@
                     </div>
                     <div class="title">Mi cuenta</div>
                 </div>
-                <div class="options" (click)="changeMenuCuenta(2)">
+                <div class="options" (click)="changeMenuCuenta(2)" *ngIf="rango === 'PRIMARY'">
                     <div class="icon">
                         <img src="./assets/manage_accounts.svg" alt="👨‍👩‍👧‍👦">
                     </div>

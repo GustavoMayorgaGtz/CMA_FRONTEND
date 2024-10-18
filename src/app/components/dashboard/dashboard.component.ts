@@ -45,6 +45,7 @@ export class DashboardComponent implements OnInit {
             this.alertService.setMessageAlert("Dashboard creado correctamente.");
             this.getDashboard();
             setTimeout(() => {
+              this.viewCreateDashboardButton = true;
               this.menu_tool = 0;
             }, 2000);
           }, (err: HttpErrorResponse) => {

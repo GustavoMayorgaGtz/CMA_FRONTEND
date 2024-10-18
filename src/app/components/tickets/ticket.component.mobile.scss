@@ -1,0 +1,43 @@
+@media screen and (max-width: 700px){
+    .primary-container {
+        .ticket {
+            width: 90%;
+            margin: auto;
+        }
+    
+        .btn-create-tickets {
+            min-width: 35%;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 10px;
+            display: flex;
+            border-radius: 5px;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            color: rgb(28, 28, 28);
+            cursor: pointer;
+            background-color: #f2bf81;
+            transition: all 0.2s;
+            font-size: calc(1vw + 10px);
+            font-weight: 500;
+    
+            &:hover {         
+                transform: scale(1.01);
+                transition: all 0.2s;
+                box-shadow: -3px 3px 3px rgba(0, 0, 0, 0.211);
+            }
+        }
+    
+        .container-tickets {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            height: calc(100vh - 330px);
+            overflow-y: scroll;
+        }
+    }
+}

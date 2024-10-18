@@ -9,7 +9,7 @@ import { Add_User_Secundary_Class } from '../gestion-cuentas/add-user-secudary-c
 @Component({
   selector: 'app-mi-cuenta',
   templateUrl: './mi-cuenta.component.html',
-  styleUrls: ['./mi-cuenta.component.scss']
+  styleUrls: ['./mi-cuenta.component.scss', './mi-cuenta.component.mobile.scss']
 })
 export class MiCuentaComponent {
 

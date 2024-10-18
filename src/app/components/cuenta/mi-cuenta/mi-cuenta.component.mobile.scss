@@ -1,0 +1,29 @@
+@media screen and (max-width: 700px) {
+    .main {
+        .create_user_container {
+            .form-container {
+                width: 100%;
+                height: calc(100vh - 128px);
+                overflow-x: hidden;
+                overflow-y: scroll;
+
+                .campo {
+                    display: flex;
+                    align-items: left;
+                    justify-content: left;
+                    flex-direction: column;
+                    margin: 10px;
+                    width: 90%;
+                    box-sizing: border-box;
+                  
+                .ipt_text {
+                    width: 90%;
+                    height: 35px;
+                    border-radius: 5px;
+                    border: 1px solid rgb(167, 167, 167);
+                }
+                }
+            }
+        }
+    }
+}

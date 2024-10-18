@@ -13,7 +13,7 @@ import { SimpleButtonService } from 'src/app/service/simple_button_service';
 @Component({
   selector: 'app-tieldmap',
   templateUrl: './tieldmap.component.html',
-  styleUrls: ['./tieldmap.component.scss']
+  styleUrls: ['./tieldmap.component.scss', './tieldmap.component.mobile.scss']
 })
 export class TieldmapComponent implements OnChanges {
 

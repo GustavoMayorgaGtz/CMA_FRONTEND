@@ -278,14 +278,18 @@ export class LineGraph {
             let copiaDate: string[] = [];
             copiaData = copiaData.concat(this.copyDataBlobData)
             copiaDate = copiaDate.concat(this.copyDateBlobData)
-            const limite_inferior = response.stadistic.limitMin;
-            const limite_superior = response.stadistic.limitMax;
-            this.limiteInferiorData = copiaData.map(m => limite_inferior);
-            this.limiteSuperiorData = copiaData.map(m => limite_superior);          
-            this.setValueData(this.limiteInferiorData, 0);
-            this.setValueData(this.limiteSuperiorData, 1);
-            this.setValueData(copiaData);
-            this.setValueLabel(copiaDate);
+            if(this.groupByDateOption != 0){
+              this.groupByDate(this.groupByDateOption)
+            }else{
+              const limite_inferior = response.stadistic.limitMin;
+              const limite_superior = response.stadistic.limitMax;
+              this.limiteInferiorData = copiaData.map(m => limite_inferior);
+              this.limiteSuperiorData = copiaData.map(m => limite_superior);          
+              this.setValueData(this.limiteInferiorData, 0);
+              this.setValueData(this.limiteSuperiorData, 1);
+              this.setValueData(copiaData);
+              this.setValueLabel(copiaDate);
+            }
             this.enableBlobData = false;
 
             //Calcular tiempo en milisgundos del polling
@@ -393,13 +397,14 @@ export class LineGraph {
     }
 
     //Configuracion con la peticion asignada a la grafica
-    if (option.general.idVariableJson) {
+    if (option.general.idVariableJson && !this.idBlobData) {
       //Protocolo "http
+      
       this.getVariableJson(option.general.idVariableJson, time);
-    } else if (option.general.idVariableModbus) {
+    } else if (option.general.idVariableModbus && !this.idBlobData) {
       //Protocolo modbus tcp/ip
       this.getVariableModbus(option.general.idVariableModbus, time);
-    } else if (option.general.idVariableMemory) {
+    } else if (option.general.idVariableMemory && !this.idBlobData) {
       //Variable de memoria 
       this.varsService.getMemoryVarById(option.general.idVariableMemory).subscribe((variable) => {
         if (vars && varsName) {
@@ -414,7 +419,7 @@ export class LineGraph {
           }, time)
         }
       })
-    } else if (option.general.idVariableEndpoint) {
+    } else if (option.general.idVariableEndpoint && !this.idBlobData) {
       this.getVariableEndpoint(option.general.idVariableEndpoint, time);
     }
   }
@@ -509,6 +514,7 @@ export class LineGraph {
         this.no_de_elementos_recibidos = this.copyDataBlobData.length;
 
         if (this.groupByDateOption > 0) {
+
           this.groupByDate(this.groupByDateOption)
         } else {
           this.lineChartData.datasets[this.dataset_important_index].data = this.var1_dataset;
@@ -626,6 +632,7 @@ export class LineGraph {
             this.copyDataBlobData.push(value);
             this.copyDateBlobData.push(this.parsearFecha(dateNow));
             if (this.groupByDateOption > 0) {
+
               this.groupByDate(this.groupByDateOption)
             } else {
               this.lineChartData.datasets[this.dataset_important_index].data = this.var1_dataset;
@@ -663,6 +670,7 @@ export class LineGraph {
           this.copyDataBlobData.push(parseFloat(value as string));
           this.copyDateBlobData.push(this.parsearFecha(dateNow));
           if (this.groupByDateOption > 0) {
+
             this.groupByDate(this.groupByDateOption)
           } else {
             this.lineChartData.datasets[this.dataset_important_index].data = this.var1_dataset;
@@ -702,6 +710,7 @@ export class LineGraph {
             if (this.copyDateBlobData)
               this.copyDateBlobData.push(this.parsearFecha(dateNow));
             if (this.groupByDateOption > 0) {
+
               this.groupByDate(this.groupByDateOption)
             } else {
               this.lineChartData.datasets[this.dataset_important_index].data = this.var1_dataset;

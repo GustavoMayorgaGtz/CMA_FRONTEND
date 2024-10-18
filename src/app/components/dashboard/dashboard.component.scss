@@ -6,6 +6,13 @@
     box-sizing: border-box;
     position: relative;
 
+
+    .container-controls{
+        display: flex;
+        height: 50px;
+        gap: 20px;
+    }
+
     .btn-create{
         display: flex;
         flex-direction: column;
@@ -27,6 +34,30 @@
         &:hover {
             transition: 0.2s all;
             background-color: rgb(139, 195, 89);
+        }
+    }
+
+    .cancelar {
+        background-color: rgb(245, 193, 193);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        white-space: nowrap;
+        color:rgb(0, 0, 0);
+        font-family: 'Mukta', sans-serif;
+        padding: 0px 50px;
+        height: 80%;
+        max-width: 250px;
+        max-height: 45px;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s all;
+
+        &:hover {
+            transition: 0.2s all;
+            background-color: rgb(218, 154, 154);
         }
     }
 
@@ -115,11 +146,6 @@
 
     .nav_btn{
         @extend .nav;
-        &:hover{
-            cursor: pointer;
-            text-decoration: underline;
-            font-weight: bold;
-        }
     }
 
     .view_dashboards{

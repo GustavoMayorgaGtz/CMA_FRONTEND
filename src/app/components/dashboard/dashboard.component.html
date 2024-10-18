@@ -8,7 +8,6 @@
             </div>
         </div>
         <div class="container_dashboards">
-            <!-- <img [src]="src" alt="nose que pasa"  > -->
             <div class="card-dashboard" *ngFor="let dashboard of dashboards; let idx = index"
                 (click)="selectDashboard(dashboard.id_dashboard, dashboard.title)">
                 <span class="title">
@@ -127,15 +126,13 @@
 </div>
 <div class="primary-container" *ngIf="menu_tool == 10">
     <div class="create-dashboard">
-        <div class="nav_btn" (click)="set_menu_tool = 0">Cancelar</div>
-
-        <div class="content">
+        <div class="nav_btn">
             <div class="title" style="color: #422e64;">
                 CREACIÓN DE DASHBOARD
             </div>
-            <br>
-            <div class="line"></div>
-            <br>
+        </div>
+
+        <div class="content">
             <div class="campo">
                 <label for="title">Nombre de dashboard</label>
                 <p>Asigna una palabra clave para poder identificar mejor tu dashboard.</p>
@@ -152,9 +149,14 @@
             <br>
             <div class="line"></div>
             <br>
-            <div class="btn-create" *ngIf="viewCreateDashboardButton" style="background-color: #b998f1;"
+            <div class="container-controls">
+                <div class="btn-create" *ngIf="viewCreateDashboardButton" style="background-color: #b998f1;"
                 (click)="createDashboard(title, description)">
                 Crear dashboard
+            </div>
+            <div class="cancelar" >
+                Cancelar
+           </div> 
             </div>
         </div>
     </div>

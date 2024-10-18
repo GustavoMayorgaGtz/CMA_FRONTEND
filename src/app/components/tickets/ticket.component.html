@@ -1,27 +1,33 @@
 <div class="primary-container">
   <div class="title">Tickets</div>
-  <div class="description">Soporte para usuarios</div>
-  <div class="description" >Tus tickets seran respondidos por medio de tu correo.</div>
+  <div class="description" style="background-color: #ffe5c5; width: min-content; white-space: nowrap; border-radius: 5px; padding: 0px 10px;">Soporte para usuarios</div>
+  <div class="description">Tus tickets seran respondidos por medio de tu correo.</div>
+
   <div class="line"></div>
+
   <div class="ticket" *ngIf="isBuldingTicket">
     <div class="title">
       <span class="ticket-no">Ticket</span>
-      
     </div>
+
     <div class="message-title">
       <select type="text" #type_ticket (change)="getTypeTicket(type_ticket.value)">
-         <option selected disabled>Tipo de ticket</option>
-         <option value="feedback">Feedback|Mejoras</option>
-         <option value="error">Error del sistema</option>
-         <option value="billing">Pagos</option>
-         <option value="help">Ayuda</option>
-         <option value="other">Otros</option>
+        <option selected disabled>Tipo de ticket</option>
+        <option value="feedback">Feedback|Mejoras</option>
+        <option value="error">Error del sistema</option>
+        <option value="billing">Pagos</option>
+        <option value="help">Ayuda</option>
+        <option value="other">Otros</option>
       </select>
     </div>
+
     <div class="message-title">
-      <input type="text" placeholder="titulo" #title_ticket (keyup)="getTitleTicket(title_ticket.value)" (change)="getTitleTicket(title_ticket.value)">
+      <input type="text" placeholder="titulo" #title_ticket (keyup)="getTitleTicket(title_ticket.value)"
+        (change)="getTitleTicket(title_ticket.value)">
     </div>
-    <textarea class="message" #message_ticket placeholder="Escribe aqui tu duda, problema o aportacion." (change)="getMessageTicket(message_ticket.value)" (keyup)="getMessageTicket(message_ticket.value)"></textarea>
+    
+    <textarea class="message" #message_ticket placeholder="Escribe aqui tu duda, problema o aportacion."
+      (change)="getMessageTicket(message_ticket.value)" (keyup)="getMessageTicket(message_ticket.value)"></textarea>
   </div>
   <!-- <span class="description" *ngIf="!isBuldingTicket">Tu ticket sera respondido via email</span> -->
   <div class="btn-create-tickets" (click)="btn_event(1)" *ngIf="!isBuldingTicket">
@@ -31,7 +37,8 @@
     <div class="btn-create-tickets" (click)="createTicket()" *ngIf="isBuldingTicket">
       Mandar ticket
     </div>
-    <div class="btn-create-tickets" style="background-color: rgb(245, 181, 181);" (click)="btn_event(0)" *ngIf="isBuldingTicket">
+    <div class="btn-create-tickets" style="background-color: rgb(245, 181, 181);" (click)="btn_event(0)"
+      *ngIf="isBuldingTicket">
       Cancelar
     </div>
   </div>

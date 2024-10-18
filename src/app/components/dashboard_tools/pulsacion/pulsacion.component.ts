@@ -157,11 +157,12 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
       this.socket.emit('sendMessageToGroup', { groupName: this.indicator_saved.groupname, message: "on" }); // Unirse al grupo
     })
     this.idCounterPulseTime = setTimeout(() => {
-
+      
     }, 250);
   }
-
+  
   unpush() {
+ 
     setTimeout(() => {
       this.Connect_Socket().then(() => {
         this.socket.emit('sendMessageToGroup', { groupName: this.indicator_saved.groupname, message: "off" }); // Unirse al grupo

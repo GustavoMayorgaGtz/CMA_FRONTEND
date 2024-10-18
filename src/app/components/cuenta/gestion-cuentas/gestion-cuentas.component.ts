@@ -22,6 +22,7 @@ export class GestionCuentasComponent {
   public menu: number = 1;
 
 
+
   constructor(private router: Router, private authService: AuthService, private alert: AlertService) {
     const token = sessionStorage.getItem("token");
     const id_user = sessionStorage.getItem("idUser");
