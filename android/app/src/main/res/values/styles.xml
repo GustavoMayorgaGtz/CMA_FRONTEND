@@ -17,6 +17,6 @@
 
 
     <style name="AppTheme.NoActionBarLaunch" parent="AppTheme.NoActionBar">
-        <item name="android:background">#EFF2E6</item>
+      <item name="android:windowBackground">@drawable/splash_gradient</item>
     </style>
 </resources>
