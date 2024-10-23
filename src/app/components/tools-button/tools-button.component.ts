@@ -1,17 +1,16 @@
-import { Component, ElementRef, Input, OnChanges, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
-
+import { Component,ElementRef, EventEmitter, Input, OnChanges, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
+import { MenuToolService } from 'src/app/service/tool-button-navigate';
 @Component({
   selector: 'app-tools-button',
   templateUrl: './tools-button.component.html',
   styleUrls: ['./tools-button.component.scss']
 })
 export class ToolsButtonComponent {
+  constructor(private menuToolService: MenuToolService) {}
+  setMenuTool(tool: number) {
+    this.menuToolService.menuToolChange.emit(tool); // Emitir el nuevo valor
+  }
   showTools = false;
-  tools = [
-    { name: 'Tool 1' },
-    { name: 'Tool 2' },
-    { name: 'Tool 3' }
-  ];
   buttonOpacity = 0.3;
   buttonPosition = { x: 10, y: 10 };
   timeoutId: any;
