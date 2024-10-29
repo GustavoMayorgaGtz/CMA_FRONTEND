@@ -55,6 +55,6 @@ export class ToolsButtonComponent {
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(() => {
       this.buttonOpacity = 0.3; // Hacer transparente
-    }, 5000); // 5 segundos de inactividad
+    }, 8000); // 5 segundos de inactividad
   }
 }

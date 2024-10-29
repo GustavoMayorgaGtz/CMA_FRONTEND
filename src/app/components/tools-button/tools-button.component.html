@@ -4,12 +4,12 @@
 >
   <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open" />
   <label class="menu-open-button" (click)="toggleTools()" for="menu-open">
-   <span class="lines line-1"></span>
-   <span class="lines line-2"></span>
-   <span class="lines line-3"></span>
+    <div class="menu-open-image-container">
+      <img src="./assets/design/gear.png" width="35px" height="35px" alt="">
+    </div>
  </label>
 
-<ng-container *ngIf="showTools">
+<ng-container>
   <a (click)="setMenuTool(2)" class="menu-item blue"><div class="image-item-content"><img _ngcontent-jlv-c22="" src="./assets/graphs/line_chart.svg" alt="line chart" class="image_contet"></div></a>
   <a (click)="setMenuTool(3)"  class="menu-item green"><div class="image-item-content"><img _ngcontent-jlv-c22="" src="./assets/graphs/switch.svg" alt="line chart" class="image_contet"></div> </a>
   <a (click)="setMenuTool(4)"  class="menu-item red"> <div class="image-item-content"><img _ngcontent-jlv-c22="" src="./assets/graphs/indicator.svg" alt="line chart" class="image_contet"></div> </a>
