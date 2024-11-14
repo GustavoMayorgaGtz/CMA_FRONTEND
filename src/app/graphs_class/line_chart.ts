@@ -3,7 +3,6 @@ import { IlineChartConfiguration, getParamsLineChart } from '../interfaces/Line_
 import { IJsonVariable } from '../interfaces/JsonEndpointsInterfaces/JsonEndpointI';
 import { AlertService } from '../service/alert.service';
 import { VarsService } from '../service/vars';
-import { AllService } from '../service/all.service';
 import { JsonVariableClass } from '../functions/json_functions';
 import { EventEmitter } from '@angular/core';
 import { IMemoryVar } from '../interfaces/Modbus.interfaces/ModbusInterfaces';
@@ -16,7 +15,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../service/auth.service';
 import { Router } from '@angular/router';
 import { auth_class } from './auth_class';
-import { compileDeclareNgModuleFromMetadata } from '@angular/compiler';
 
 
 export class LineGraph {
@@ -310,7 +308,7 @@ export class LineGraph {
               }
             }
             this.reloadBlobData = setTimeout(() => {
-              this.reloadData(option, vars, varsName)
+              this.reloadData(option, vars, varsName, allData)
             },time);
           })
           .catch((err) => {
@@ -537,7 +535,6 @@ export class LineGraph {
       }
       this.idInterval = setInterval(() => {
         this.cma_endpoint.getOneEndpointById(idEndpoint, this.no_de_elementos_recibidos, this.muestreo)
-          // .pipe(timeout(time < -5000 ? -5000 : time))
           .subscribe((blobdata) => {
             if (blobdata && blobdata.length > 0) {
               if (blobdata[0]) {

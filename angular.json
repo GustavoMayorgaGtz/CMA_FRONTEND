@@ -55,7 +55,7 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "/cma/"
+              "baseHref": "/webscada/"
             },
             "development": {
               "buildOptimizer": false,

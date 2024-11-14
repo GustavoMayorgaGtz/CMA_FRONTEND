@@ -33,7 +33,13 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnInit(): void {
-
+    if (this.socket) {
+      //Validar la conexion
+      this.socket.on("disconnect", (err) => {
+        console.log("Desconectado");
+        console.log(err);
+      })
+    }
   }
 
   public style_button: number = 0;
@@ -117,11 +123,12 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
   Connect_Socket() {
     return new Promise((resolve, reject) => {
       //deshabilitar el actual socket
-      if (this.socket) {
-        this.socket.disconnect();
-        this.socket.removeAllListeners();
-      }
-
+      // if (this.socket) {
+      //   this.socket.disconnect();
+      //   this.socket.removeAllListeners();
+      // }
+      if (!this.socket || this.socket.connected == false) {
+        console.log("Vamos a conectar")
       //Tratando de conectar
       this.socket = io(ws_server, {
         reconnectionDelayMax: 10000,
@@ -130,22 +137,31 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
         reconnection: false
       });
 
-      this.socket.connect();
+     
+        this.socket.connect();
 
-      //Mandar a repetir el intento de conexion a los 10000 segundos
-      let interval = setTimeout(() => {
-        this.socket.disconnect();
-        this.socket.removeAllListeners();
-        reject("No conecto")
-      }, 10000)
+        //Mandar a repetir el intento de conexion a los 10000 segundos
+        let interval = setTimeout(() => {
+          this.socket.disconnect();
+          this.socket.removeAllListeners();
+          reject("No conecto")
+        }, 30000)
 
-      //Validar la conexion
-      this.socket.on("connect", () => {
-        this.status = true;
-        clearInterval(interval);
-        this.intentosReconexion = 0;
+
+        //Validar la conexion
+        this.socket.on("connect", () => {
+          console.log("Conectado");
+          this.status = true;
+          clearInterval(interval);
+          this.intentosReconexion = 0;
+          resolve("Conecto")
+        })
+        this.socket.on("disconnect", (err, reason) => {
+         console.log("El usuario se desconecto", err, reason);
+        })
+      }else{
         resolve("Conecto")
-      })
+      }
     })
   }
 
@@ -157,12 +173,12 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
       this.socket.emit('sendMessageToGroup', { groupName: this.indicator_saved.groupname, message: "on" }); // Unirse al grupo
     })
     this.idCounterPulseTime = setTimeout(() => {
-      
+
     }, 250);
   }
-  
+
   unpush() {
- 
+
     setTimeout(() => {
       this.Connect_Socket().then(() => {
         this.socket.emit('sendMessageToGroup', { groupName: this.indicator_saved.groupname, message: "off" }); // Unirse al grupo
@@ -172,11 +188,6 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
 
   listenStreaming(list: IPulsacion_Recive) {
     this.Connect_Socket().then(() => {
-      // array.add("sendMessageToGroup");
-      // JsonObject param1 = array.createNestedObject();
-      // param1["groupName"] = "feedbackGroup";
-      // param1["message"] = "servo_positions"
-
       this.socket.on(list.groupname, (data: ArrayBuffer) => {
         const blob_data = new Blob([data])
         const buffer_blob = URL.createObjectURL(blob_data);

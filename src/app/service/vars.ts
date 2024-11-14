@@ -115,8 +115,15 @@ export class VarsService {
 
 
   test_Modbus_var(body: IModbusVar_Test) {
-    
-    return this.http.post(server + "modbusvars/testConnection", body);
+    const idUser = sessionStorage.getItem('idUser')
+    const token = sessionStorage.getItem("token")
+    if(!idUser || !token){
+       this.router.navigate(['/login'])
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post(server + "modbusvars/testConnection", body, {headers});
   }
 
   getAllVarsModbus() {
