@@ -147,6 +147,7 @@ export class TieldmapComponent implements OnChanges {
    * @param tieldmap
    */
   getPosition(event: MouseEvent| TouchEvent, tieldmap: HTMLDivElement) {
+    // event.preventDefault();
     const tieldmap_positionX = tieldmap.getBoundingClientRect().x;
     const tieldmap_positionY = tieldmap.getBoundingClientRect().y;
     const tieldmap_width = tieldmap.getBoundingClientRect().width;
