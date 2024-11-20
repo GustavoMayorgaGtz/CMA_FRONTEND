@@ -9,7 +9,7 @@
     "deploy": "git add . && git commit -a -m deploy && git push -u origin master",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "cordova_build": "ng build && npx cap copy && npx cap sync android && npx cap open android"
+    "cordova_build": "npx cap sync android && ng build && npx cap copy && npx cap open android"
   },
   "private": true,
   "dependencies": {

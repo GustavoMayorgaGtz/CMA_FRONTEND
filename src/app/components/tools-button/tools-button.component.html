@@ -1,96 +1,20 @@
-<section class="menu menu--circle" [ngStyle]="{ 'opacity': buttonOpacity }" (click)="toggleTools()" (mousedown)="onDragStart($event)" [class.show-tools]="showTools" >
-  <input type="checkbox" id="menu__active"/>
-  <label for="menu__active" class="menu__active">
-    <div class="menu__toggle">
-      <div class="icon">
-        <div class="hamburger"></div>
-      </div>
+<nav class="menu"
+  (mousedown)="onDragStart($event)"
+  [ngStyle]="{ 'opacity': buttonOpacity }"
+>
+  <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open" />
+  <label class="menu-open-button" (click)="toggleTools()" for="menu-open">
+    <div class="menu-open-image-container">
+      <img src="./assets/design/gear.png" width="35px" height="35px" alt="">
     </div>
-    <input type="radio" name="arrow--up" id="degree--up-0"/>
-    <input type="radio" name="arrow--up" id="degree--up-1" />
-    <input type="radio" name="arrow--up" id="degree--up-2" />
-    <div class="menu__listings">
-      <ul class="circle">
-        <li>
-          <div class="placeholder">
-            <div class="upside">
-              <a href="https://codepen.io/logrithumn" class="button"><i class="fa fa-user"></i></a>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="placeholder">
-            <div class="upside">
-              <a href="#" class="button"><i class="fa fa-cog"></i></a>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="placeholder">
-            <div class="upside">
-              <a href="#">&nbsp</a>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="placeholder">
-            <div class="upside">
-              <a href="#" class="button"><i class="fa fa-commenting"></i></a>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="placeholder">
-            <div class="upside">
-              <a href="#" class="button"><i class="fa fa-trash"></i></a>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="placeholder">
-            <div class="upside">
-              <a href="#" class="button"><i class="fa fa-battery-4"></i></a>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="placeholder">
-            <div class="upside">
-              <a href="#" class="button"><i class="fa fa-calendar"></i></a>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="placeholder">
-            <div class="upside">
-              <a href="#" class="button"><i class="fa fa-cloud"></i></a>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="placeholder">
-            <div class="upside">
-              <a href="#" class="button"><i class="fa fa-wifi"></i></a>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="placeholder">
-            <div class="upside">
-              <a href="#" class="button"><i class="fa fa-envelope-o"></i></a>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="menu__arrow menu__arrow--top">
-      <ul>
-        <li>
-          <label for="degree--up-0"><div class="arrow"></div></label>
-          <label for="degree--up-1"><div class="arrow"></div></label>
-          <label for="degree--up-2"><div class="arrow"></div></label>
-        </li>
-      </ul>
-    </div>
-  </label>
-</section>
+ </label>
+
+<ng-container>
+  <a (click)="setMenuTool(2)" class="menu-item blue"><div class="image-item-content"><img _ngcontent-jlv-c22="" src="./assets/graphs/line_chart.svg" alt="line chart" class="image_contet"></div></a>
+  <a (click)="setMenuTool(3)"  class="menu-item green"><div class="image-item-content"><img _ngcontent-jlv-c22="" src="./assets/graphs/switch.svg" alt="line chart" class="image_contet"></div> </a>
+  <a (click)="setMenuTool(4)"  class="menu-item red"> <div class="image-item-content"><img _ngcontent-jlv-c22="" src="./assets/graphs/indicator.svg" alt="line chart" class="image_contet"></div> </a>
+  <a (click)="setMenuTool(5)"  class="menu-item purple"> <div class="image-item-content"><img _ngcontent-jlv-c22="" src="./assets/graphs/camera.svg" alt="camera" class="image_contet"></div>  </a>
+  <a (click)="setMenuTool(6)"  class="menu-item orange"> <div class="image-item-content"><img _ngcontent-jlv-c22="" src="./assets/graphs/pulse.svg" alt="pulse" class="image_contet"></div>  </a>
+</ng-container>
+
+</nav>
