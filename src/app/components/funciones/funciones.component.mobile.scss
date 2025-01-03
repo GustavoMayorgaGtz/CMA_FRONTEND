@@ -1,0 +1,555 @@
+@media screen and (max-width: 700px){
+    .main {
+        width: 100%;
+        height: calc(100vh - 90px);
+        border: 1px solid black;
+        overflow: scroll;
+        overflow-x: hidden;
+        background-color: #ecefec;
+    
+        .title {
+            margin: 10px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+    
+        .quit {
+            border-radius: 50%;
+            height: 30px;
+            width: 30px;
+            padding: 5px;
+            transition: all 0.2s;
+    
+            &:hover {
+                cursor: pointer;
+                transform: scale(1.02);
+                background-color: rgba(0, 0, 0, 0.235);
+                transition: all 0.2s;
+            }
+        }
+    
+        .crearVariable {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 0px 3%;
+            justify-content: center;
+            width: 90%;
+            border-top: 1px solid rgb(184, 184, 184);
+    
+            .informacion {
+                display: flex;
+                width: 40%;
+                min-width: 400px;
+                height: 45px;
+                padding: 0px 5px;
+                background-color: white;
+                margin: 20px;
+                border-radius: 5px;
+                border: 1px solid rgb(157, 157, 157);
+    
+                .icono-informacion {
+                    min-width: 45px;
+                    min-height: 45px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+    
+                    img {
+                        width: 60%;
+                        height: 60%;
+                    }
+                }
+    
+    
+    
+                .content {
+                    display: flex;
+                    align-items: center;
+                    font-size: 0.8em;
+                }
+            }
+    
+            .menuVar {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+    
+                .options {
+                    width: 100%;
+                    display: flex;
+    
+                    .option {
+                        width: max-content;
+                        gap: 2px;
+                        font-size: 0.8em;
+                        padding: 5px 25px;
+                        background-color: #ffffff;
+                        border: 1px solid rgb(157, 157, 157);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 35px;
+                        cursor: pointer;
+                        transition: all 0.2;
+    
+                        &:hover {
+                            transition: all 0.2;
+                            transform: scale(1.01);
+                            box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.105);
+                        }
+                    }
+    
+                    .selected {
+                        background-color: rgb(34, 82, 150);
+                        color: white;
+                        border: none;
+                    }
+                }
+    
+                .contentFormularioCreateVar {
+                    display: flex;
+                    flex-direction: column;
+                    padding: 10px;
+                    font-size: 1em;
+                    font-weight: bold;
+                    box-sizing: border-box;
+                    width: 100%;
+                    min-height: 90%;
+                    background-color: white;
+                    border: 1px solid rgb(157, 157, 157);
+    
+                    .Alertas {
+                        .opciones {
+                            position: relative;
+                            display: flex;
+                            // justify-content: space-evenly;
+                            padding: 0px 3%;
+                            align-items: center;
+                            width: 100%;
+                            height: 120px;
+                            border-top: 1px solid rgb(184, 184, 184);
+                            border-bottom: 1px solid rgb(184, 184, 184);
+    
+                            .opciones-title {
+                                position: absolute;
+                                top: 5px;
+                                left: 10px;
+                                font-size: 0.9em;
+                                // font-weight: bold;
+                            }
+    
+                            .search {
+                                display: flex;
+                                width: 30%;
+                                min-width: 45%;
+                                height: 35px;
+                                max-height: 35px;
+                                background-color: white;
+                                border-radius: 5px;
+                                border: 1px solid rgb(198, 198, 198);
+    
+                                input {
+                                    width: 80%;
+                                    padding: 0px 10px;
+                                    height: 35px;
+                                    max-height: 35px;
+                                    box-sizing: border-box;
+                                    border-radius: 5px 0px 0px 5px;
+                                    border: 1px solid rgb(227, 227, 227);
+    
+                                    &:focus {
+                                        outline: none;
+                                    }
+                                }
+    
+                                .search-btn {
+                                    display: flex;
+                                    border-radius: 0px 5px 5px 0px;
+                                    justify-content: center;
+                                    align-items: center;
+                                    width: 45px;
+                                    height: 35px;
+                                    max-height: 35px;
+                                    border: 1px solid rgb(227, 227, 227);
+                                    box-sizing: border-box;
+                                    transition: all 0.5s;
+    
+                                    &:hover {
+                                        transition: all 0.5s;
+                                        cursor: pointer;
+                                        border-color: black;
+                                    }
+    
+                                    img {
+                                        width: auto;
+                                        height: 70%;
+                                    }
+                                }
+                            }
+    
+                            select {
+                                margin-left: 20px;
+                                display: flex;
+                                width: 30%;
+                                // min-width: 400px;
+                                height: 45px;
+                                background-color: white;
+                                border-radius: 5px;
+                                border: 1px solid rgb(198, 198, 198);
+                            }
+                        }
+    
+                        .content {
+                            box-sizing: border-box;
+                            overflow: hidden;
+                            width: 100%;
+                            height: 100%;
+                            padding: 20px;
+                            display: flex;
+                            justify-content: space-evenly;
+                            flex-wrap: wrap;
+                            gap: 10px;
+                            
+                            .alerta {
+                                position: relative;
+                                padding: 5px;
+                                width: 250px;
+                                height: 100%;
+                                border-radius: 5px;
+                                overflow: hidden;
+                                // color: orange;
+                                border: 1px solid rgb(230, 191, 141);
+                                background-color: rgb(255, 250, 243);
+    
+                                .icon-warning {
+                                    position: absolute;
+                                    top: 10px;
+                                    right: 10px;
+                                    width: 40px;
+                                    margin: auto;
+                                    display: flex;
+                                    justify-content: center;
+                                }
+    
+                                .top {
+                                    white-space: nowrap;
+                                    display: flex;
+                                    align-items: center;
+                                    font-weight: bolder;
+                                    padding: 0px 5px;
+                                    font-size: calc(0.6vw + 10px);
+                                    height: 35px;
+                                    color: rgb(219, 189, 133);
+                                }
+    
+                                .description {
+                                    width: 100%;
+                                    font-size: calc(0.4vw + 10px);
+                                    padding: 0px 5px;
+                                    display: flex;
+                                    color: rgb(97, 70, 21);
+    
+                                }
+    
+                                .body {
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    font-weight: lighter;
+                                    box-sizing: border-box;
+                                    height: min-content;
+                                    margin-top: 10px;
+                                    border-radius: 5px;
+                                    background-color: rgb(255, 253, 250);
+                                    padding: 5px 0px;
+                                    border: 1px solid rgb(155, 108, 22);
+    
+                                    .nombre_var {
+                                        display: grid;
+                                        grid-template-columns: 1fr 1fr 1fr;
+    
+                                        .nombre {
+                                            display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                            font-weight: bolder;
+                                            padding: 0px 5px;
+                                            font-size: calc(0.6vw + 8px);
+                                            height: 35px;
+                                            color: rgb(150, 118, 58);
+                                        }
+    
+                                        .switch {
+                                            display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                        }
+    
+                                        .variable {
+                                            display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                        }
+    
+    
+                                    }
+                                }
+                            }
+                        }
+    
+                        .noContent {
+                            margin: 20px;
+                            padding: 5px 10px;
+                            border-radius: 5px;
+                            background-color: rgb(185, 185, 185);
+                            font-weight: lighter;
+                            color: rgb(33, 33, 33);
+                            text-align: center;
+                        }
+                    }
+    
+                    .CrearAlerta {
+                        margin-bottom: 20px;
+                        .campo {
+                            font-size: 0.8em;
+                            font-weight: lighter;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            width: 100%;
+                            height: 50px;
+
+                            label{
+                                white-space: nowrap;
+                            }
+    
+                            input[type='text'],
+                            select {
+                                width: 100%;
+                                height: 35px;
+                                border-radius: 5px;
+                                border: 1px solid rgb(96, 96, 96);
+                                padding: 0px 10px;
+                            }
+    
+                            input[type="checkbox"] {
+                                width: 20px;
+                                height: 20px;
+                            }
+    
+                            .send_img {
+                                width: 25px;
+                                height: 30px;
+                                margin-left: 5px;
+                                filter: invert(0.6);
+    
+                                &:hover {
+                                    transition: all 0.2s;
+                                    cursor: pointer;
+                                    filter: invert(0);
+                                }
+                            }
+                        }
+    
+                        .campo-phone {
+                            @extend .campo;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: baseline;
+                            min-height: max-content;
+                            height: min-content;
+                            
+                            padding: 10px 0px;
+                            margin: 10px 0px;
+    
+    
+                            .content {
+                                display: flex;
+                                flex-direction: column;
+                                padding: 0px 20px;
+                                font-size: 1em;
+                                font-weight: bold;
+                                box-sizing: border-box;
+                                width: 100%;
+                                height: min-content;
+                                background-color: white;
+                                border: 1px solid rgb(157, 157, 157);
+                            }
+    
+                            .campo-data {
+                                @extend .campo;
+                                align-items: normal;
+                                justify-content: center;
+                                flex-direction: column;
+                                height: min-content;
+                                padding: 10px 0px;
+    
+                                .data {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 20px;
+    
+                                    .container-img-quit {
+                                        height: 100%;
+                                        width: auto;
+                                        display: flex;
+                                        justify-content: center;
+    
+    
+                                    }
+                                }
+    
+                                .addMore {
+                                    min-width: 150px;
+                                    width: min-content;
+                                    padding: 10px 10px;
+                                    display: flex;
+                                    border-radius: 5px;
+                                    justify-content: center;
+                                    align-items: center;
+                                    // color: white;
+                                    cursor: pointer;
+                                    background-color: rgb(242, 191, 129);
+                                    transition: all 0.2s;
+                                    color: rgb(28, 28, 28);
+                                    font-weight: bold;
+    
+                                    &:hover {
+                                        transform: scale(1.01);
+                                        transition: all 0.2s;
+                                        box-shadow: -3px 3px 3px rgba(0, 0, 0, 0.211);
+                                    }
+                                }
+                            }
+                        }
+    
+                        .campo-variable {
+                            @extend .campo;
+                            align-items: normal;
+                            justify-content: center;
+                            flex-direction: column;
+                            height: min-content;
+                            padding: 10px 0px;
+    
+                            label {
+                                display: flex;
+                                align-items: center;
+                                gap: 10px;
+                            }
+    
+                            .contenedor_busqueda {
+                                display: flex;
+                                align-items: center;
+                                box-sizing: border-box;
+                                width: 100%;
+                                gap: 20px;
+                                height: 35px;
+    
+                                select {
+                                    display: none;
+                                }
+    
+                                .busqueda {
+                                    display: flex;
+                                    align-items: center;
+                                    align-items: center;
+                                    border: 1px solid black;
+                                    border-radius: 5px;
+                                    height: 35px;
+    
+                                    input {
+                                        width: 80% ;
+                                        outline: none;
+                                        border: none;
+                                        height: 35px;
+                                    }
+    
+                                    .contenedor_img_busqueda {
+                                        width: 35px;
+                                        height: 35px;
+                                        display: flex;
+                                        outline: none;
+                                        border: none;
+                                        border-left: 1px solid black;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+    
+                                        img {
+                                            width: auto;
+                                            height: 50%;
+                                        }
+    
+                                        &:hover {
+                                            background-color: rgb(230, 230, 230);
+                                        }
+                                    }
+                                }
+                            }
+    
+                            .variables {
+                                width: 100%;
+                                max-height: 300px;
+                                overflow-y: scroll;
+    
+                                .option {
+                                    gap: 50px;
+                                    border-radius: 5px;
+                                    margin: 2px;
+                                    padding: 5px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    border: 1px solid rgb(148, 148, 148);
+                                    background-color: rgb(255, 255, 255);
+                                    color: rgb(0, 0, 0);
+    
+                                    &:hover {
+                                        cursor: pointer;
+                                        color: rgb(0, 0, 0);
+                                        background-color: rgb(185, 205, 215);
+                                    }
+    
+                                    .colorVariable {
+                                        height: 20px;
+                                        width: auto;
+                                        overflow: hidden;
+    
+                                        .color {
+                                            width: 100%;
+                                            height: 100%;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+    
+                        .btn-guardar {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            border-radius: 3px;
+                            width: 100%;
+                            min-width: 300px;
+                            box-sizing: border-box;
+                            padding: 12px 13px;
+                            margin-top: 10px;
+                            font-weight: lighter;
+                            font-size: .9em;
+                            color: rgb(28, 28, 28);
+                            cursor: pointer;
+                            background-color: rgb(242, 191, 129);
+    
+                            &:hover {
+                                box-shadow: -3px 3px 3px rgba(0, 0, 0, 0.211);
+                                transform: scale(1.01);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

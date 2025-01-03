@@ -109,6 +109,7 @@ export class IndicatorComponent implements OnInit, OnChanges {
       }); // Unirse al grupo
       
       this.socket.on(list.groupname, (data: WebsocketRecive) => {
+        console.log(data);
         this.data = data;
       });
       this.socket.on("disconnect", (err, other) => {
@@ -134,6 +135,7 @@ export class IndicatorComponent implements OnInit, OnChanges {
       if (idUserString) {
         this.indicatorService.getOne(parseInt(idUserString), this.id_indicator).subscribe((data) => {
           this.indicator_saved = data;
+          
           this.Connect_Socket().then(() => {
             this.listenIndicators(data);
           })

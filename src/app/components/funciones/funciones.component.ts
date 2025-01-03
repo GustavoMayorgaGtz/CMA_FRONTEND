@@ -9,7 +9,7 @@ import { VarsService } from 'src/app/service/vars';
 @Component({
   selector: 'app-funciones',
   templateUrl: './funciones.component.html',
-  styleUrls: ['./funciones.component.scss']
+  styleUrls: ['./funciones.component.scss', './funciones.component.mobile.scss']
 })
 export class FuncionesComponent {
 
@@ -71,6 +71,7 @@ export class FuncionesComponent {
     if (phone.length >= 10 && phone.length <= 15) {
       this.numeros[idx].code = parseInt(key);
       this.numeros[idx].phone = parseInt(phone);
+      console.log("Numeros", this.numeros);
     } else {
       this.alertService.setMessageAlert("El numero debe de tener mas de 9 digitos  y menos de 16 digitos");
     }
@@ -244,14 +245,11 @@ export class FuncionesComponent {
     description: string,
     mensaje: string,
     waiting_next_message_time: string,
-    waiting_send_first_message: string,
+    // waiting_send_first_message: string,
     method_evaluation: string) {
 
     let message = "";
     let enable_alertaSMS = false;
-
-
-
 
     if (this.equal_enable) {
       //Necesito this.equal para que funcione el registro
@@ -304,16 +302,16 @@ export class FuncionesComponent {
       message = "No se ha definido el tipo de evaluacion";
     }
 
-    if (this.equal_enable && !this.type_data) {
-      enable_alertaSMS = false;
-      message = "No haz definido el tipo de dato de la entrada igual que"
-    }
+    // if (this.equal_enable && !this.type_data) {
+    //   enable_alertaSMS = false;
+    //   message = "No haz definido el tipo de dato de la entrada igual que"
+    // }
 
     //Validar waiting_send_first_message
-    if (!waiting_send_first_message) {
-      enable_alertaSMS = false;
-      message = "No haz definido el tiempo de inicio de espera inicial";
-    }
+    // if (!waiting_send_first_message) {
+    //   enable_alertaSMS = false;
+    //   message = "No haz definido el tiempo de inicio de espera inicial";
+    // }
 
     //Validar waiting_next_message_time
     if (!waiting_next_message_time) {
@@ -361,12 +359,12 @@ export class FuncionesComponent {
         message: mensaje,
         var_evaluation_id: this.idVariableSelectInVars ? this.idVariableSelectInVars : 0,
         waiting_next_message_time: parseInt(waiting_next_message_time),
-        waiting_send_first_message: parseInt(waiting_send_first_message),
+        waiting_send_first_message: 0,//parseInt(waiting_send_first_message),
         method_evaluation: metodoEvaluacion ? metodoEvaluacion : "mayor que x",
         max: this.max,
         min: this.min,
         equal: this.equal,
-        type_data: this.type_data
+        type_data: "Numerico"
       }).subscribe((response) => {
         this.alertService.setMessageAlert("Alerta sms creada");
         this.clearInputs();

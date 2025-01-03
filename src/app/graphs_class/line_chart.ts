@@ -258,6 +258,7 @@ export class LineGraph {
     if (varsName)
       this.varsName_global = varsName;
 
+    
     //BlobData operations
     if (!this.enableBlobData) {
       this.idBlobData = option.general.idblobdata;

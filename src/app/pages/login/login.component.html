@@ -1,21 +1,21 @@
 <main>   
     <section class="formulario">
-     
+         
         <!--------------------------------->
         <form *ngIf="isLogin" [formGroup]="loginGroup">
             <div class="form-title">Inicio de sesión</div>
-            <div class="form-description">Inicia sesión para empezar a organizar tu inventario</div>
+            <div class="form-description">Inicia sesión para comenzar a monitorear y controlar los eventos de tus procesos.</div>
             <div class="bloque-entrada">
                 <label for="inpt-title">Nombre de usuario</label>
                 <input type="text" name="username" id="username" autocomplete="off" placeholder="example@example.com" formControlName="nombre_usuario">
             </div>
             <div class="bloque-entrada">
                 <label for="inpt-title">Contraseña</label>
-                <input type="password" name="password" id="password" autocomplete="off" placeholder="Password" formControlName="password" (keyup.enter)="loggear()">
+                <input type="password" name="password" id="password" autocomplete="off" placeholder="Password" formControlName="password" (keyup.enter)="loggear(checkbox_renamber.checked)">
             </div>
             <div class="bloque-general">
                 <div class="container-recordar">
-                    <input type="checkbox" name="recordar" id="recordar">
+                    <input type="checkbox" #checkbox_renamber name="recordar" id="recordar">
                     <label for="recordar">Recordarme</label>
                 </div>
                 <!-- <div class="container-forgeinpassword">
@@ -25,7 +25,7 @@
             <div class="btn-login" >
                 <span *ngIf="validAuthLoading == false" class="back">Comenzar!</span>
                 <div class="front" *ngIf="validAuthLoading == false">Iniciar sesión</div>
-                <div class="focus" (click)="loggear()" *ngIf="validAuthLoading == false"></div>
+                <div class="focus" (click)="loggear(checkbox_renamber.checked)" *ngIf="validAuthLoading == false"></div>
                 
                 <span *ngIf="validAuthLoading == true" class="back">Espera un momento!</span>
                 <div class="front" *ngIf="validAuthLoading == true">Validando credenciales...</div>
@@ -64,7 +64,8 @@
             </div>
         </form>
         <!--------------------------------->
-        <span class="derechos">CMA 2023. Todos los derechos reservados</span>
+        <span class="derechos">CMA 2025. Todos los derechos reservados</span>
+        <span class="version">CMA WEB SCADA SYSTEM V1.0.0</span>
     </section>
     <section class="informacion">
         <!-- <div class="gear">

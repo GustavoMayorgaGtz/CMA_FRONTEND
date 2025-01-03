@@ -51,8 +51,8 @@ export class ConfigureIndicatorComponent implements OnInit {
     this.indicator_symbol = symbol;
   }
   /*-----*/
-  //-   -   -   -   -   -   -   -   -   -   TYPE DATA IN  
-  private indicator_type_data_in: string = "boolean";
+  //-   -   -   -   -   -   -   -   -   -   TYPE D
+  private indicator_type_data_in: string = "number";
   public get get_indicator_type_data_in() {
     return this.indicator_type_data_in;
   }
@@ -113,6 +113,8 @@ export class ConfigureIndicatorComponent implements OnInit {
     return this.indicator_blobdata;
   }
   public set set_indicator_blobdata(blobdata: boolean) {
+    //TODO: QUITAR
+    alert(blobdata);
     this.indicator_blobdata = blobdata;
   }
   /*-----*/
@@ -177,7 +179,7 @@ export class ConfigureIndicatorComponent implements OnInit {
                     type_data_in: this.get_indicator_type_data_in,
                     type_data_design: this.get_indicator_type_data_design,
                     dashboard: this.id_dashboard_selected,
-                    issaveblobdata: true,
+                    issaveblobdata: this.indicator_blobdata,
                     primary_user: parseInt(idUser)
                   }
                   this.indicatorService.create_indicator(object).subscribe((response) => {
@@ -188,7 +190,7 @@ export class ConfigureIndicatorComponent implements OnInit {
                     this.alertService.setMessageAlert("No se creo el indicador correctamente, vuelve a intentarlo mas tarde.");
                   })
                 } else {
-                  this.alertService.setMessageAlert("Vuelve a iniciar sesion...")
+                  this.alertService.setMessageAlert("7. Vuelve a iniciar sesion...")
                   this.router.navigate(['/login']);
                 }
   
