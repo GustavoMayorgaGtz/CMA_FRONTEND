@@ -27,25 +27,25 @@ export class AuthService {
 
 
  //Peticion para registrar un usuario primario
-  registerPrimaryUser(username: string, correo: string, password: string, telefono: string) {
-    return this.http.post<Object>(server+"auth/registerPrimaryUser", {username, correo, password, telefono})
+  registerPrimaryUser(username: string, correo: string, password: string, telefono: string, zona_horaria: string) {
+    return this.http.post<Object>(server+"auth/registerPrimaryUser", {username, correo, password, telefono, zona_horaria})
   }
 
 
   //Peticion para registrar un usuario secundario
-  registerSecondaryUser(username: string, correo: string, password: string, telefono: string, primaryUser: number, rango: access_functions, token: string) {
+  registerSecondaryUser(username: string, zona_horaria: string, correo: string, password: string, telefono: string, primaryUser: number, rango: access_functions, token: string) {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    return this.http.post<any>(server+"auth/registerSecondaryUser", {username, correo, password, telefono, primaryUser, rango}, {headers})
+    return this.http.post<any>(server+"auth/registerSecondaryUser", {username, correo, password, telefono, primaryUser, rango, zona_horaria}, {headers})
   }
 
    //Peticion para actualizar un usuario secundario
-   updateUser(username: string, correo: string, password: string, telefono: string, idUserQuery: number, idUserFactory: number, rango: access_functions, token: string) {
+   updateUser(username: string, zona_horaria: string, correo: string, password: string, telefono: string, idUserQuery: number, idUserFactory: number, rango: access_functions, token: string) {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}` 
     });
-    return this.http.post<any>(server+"auth/updateUser", {username, correo, password, telefono, idUserQuery, rango, idUserFactory}, {headers})
+    return this.http.post<any>(server+"auth/updateUser", {username, zona_horaria, correo, password, telefono, idUserQuery, rango, idUserFactory}, {headers})
   }
 
   //Observable para obtener los usuarios asociados a un usuario

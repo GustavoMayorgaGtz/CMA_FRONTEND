@@ -35,6 +35,8 @@ export class LoginComponent implements OnInit {
       nombre_usuario: new FormControl('', Validators.required),
       correo: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
+      password2: new FormControl('', Validators.required),
+      zona_horaria: new FormControl('', Validators.required),
       telefono: new FormControl('', Validators.required),
     }) as registerBuilder;
 
@@ -92,6 +94,7 @@ export class LoginComponent implements OnInit {
   public isLoadingRegister: boolean = true;
   changeLogin_Status() {
     this.isLogin = !this.isLogin;
+    
   }
 
   loggear(renemberme: boolean) {
@@ -146,16 +149,23 @@ export class LoginComponent implements OnInit {
       const nombre_usuario = this.registerGroup.controls.nombre_usuario.value;
       const correo = this.registerGroup.controls.correo.value;
       const password = this.registerGroup.controls.password.value;
+      const password2 = this.registerGroup.controls.password2.value;
+      const zona_horaria = this.registerGroup.controls.zona_horaria.value;
       const telefono = this.registerGroup.controls.telefono.value;
-      this.servicios.registerPrimaryUser(nombre_usuario, correo, password, telefono).subscribe((res) => {
-        this.isLoadingRegister = true;
-        this.alertService.setMessageAlert("Usuario registrado");
-        this.isLogin = true;
-      }, (err: HttpErrorResponse) => {
-        this.isLoadingRegister = true;
-        this.alertService.setMessageAlert("No se pudo registrar el usuario. err: " + err.message);
-
-      })
+      if(password == password2){
+        this.servicios.registerPrimaryUser(nombre_usuario, correo, password, telefono, zona_horaria).subscribe((res) => {
+          this.isLoadingRegister = true;
+          this.alertService.setMessageAlert("Usuario registrado");
+          this.isLogin = true;
+        }, (err: HttpErrorResponse) => {
+          this.isLoadingRegister = true;
+          this.alertService.setMessageAlert("No se pudo registrar el usuario. err: " + err.message);
+  
+        })
+      }else{
+        this.alertService.setMessageAlert("Las contraseñas no coinciden");
+      }
+     
     } else {
       if (this.registerGroup.controls.correo.valid) {
         alert("Llena todos los campos")

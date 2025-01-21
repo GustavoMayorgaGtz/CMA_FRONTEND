@@ -359,6 +359,8 @@ export class JsonVariableClass {
      * Funcion que realiza la peticion para la creacion de variables json endpoint
      * @param metodo 
      * @param url 
+     * @param object 
+     * @param nombreElement 
      */
     sendQuery(metodo: string, url: HTMLInputElement, object: Object, nombreElement: HTMLInputElement) {
         if (nombreElement.value && url.value) {

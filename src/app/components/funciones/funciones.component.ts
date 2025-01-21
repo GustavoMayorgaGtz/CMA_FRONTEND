@@ -1,9 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { auth_class } from 'src/app/graphs_class/auth_class';
 import { IAlertSMS_Database, IAlertSMS_Phone } from 'src/app/interfaces/AlertSMS/AlertSMS';
 import { AllVar } from 'src/app/interfaces/interfaces';
 import { AlertService } from 'src/app/service/alert.service';
 import { Alert_SMS_Service } from 'src/app/service/alert.sms.service';
+import { AuthService } from 'src/app/service/auth.service';
 import { VarsService } from 'src/app/service/vars';
 
 @Component({
@@ -13,24 +16,18 @@ import { VarsService } from 'src/app/service/vars';
 })
 export class FuncionesComponent {
 
-
-
-
-
   public menu: number = 1;
   set setMenu(option: number) {
     this.menu = option;
     this.clearInputs();
-
   }
 
-
-
-
-
+  public authClass = new auth_class(this.router, this.authService, this.alertService);
 
 
   constructor(private alertService: AlertService,
+    private router: Router,
+    private authService: AuthService,
     private alertSMS_Service: Alert_SMS_Service,
     private varsService: VarsService) {
     this.getAllVars();
@@ -39,11 +36,18 @@ export class FuncionesComponent {
 
   public allAlertasSMS: IAlertSMS_Database[] = [];
   getAllAlertsSMS() {
-    this.alertSMS_Service.getAllAlertSMS().subscribe((alertas) => {
-      this.allAlertasSMS = alertas;
-    })
+    //Obtener el id del usuario
+    this.authClass.validateUser();
+    const idUser = sessionStorage.getItem("idUser")
+    if (idUser) {
+      this.alertSMS_Service.getAllAlertSMS(parseInt(idUser)).subscribe((alertas) => {
+        this.allAlertasSMS = alertas;
+      })
+    } else {
+      this.alertService.setMessageAlert("R6. Vuelve a iniciar sesion...")
+      this.router.navigate(['/login']);
+    }
   }
-
 
   public allVarsCopy: AllVar[] = [];
   public allVars: AllVar[] = [];
@@ -60,29 +64,17 @@ export class FuncionesComponent {
     }
   }
 
-
-
-
-
-
   //Numeros de telefono
   public numeros: IAlertSMS_Phone[] = [{ code: 0, phone: 0 }];
   modifyNumber(key: string, phone: string, idx: number) {
+    phone = phone.replaceAll(" ", "");
     if (phone.length >= 10 && phone.length <= 15) {
       this.numeros[idx].code = parseInt(key);
       this.numeros[idx].phone = parseInt(phone);
-      console.log("Numeros", this.numeros);
     } else {
       this.alertService.setMessageAlert("El numero debe de tener mas de 9 digitos  y menos de 16 digitos");
     }
   }
-
-
-
-
-
-
-
 
   searchByName(name: string) {
     this.allVars = [];
@@ -94,13 +86,6 @@ export class FuncionesComponent {
     })
   }
 
-
-
-
-
-
-
-
   searchByType(type: string) {
     this.allVars = [];
     this.allVarsCopy.forEach((variable) => {
@@ -110,11 +95,6 @@ export class FuncionesComponent {
     })
   }
 
-
-
-
-
-
   public idxVariableSelected: number | null = null;
   public idVariableSelectInVars: number = 0;
   selectVariable(idx: number) {
@@ -122,12 +102,6 @@ export class FuncionesComponent {
     this.idVariableSelectInVars = this.allVarsCopy[idx].idvar;
     this.alertService.setMessageAlert("Haz seleccionado la variable " + this.allVarsCopy[idx].name);
   }
-
-
-
-
-
-
 
   addNumber() {
     const newPhone: IAlertSMS_Phone = {
@@ -141,31 +115,16 @@ export class FuncionesComponent {
     }
   }
 
-
-
-
-
-
   quitPhone(idx: number) {
     if (this.numeros.length > 1) {
       this.numeros.splice(idx, 1);
     }
   }
 
-
-
-
-
-
   quitIdVariableSelected() {
     this.idxVariableSelected = 0;
     this.idxVariableSelected = null;
   }
-
-
-
-
-
 
   public max_enable: boolean = false;
   public min_enable: boolean = false;
@@ -201,14 +160,6 @@ export class FuncionesComponent {
     }
   }
 
-
-
-
-
-
-
-
-
   public max: string = "0";
   public min: string = "0";
   public equal: string = "0";
@@ -227,8 +178,6 @@ export class FuncionesComponent {
     this.type_data = typeData;
   }
 
-
-
   clearInputs() {
     this.numeros = [{ code: 0, phone: 0 }];
     this.allVars = this.allVarsCopy;
@@ -240,7 +189,6 @@ export class FuncionesComponent {
     this.getAllVars();
   }
 
-
   guardarAlertaSMS_Event(name: string,
     description: string,
     mensaje: string,
@@ -250,7 +198,7 @@ export class FuncionesComponent {
 
     let message = "";
     let enable_alertaSMS = false;
-
+    console.log(this.numeros);
     if (this.equal_enable) {
       //Necesito this.equal para que funcione el registro
       if (this.equal) {
@@ -265,7 +213,6 @@ export class FuncionesComponent {
       enable_alertaSMS = false;
       message = "No haz definido la entrada valor maximo o la entrada valor minimo";
     }
-
 
     //Validar los numeros
     if (this.numeros.length <= 0) {
@@ -284,7 +231,6 @@ export class FuncionesComponent {
         }
       })
     }
-
 
     //validar el metodo de evaluacion
     const methodEvaluation: string[] = ['menor que x', 'mayor que x', 'entre que x', 'fuera de x y y', 'igual a x'];
@@ -350,33 +296,41 @@ export class FuncionesComponent {
       enable_alertaSMS = false;
       message = "No haz definido ningun metodo de evaluacion";
     }
-
-    if (enable_alertaSMS) {
-      this.alertSMS_Service.create({
-        name,
-        description,
-        phone: numeros,
-        message: mensaje,
-        var_evaluation_id: this.idVariableSelectInVars ? this.idVariableSelectInVars : 0,
-        waiting_next_message_time: parseInt(waiting_next_message_time),
-        waiting_send_first_message: 0,//parseInt(waiting_send_first_message),
-        method_evaluation: metodoEvaluacion ? metodoEvaluacion : "mayor que x",
-        max: this.max,
-        min: this.min,
-        equal: this.equal,
-        type_data: "Numerico"
-      }).subscribe((response) => {
-        this.alertService.setMessageAlert("Alerta sms creada");
-        this.clearInputs();
-        this.menu = 1;
-        this.getAllAlertsSMS();
-        this.getAllVars();
-      }, (err: HttpErrorResponse) => {
-        console.log(err);
-        this.alertService.setMessageAlert(err.message);
-      });
+    //Obtener el id del usuario
+    this.authClass.validateUser();
+    const idUser = sessionStorage.getItem("idUser")
+    if (idUser) {
+      if (enable_alertaSMS) {
+        this.alertSMS_Service.create({
+          name,
+          description,
+          phone: numeros,
+          message: mensaje,
+          var_evaluation_id: this.idVariableSelectInVars ? this.idVariableSelectInVars : 0,
+          waiting_next_message_time: parseInt(waiting_next_message_time),
+          waiting_send_first_message: 0,//parseInt(waiting_send_first_message),
+          method_evaluation: metodoEvaluacion ? metodoEvaluacion : "mayor que x",
+          max: this.max,
+          min: this.min,
+          equal: this.equal,
+          type_data: "numerico",
+          primary_id_user: parseInt(idUser)
+        }).subscribe((response) => {
+          this.alertService.setMessageAlert("Alerta SMS creada");
+          this.clearInputs();
+          this.menu = 1;
+          this.getAllAlertsSMS();
+          this.getAllVars();
+        }, (err: HttpErrorResponse) => {
+          console.log(err);
+          this.alertService.setMessageAlert(err.message);
+        });
+      } else {
+        this.alertService.setMessageAlert(message);
+      }
     } else {
-      this.alertService.setMessageAlert(message);
+      this.alertService.setMessageAlert("6. Vuelve a iniciar sesion...")
+      this.router.navigate(['/login']);
     }
   }
 }
