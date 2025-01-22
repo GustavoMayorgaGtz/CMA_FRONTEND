@@ -1,17 +1,20 @@
-<main>   
+<main>
     <section class="formulario">
-         
+
         <!--------------------------------->
         <form *ngIf="isLogin" [formGroup]="loginGroup">
             <div class="form-title">Inicio de sesión</div>
-            <div class="form-description">Inicia sesión para comenzar a monitorear y controlar los eventos de tus procesos.</div>
+            <div class="form-description">Inicia sesión para comenzar a monitorear y controlar los eventos de tus
+                procesos.</div>
             <div class="bloque-entrada">
                 <label for="inpt-title">Nombre de usuario</label>
-                <input type="text" name="username" id="username" autocomplete="off" placeholder="example@example.com" formControlName="nombre_usuario">
+                <input type="text" name="username" id="username" autocomplete="off" placeholder="example@example.com"
+                    formControlName="nombre_usuario">
             </div>
             <div class="bloque-entrada">
                 <label for="inpt-title">Contraseña</label>
-                <input type="password" name="password" id="password" autocomplete="off" placeholder="Password" formControlName="password" (keyup.enter)="loggear(checkbox_renamber.checked)">
+                <input type="password" name="password" id="password" autocomplete="off" placeholder="Password"
+                    formControlName="password" (keyup.enter)="loggear(checkbox_renamber.checked)">
             </div>
             <div class="bloque-general">
                 <div class="container-recordar">
@@ -22,11 +25,11 @@
                     ¿Olvidaste tu contraseña?
                 </div> -->
             </div>
-            <div class="btn-login" >
+            <div class="btn-login">
                 <span *ngIf="validAuthLoading == false" class="back">Comenzar!</span>
                 <div class="front" *ngIf="validAuthLoading == false">Iniciar sesión</div>
                 <div class="focus" (click)="loggear(checkbox_renamber.checked)" *ngIf="validAuthLoading == false"></div>
-                
+
                 <span *ngIf="validAuthLoading == true" class="back">Espera un momento!</span>
                 <div class="front" *ngIf="validAuthLoading == true">Validando credenciales...</div>
             </div>
@@ -36,29 +39,36 @@
             </div>
         </form>
         <!--------------------------------->
-        <form *ngIf="!isLogin" [formGroup]="registerGroup">
+        <form *ngIf="!isLogin" [formGroup]="registerGroup" class="registration-form">
             <div class="form-title">Registrar usuario</div>
             <div class="bloque-entrada">
                 <label for="username">Nombre de usuario</label>
-                <input type="text" name="username" id="username" autocomplete="off" placeholder="Gustavo_Mayorga" formControlName="nombre_usuario">
+                <input type="text" name="username" id="username" autocomplete="off" placeholder="Gustavo_Mayorga"
+                    formControlName="nombre_usuario">
             </div>
             <div class="bloque-entrada">
                 <label for="zona_horaria">Zona_Horaria</label>
                 <select id="zona_horaria" name="zona_horaria" formControlName="zona_horaria">
                     <option selected disabled>Selecciona una zona horaria</option>
+                    <option *ngFor="let horarios of zonas_horarias; let i = index">
+                        {{horarios.nombre}}
+                    </option>
                 </select>
             </div>
             <div class="bloque-entrada">
                 <label for="password">Contraseña</label>
-                <input type="password" name="password" id="password" autocomplete="off" placeholder="Password" formControlName="password">
+                <input type="password" name="password" id="password" autocomplete="off" placeholder="Password"
+                    formControlName="password">
             </div>
             <div class="bloque-entrada">
                 <label for="password">Confirma contraseña</label>
-                <input type="password" name="password2" id="password2" autocomplete="off" placeholder="Password2" formControlName="password2">
+                <input type="password" name="password2" id="password2" autocomplete="off" placeholder="Password"
+                    formControlName="password2">
             </div>
             <div class="bloque-entrada">
                 <label for="email">Correo electronico</label>
-                <input type="text" name="email" id="email" autocomplete="off" placeholder="awesome@example.com" formControlName="correo">
+                <input type="text" name="email" id="email" autocomplete="off" placeholder="awesome@example.com"
+                    formControlName="correo">
             </div>
             <div class="bloque-entrada">
                 <label for="name">Telefono</label>

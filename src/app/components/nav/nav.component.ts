@@ -7,4 +7,7 @@ import { Component } from '@angular/core';
 })
 export class NavComponent {
 
+  gotoschool(){
+    window.location.href = "https://cmasystems.com.mx/learning/"
+  }
 }

@@ -4,8 +4,10 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UnsubscriptionError } from 'rxjs';
 import { loginBuilder, registerBuilder } from 'src/app/interfaces/LoginInterface/login.interface';
+import { Zona_Horaria } from 'src/app/interfaces/Zona_Horaria/zona_horaria.interface';
 import { AlertService } from 'src/app/service/alert.service';
 import { AuthService } from 'src/app/service/auth.service';
+import { ZonaHorariaService } from 'src/app/service/zona-horaria.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +26,8 @@ export class LoginComponent implements OnInit {
     private builder: FormBuilder
     , private servicios: AuthService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private zona_horaria_service: ZonaHorariaService
   ) {
     this.loginGroup = this.builder.group({
       nombre_usuario: new FormControl('', Validators.required),
@@ -40,10 +43,17 @@ export class LoginComponent implements OnInit {
       telefono: new FormControl('', Validators.required),
     }) as registerBuilder;
 
-
+    this.get_zona_horaria();
     this.userSavedSession();
   }
 
+
+   public zonas_horarias: Zona_Horaria[] = [];
+    get_zona_horaria(){
+      this.zona_horaria_service.getZonaHoraria().subscribe((response) => {
+        this.zonas_horarias = response;
+      })
+    }
 
 
   userSavedSession(){

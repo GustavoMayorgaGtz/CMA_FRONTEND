@@ -1,12 +1,17 @@
+* {
+    box-sizing: border-box;
+}
+
 .chart-container {
     width: 100%;
     min-height: 50vh;
     height: 60vh;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 3px;
     padding: 10px;
     background-color: white;
     border: 1px solid rgb(218, 218, 218);
+    box-shadow: -5px 0px 0px -8px rgba(0, 0, 0, 0.062);
     margin-top: 50px;
 
 }
@@ -15,12 +20,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgb(236, 236, 236);
+    background-color: rgb(245, 245, 245);
     border: 1px solid rgb(218, 218, 218);
-    padding: 20px 50px;
+    padding: 10px 15px;
     width: 100vw;
     box-sizing: border-box;
-    // height: 100vh;
     overflow: hidden;
     overflow-y: scroll;
     position: relative;
@@ -62,20 +66,24 @@
         padding: 10px;
         background-color: white;
         border: 1px solid rgb(218, 218, 218);
-        margin-top: 10px;
-        display: grid;
-        grid-template-columns: 30% 70%;
+        margin-top: 3px;
+        display: flex;
+        // grid-template-columns: 30% 70%;
 
-        .information-table{
+        .information-table {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             box-sizing: border-box;
+            font-size: calc(0.4vw + 7px);
             padding: 10px 20px;
-            margin:10px 0px;
-            border-radius: 5px;
+            margin: 10px 0px;
+            border-radius: 3px;
             border: 1px solid black;
-            width: 100%; 
+            width: 100%;
             background-color: rgb(226, 226, 226);
 
-            .info-ico{
+            .info-ico {
                 width: 20px;
                 height: 20px;
             }
@@ -85,15 +93,23 @@
             grid-column: 1;
             width: 100%;
             border-collapse: collapse;
-            min-width: 200px;
+            // min-width: 200px;
             border: 1px solid black;
 
             .head {
                 background-color: rgb(210, 210, 210);
-                padding: 10px;
+                // padding: 10px;
+
+                th {
+                    // background-color: rgb(255, 255, 255);
+                    height: 50px;
+                    font-size: calc(0.4vw + 7px);
+                }
             }
 
             td {
+                background-color: white;
+                font-size: calc(0.4vw + 7px);
                 padding: 10px;
                 border: 1px solid black;
             }
@@ -104,107 +120,123 @@
             }
         }
 
-       
-            .menu {
-                grid-column: 2;
-                margin: 10px 50px;
-                border-radius: 20px;
-                padding: 5px 20px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                box-sizing: border-box;
-                background-color: rgb(226, 226, 226);
-                height: 80vh;
-                left: 50px;
-                .title{
+
+        .menu {
+            grid-column: 2;
+            // margin: 10px 10px;
+            border-radius: 3px;
+            padding: 5px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+            border: 1px solid black;
+            background-color: rgb(226, 226, 226);
+            width: 100%;
+            height: min-content;
+            left: 50px;
+
+            .container-table {
+                width: 100%;
+            }
+
+            .title {
+                font-weight: bold;
+            }
+
+            .line {
+                width: 100%;
+                height: 1px;
+                background-color: rgb(154, 154, 154);
+                margin: 20px 0px;
+            }
+
+            .campo {
+                width: 100%;
+
+                .subtitle {
                     font-weight: bold;
                 }
 
-                .line{
+                .content {
                     width: 100%;
-                    height: 1px;
-                    background-color: rgb(154, 154, 154);
-                    margin: 20px 0px;
-                }
-                .campo{
-                    width: 100%;
-                    .subtitle{
-                        font-weight: bold;
-                    }
-                    .content{
+                    font-size: calc(0.6vw + 8px);
+
+                    .input-muestreo {
+                        display: grid;
+                        grid-template-rows: 1fr 1fr;
                         width: 100%;
-                        font-size: calc(0.6vw + 8px);
 
-                        .input-muestreo{
-                            display: grid;
-                            grid-template-rows: 1fr 1fr;
-                            width: 100%;
-                            input{
-                                grid-row: 1;
-                            }
-                            .bottom{
-                                display: flex;
-                                justify-content: space-between;
-                                grid-row: 2;
-
-                                .min, .max{
-                                    font-size: calc(0.6vw + 6px);
-                                    font-weight: bold;
-                                }
-
-                                .center{
-                                    font-size: calc(0.6vw + 6px);
-                                    font-weight: bold;
-                                    color: green;
-                                }
-
-                            }
+                        input {
+                            grid-row: 1;
                         }
 
-                        .input-groupby{
-                            width: 100%;
-                            display: grid;
-                            grid-template-rows: 1fr 1fr;
+                        .bottom {
+                            display: flex;
+                            justify-content: space-between;
+                            grid-row: 2;
 
-                            .top{
-                                grid-row: 1;
-                                width: 100%;
+                            .min,
+                            .max {
+                                font-size: calc(0.6vw + 6px);
+                                font-weight: bold;
                             }
 
-                            .bottom{
+                            .center {
+                                font-size: calc(0.6vw + 6px);
+                                font-weight: bold;
+                                color: green;
+                            }
+
+                        }
+                    }
+
+                    .input-groupby {
+                        width: 100%;
+                        display: grid;
+                        grid-template-rows: 1fr 1fr;
+
+                        .top {
+                            grid-row: 1;
+                            width: 100%;
+                        }
+
+                        .bottom {
+                            display: flex;
+
+                            .option {
                                 display: flex;
-                                .option{
-                                    display: flex;
-                                    justify-content: center;
-                                    font-size: calc(0.6vw + 6px);
-                                    align-items: center;
-                                    width: 100%;
-                                    height: 35px;
-                                    border:1px solid rgba(0, 0, 0, 0.216);
-                                    cursor: pointer;
-                                    transition: all 0.2s;
+                                justify-content: center;
+                                font-size: calc(0.6vw + 6px);
+                                align-items: center;
+                                width: 100%;
+                                height: 35px;
+                                background-color: white;
+                                border: 1px solid rgba(0, 0, 0);
+                                cursor: pointer;
+                                transition: all 0.2s;
 
-                                    &:hover{
-                                        transition: all 0.5s;
-                                        transform: scale(1.01);
-                                        background-color: rgba(255, 255, 255, 0.619);
-                                    }
+                                &:hover {
+                                    transition: all 0.5s;
+                                    transform: scale(1.01);
+                                    background-color: rgba(255, 255, 255, 0.619);
                                 }
+                            }
 
-                                .option-mark{
-                                    @extend .option;
+                            .option-mark {
+                                @extend .option;
+                                background-color: rgb(60, 105, 173);
+                                color: white;
+
+                                &:hover {
+                                    transform: scale(1);
                                     background-color: rgb(60, 105, 173);
-                                    color: white;
-                                    &:hover{
-                                        transform: scale(1);
-                                        background-color: rgb(60, 105, 173);
-                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+        }
     }
 }

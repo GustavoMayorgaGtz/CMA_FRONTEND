@@ -189,6 +189,11 @@ main {
             left: 5%;
         }
 
+        .registration-form{
+            padding-top: 100px;
+            height: 100%;
+            overflow-y: scroll;
+        }
         form {
             padding: 10px 30px;
             width: 80%;
@@ -228,7 +233,7 @@ main {
                     font-size: 0.8em;
                 }
 
-                input {
+                input, select {
                     height: 40px;
                     border-radius: 8px;
                     border: 1px solid rgb(187, 187, 187);

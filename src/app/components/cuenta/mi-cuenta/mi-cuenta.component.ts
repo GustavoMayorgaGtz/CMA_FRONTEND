@@ -5,6 +5,8 @@ import { access_functions, Users } from 'src/app/interfaces/GestionUsuarios/Gest
 import { AlertService } from 'src/app/service/alert.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { Add_User_Secundary_Class } from '../gestion-cuentas/add-user-secudary-class';
+import { ZonaHorariaService } from 'src/app/service/zona-horaria.service';
+import { Zona_Horaria } from 'src/app/interfaces/Zona_Horaria/zona_horaria.interface';
 
 @Component({
   selector: 'app-mi-cuenta',
@@ -17,11 +19,12 @@ export class MiCuentaComponent {
   private token!: string;
   public id_user!: number;
 
-  constructor(private router: Router, private authService: AuthService, private alert: AlertService) {
+  constructor(private router: Router, private authService: AuthService, private alert: AlertService, private zona_horaria_service: ZonaHorariaService) {
     const token = sessionStorage.getItem("token");
     const id_user = sessionStorage.getItem("idUser");
     if (token && id_user) {
-      this.authService.authUser(parseInt(id_user), token ).subscribe((response) => { 
+      this.get_zona_horaria();
+      this.authService.authUser(parseInt(id_user), token).subscribe((response) => {
         this.token = token;
         this.id_user = parseInt(id_user);
         this.getOneUser(parseInt(id_user));
@@ -34,6 +37,26 @@ export class MiCuentaComponent {
       this.router.navigate(['/login']);
     }
   }
+
+
+  change_zona_horaria(zona_horaria: string) {
+    if (zona_horaria != this.userSelected?.zona_horaria) {
+       this.zona_horaria_service.updateZonaHoraria(zona_horaria).subscribe((response) => {
+        this.alert.setMessageAlert("Se actualizo el usuario");
+       }, (err) => {
+        this.alert.setMessageAlert("No se actualizo el usuario");
+       })
+    }
+  }
+
+
+  public zonas_horarias: Zona_Horaria[] = [];
+  get_zona_horaria() {
+    this.zona_horaria_service.getZonaHoraria().subscribe((response) => {
+      this.zonas_horarias = response;
+    })
+  }
+
 
   public secundary_user_functions = new Add_User_Secundary_Class(this.authService, this.alert);
   public userSelected!: Users | null;

@@ -9,47 +9,12 @@
         </canvas>
     </div>
     <div class="information">
-        <div class="container-table">
-            <div class="information-table">
-                <img src="./assets/info.png" class="info-ico"> La tabla presenta los datos recopilados a lo largo del periodo establecido desde la creación del gráfico lineal.
-            </div>
-
-            <table>
-                <tr class="head">
-                    <th>Fecha de registro</th>
-                    <th>Valor</th>
-                </tr>
-                <tr *ngFor="let valor of blobdataInformation; let i = index">
-                    <td class="columna">
-                        {{valor.fecha}}
-                    </td>
-                    <td class="columna">
-                        {{valor.valor}}
-                    </td>
-                </tr>
-            </table>
-        </div>
+       
         <div class="menu">
             <!-- <p class="title">Muestreo</p> -->
             <div class="information-table">
                 <img src="./assets/info.png" class="info-ico"> Selecciona los datos que quieres visualizar y descarga los datos en excel.
             </div>
-      
-            <!-- <div class="campo">
-                <div class="subtitle">
-                    Muestreo de datos
-                </div>
-                <div class="content">
-                    <div class="input-muestreo">
-                        <input type="range" min="10" max="2000" step="10" #range value={{samplingNumber}} (click)="grafica_linear.setMuestreo(range.value)" (change)="grafica_linear.setMuestreo(range.value)" >
-                        <div class="bottom">
-                            <div class="min">0</div>
-                            <div class="center">{{range.value}}</div>
-                            <div class="max">2000</div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
            
             <div class="campo">
                 <div class="subtitle">
@@ -134,6 +99,26 @@
                     </td>
                 </tr>
             </table>
+            <div class="container-table">
+                <div class="information-table">
+                    <img src="./assets/info.png" class="info-ico"> La tabla presenta datos recopilados.
+                </div>
+    
+                <table>
+                    <tr class="head">
+                        <th>Fecha de registro</th>
+                        <th>Valor</th>
+                    </tr>
+                    <tr *ngFor="let valor of blobdataInformation; let i = index">
+                        <td class="columna">
+                            {{valor.fecha}}
+                        </td>
+                        <td class="columna">
+                            {{valor.valor}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 

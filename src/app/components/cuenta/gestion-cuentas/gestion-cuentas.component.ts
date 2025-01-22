@@ -6,6 +6,8 @@ import { AlertService } from 'src/app/service/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { access_functions, Users } from 'src/app/interfaces/GestionUsuarios/GestionUsuarios.Interface';
 import { count } from 'rxjs';
+import { ZonaHorariaService } from 'src/app/service/zona-horaria.service';
+import { Zona_Horaria } from 'src/app/interfaces/Zona_Horaria/zona_horaria.interface';
 
 @Component({
   selector: 'app-gestion-cuentas',
@@ -23,13 +25,14 @@ export class GestionCuentasComponent {
 
 
 
-  constructor(private router: Router, private authService: AuthService, private alert: AlertService) {
+  constructor(private router: Router, private authService: AuthService, private alert: AlertService, private zona_horaria_service: ZonaHorariaService) {
     const token = sessionStorage.getItem("token");
     const id_user = sessionStorage.getItem("idUser");
     if (token && id_user) {
       this.token = token;
       this.id_user = parseInt(id_user);
       this.getUsers();
+      this.get_zona_horaria();
     } else {
       sessionStorage.removeItem("id_user")
       sessionStorage.removeItem("token")
@@ -37,7 +40,12 @@ export class GestionCuentasComponent {
     }
   }
 
-
+  public zonas_horarias: Zona_Horaria[] = [];
+  get_zona_horaria(){
+    this.zona_horaria_service.getZonaHoraria().subscribe((response) => {
+      this.zonas_horarias = response;
+    })
+  }
   /**
    * Obtener todos los usuarios by id_usuario_primario
    */
@@ -46,43 +54,46 @@ export class GestionCuentasComponent {
       this.authService.getUsers(this.id_user, this.token).subscribe((users) => {
         this.alert.setMessageAlert("Usuarios cargados...");
         this.users = [];
-        users.forEach(user => {
-          const functionsacces = user.access_functions.replaceAll(/[()]/g, "").split(",").map((v) => v == 't' ? true : false);
-          const access_functions_this: access_functions = {
-            edit_json_connection: functionsacces[0],
-            drop_json_connection: functionsacces[1],
-            modify_json_connection: functionsacces[2],
-            use_json_connection: functionsacces[3],
-            edit_modbus_connection: functionsacces[4],
-            drop_modbus_connection: functionsacces[5],
-            modify_modbus_connection: functionsacces[6],
-            use_modbus_connection: functionsacces[7],
-            edit_memory_connection: functionsacces[8],
-            drop_memory_connection: functionsacces[9],
-            modify_memory_connection: functionsacces[10],
-            use_memory_connection: functionsacces[11],
-            edit_endpoint_connection: functionsacces[12],
-            drop_endpoint_connection: functionsacces[13],
-            modify_endpoint_connection: functionsacces[14],
-            use_endpoint_connection: functionsacces[15],
-            create_line_graph: functionsacces[16],
-            drop_line_graph: functionsacces[17],
-            edit_line_graph: functionsacces[18],
-            modify_line_graph: functionsacces[19],
-            create_simple_button: functionsacces[20],
-            drop_simple_button: functionsacces[21],
-            edit_simple_button: functionsacces[22],
-            modify_simple_button: functionsacces[23],
-            create_alert_sms: functionsacces[24],
-            edit_alert_sms: functionsacces[25],
-            drop_alert_sms: functionsacces[26],
-            view_alert_sms_logs: functionsacces[27],
-            modify_tieldmap: functionsacces[28]
-          }
-
-          const userTransform: Users = { ...user, access_functions: access_functions_this }
-          this.users.push(userTransform);
-        })
+        if(users){
+          users.forEach(user => {
+            const functionsacces = user.access_functions.replaceAll(/[()]/g, "").split(",").map((v) => v == 't' ? true : false);
+            const access_functions_this: access_functions = {
+              edit_json_connection: functionsacces[0],
+              drop_json_connection: functionsacces[1],
+              modify_json_connection: functionsacces[2],
+              use_json_connection: functionsacces[3],
+              edit_modbus_connection: functionsacces[4],
+              drop_modbus_connection: functionsacces[5],
+              modify_modbus_connection: functionsacces[6],
+              use_modbus_connection: functionsacces[7],
+              edit_memory_connection: functionsacces[8],
+              drop_memory_connection: functionsacces[9],
+              modify_memory_connection: functionsacces[10],
+              use_memory_connection: functionsacces[11],
+              edit_endpoint_connection: functionsacces[12],
+              drop_endpoint_connection: functionsacces[13],
+              modify_endpoint_connection: functionsacces[14],
+              use_endpoint_connection: functionsacces[15],
+              create_line_graph: functionsacces[16],
+              drop_line_graph: functionsacces[17],
+              edit_line_graph: functionsacces[18],
+              modify_line_graph: functionsacces[19],
+              create_simple_button: functionsacces[20],
+              drop_simple_button: functionsacces[21],
+              edit_simple_button: functionsacces[22],
+              modify_simple_button: functionsacces[23],
+              create_alert_sms: functionsacces[24],
+              edit_alert_sms: functionsacces[25],
+              drop_alert_sms: functionsacces[26],
+              view_alert_sms_logs: functionsacces[27],
+              modify_tieldmap: functionsacces[28]
+            }
+  
+            const userTransform: Users = { ...user, access_functions: access_functions_this }
+            this.users.push(userTransform);
+          })
+        }
+      
 
       }, (err: HttpErrorResponse) => {
         this.alert.setMessageAlert("No se ha podido recuperar los usuarios")
