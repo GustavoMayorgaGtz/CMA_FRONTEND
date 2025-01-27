@@ -13,7 +13,6 @@
                 corporativos.
             </div>
         </div>
-        <hr>
         <div class="menuVar">
             <div class="options">
                 <div class="option" *ngIf="menu != 1" (click)="setMenu = 1">Alertas</div>
@@ -149,9 +148,12 @@
                             </div>
                             <select #typeVarSearch (change)="searchByType(typeVarSearch.value)">
                                 <option disabled selected>Selecciona un tipo de variable</option>
-                                <option value="json">Json Endpoint</option>
-                                <option value="modbus">Modbus</option>
-                                <option value="memory">Memoria</option>
+                                <option value="json">json endpoint</option>
+                                <!-- <option value="modbus">modbus</option> -->
+                                <option value="memory">memoria</option>
+                                <option value="indicator">indicador</option>
+                                <option value="streaming">camara</option>
+                                <option value="pulsacion">pulsacion</option>
                             </select>
                         </div>
                         <div class="variables" *ngIf="idxVariableSelected === null">
@@ -164,6 +166,12 @@
                                     <div class="color" *ngSwitchCase="'modbus'" style="color:  rgb(79, 155, 55);">modbus
                                     </div>
                                     <div class="color" *ngSwitchCase="'memory'" style="color: rgb(97, 50, 179);">memory
+                                    </div>
+                                    <div class="color" *ngSwitchCase="'indicator'" style="color: rgb(46, 91, 143);">indicador
+                                    </div>
+                                    <div class="color" *ngSwitchCase="'streaming'" style="color: rgb(143, 46, 46);">camara
+                                    </div>
+                                    <div class="color" *ngSwitchCase="'pulsacion'" style="color:  rgb(79, 155, 55);">pulsacion
                                     </div>
                                 </div>
                             </div>
@@ -216,7 +224,19 @@
                     </div>
                 </div>
                 <div class="Eventos" *ngIf="menu == 3">
-                    Eventos de alerta.  <b style="color: rgb(156, 115, 37); font-size: 12px;">(Función aun no disponible)</b>
+                    Eventos de alerta.  
+                    <b style="color: rgb(156, 115, 37); font-size: 12px;">(Solo se almacenaran los ultimos 100 eventos registrados)</b>
+                    <div class="events-container">
+                        <br>
+                        <div class="event" *ngFor="let event of events; let idx = index">
+                            <span class="date"> 
+                                {{event.date_trigger}}
+                            </span>
+                            <div class="message">
+                                {{event.message}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

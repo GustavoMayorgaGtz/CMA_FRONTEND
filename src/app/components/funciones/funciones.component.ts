@@ -2,10 +2,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { auth_class } from 'src/app/graphs_class/auth_class';
+import { IAlertSMS_Event } from 'src/app/interfaces/AlertEventSMS/AlertEventSMS';
 import { IAlertSMS_Database, IAlertSMS_Phone } from 'src/app/interfaces/AlertSMS/AlertSMS';
 import { AllVar } from 'src/app/interfaces/interfaces';
 import { AlertService } from 'src/app/service/alert.service';
 import { Alert_SMS_Service } from 'src/app/service/alert.sms.service';
+import { Alert_Event_SMS_Service } from 'src/app/service/alert_events.sms.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { VarsService } from 'src/app/service/vars';
 
@@ -29,10 +31,28 @@ export class FuncionesComponent {
     private router: Router,
     private authService: AuthService,
     private alertSMS_Service: Alert_SMS_Service,
-    private varsService: VarsService) {
+    private varsService: VarsService, private alert_event_service: Alert_Event_SMS_Service) {
     this.getAllVars();
     this.getAllAlertsSMS();
+    this.getEventsAlerts();
   }
+
+  public events: IAlertSMS_Event[] = [];
+  getEventsAlerts() {
+    const idUser = sessionStorage.getItem("idUser")
+    if (idUser) {
+      this.alert_event_service.getAllEventsAlertSms(parseInt(idUser)).subscribe((events) => {
+        this.events = events;
+        console.log("Eventos: ", events);
+      }, (err: HttpErrorResponse) => {
+        this.alertService.setMessageAlert("No se pudieron obtener los eventos");
+      })
+    } else {
+      this.alertService.setMessageAlert("Vuelve a iniciar sesion...")
+      this.router.navigate(['/login']);
+    }
+  }
+
 
   public allAlertasSMS: IAlertSMS_Database[] = [];
   getAllAlertsSMS() {
@@ -44,7 +64,7 @@ export class FuncionesComponent {
         this.allAlertasSMS = alertas;
       })
     } else {
-      this.alertService.setMessageAlert("R6. Vuelve a iniciar sesion...")
+      this.alertService.setMessageAlert("Vuelve a iniciar sesion...")
       this.router.navigate(['/login']);
     }
   }

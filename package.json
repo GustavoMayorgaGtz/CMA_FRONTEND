@@ -23,6 +23,7 @@
     "apexcharts": "^3.40.0",
     "axios": "^1.6.8",
     "chart.js": "^3.8.0",
+    "chartjs-plugin-zoom": "^2.2.0",
     "ng-apexcharts": "^1.7.6",
     "ng2-charts": "^3.1.0",
     "rxjs": "~7.5.0",

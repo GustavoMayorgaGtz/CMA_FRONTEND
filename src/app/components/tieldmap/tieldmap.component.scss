@@ -122,6 +122,8 @@ $SPACE_TITLE: 30px;
     overflow-x: hidden;
     padding-bottom: 200px;
 
+
+
 }
 
 @media screen and (max-width: 700px) {
@@ -140,11 +142,81 @@ $SPACE_TITLE: 30px;
     // display: flex;
     // flex-direction: column;
 
+    .menu {
+        width: 30px;
+        height: 30px;
+        border-radius: 0px 3px 3px 0px;
+        background-color: white;
+        border: 1px solid rgb(214, 214, 214);
+        position: absolute;
+        top: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        right: -30px;
+
+       
+
+        .menu-icon {
+            width: 60%;
+            height: 60%;
+            transition: all 0.2s;
+        }
+
+        .menu-icon:hover {
+            transition: all 0.2s;
+            width: 70%;
+            height: 70%;
+            cursor: pointer;
+        }
+    }
+
+    .menu-list-hidden{
+        display: none;
+    }
+    
+    .menu-list {
+        width: min-content;
+        height: min-content;
+        border-radius: 0px 3px 3px 0px;
+        background-color: white;
+        position: absolute;
+        top: 30px;
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        right: -150px;
+        background-color: white;
+        flex-direction: column;
+
+        .option
+        {
+            font-size: calc(0.4vw + 5px);
+            border: 1px solid rgb(214, 214, 214);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 150px;
+            height: 30px;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:hover{
+                transition: all 0.2s;
+                font-size: calc(0.4vw + 5px);
+                font-weight: bold;
+                background-color: rgb(252, 252, 252);
+            }
+        }
+    }
+
 
     &:hover {
         // background-color: white;
         // box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.041);
         // border: 2px solid black;
+        z-index: 1000;
 
         .opendata {
             transition: all 0.2;

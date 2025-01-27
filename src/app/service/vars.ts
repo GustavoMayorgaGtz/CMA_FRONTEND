@@ -22,7 +22,7 @@ export class VarsService {
    * @param primary_user 
    * @returns {Observable<AllVar[]>}
    */
-  getAllVars(primary_user: number) {
+  getAllVars(id_usuario: number) {
     const token = sessionStorage.getItem('token');
     if (!token) {
       this.router.navigate(['/login'])
@@ -30,7 +30,7 @@ export class VarsService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    return this.http.get<AllVar[]>(server + `vars/get?primary_user=${primary_user}`, { headers });
+    return this.http.post<AllVar[]>(server + `vars/get`,{id_usuario}, { headers });
   }
 
 
