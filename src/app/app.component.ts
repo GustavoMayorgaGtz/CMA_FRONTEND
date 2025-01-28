@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { SplashScreen } from '@capacitor/splash-screen';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,7 @@ import { Platform } from '@ionic/angular';
 export class AppComponent {
   constructor(private platform: Platform) {
     this.initializeApp();
+    this.showSplash();
   }
 
   initializeApp() {
@@ -16,4 +18,11 @@ export class AppComponent {
     });
   }
   title = 'CMA';
+
+  async showSplash(){
+    await SplashScreen.show({
+      autoHide: true,
+      showDuration:3000
+    });
+  }
 }

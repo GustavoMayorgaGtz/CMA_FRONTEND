@@ -25,3 +25,6 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Export to android with capacitor
+Run `npm run cordova_build` to get the android app for cma, it will be build the web app and capacitor copy and use gradle to build android aplication.

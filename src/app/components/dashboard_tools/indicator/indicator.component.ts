@@ -3,6 +3,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { DefaultEventsMap } from '@socket.io/component-emitter';
 import { io, Socket } from 'socket.io-client';
 import { IRecive_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
+import { WebsocketRecive } from 'src/app/interfaces/Websocket/websocket.interfaces';
 import { AlertService } from 'src/app/service/alert.service';
 import { IndicatorService } from 'src/app/service/indicators_service';
 import { ws_server } from 'src/environments/environment';
@@ -29,9 +30,9 @@ export class IndicatorComponent implements OnInit, OnChanges {
     private alertService: AlertService
   ) { }
 
-  public data: any;
+  public data!: WebsocketRecive;
   ngOnInit(): void {
-   
+
   }
 
 
@@ -39,12 +40,14 @@ export class IndicatorComponent implements OnInit, OnChanges {
   TriggerConnectSocket() {
     if (this.socket) {
       if (this.socket.disconnected == true) {
-        
+
         this.Connect_Socket().then(() => {
           //El socket funciono correctamente
           this.listenIndicators(this.indicator_saved);
         })
           .catch((err) => {
+            console.log("Error de conexion")
+            console.log(err)
             this.TriggerConnectSocket();
           })
       }
@@ -53,6 +56,8 @@ export class IndicatorComponent implements OnInit, OnChanges {
         //El socket funciono correctamente
       })
         .catch((err) => {
+          console.log("Error de conexion")
+            console.log(err)
           this.TriggerConnectSocket();
         })
     }
@@ -98,13 +103,18 @@ export class IndicatorComponent implements OnInit, OnChanges {
 
   listenIndicators(list: IRecive_Indicator) {
     this.Connect_Socket().then((connection) => {
-      this.socket.emit('joinGroup', { group
-        : list.groupname }); // Unirse al grupo
-      this.socket.on(list.groupname, (data: string) => {
+      console.log(connection)
+      this.socket.emit('joinGroup', {
+        group: list.groupname
+      }); // Unirse al grupo
+      
+      this.socket.on(list.groupname, (data: WebsocketRecive) => {
         this.data = data;
       });
-      this.socket.on("disconnect", () => {
+      this.socket.on("disconnect", (err, other) => {
         this.status = false;
+        console.log(err);
+        console.log(other);
         console.log("Se desconecto la conexion")
         if (this.intentosReconexion < 3) {
           this.TriggerConnectSocket();
@@ -127,9 +137,9 @@ export class IndicatorComponent implements OnInit, OnChanges {
           this.Connect_Socket().then(() => {
             this.listenIndicators(data);
           })
-          .catch((err) =>{
-            console.log(err);
-          })
+            .catch((err) => {
+              console.log(err);
+            })
           const actualIndicator = data;
           this.title = actualIndicator.title;
           this.description = actualIndicator.description;

@@ -9,8 +9,7 @@ import { NgChartsModule } from 'ng2-charts';
 
 
 @NgModule({
-    declarations: [BlobdataComponent,
-      
+    declarations: [BlobdataComponent
     ],
     imports: [
         CommonModule,

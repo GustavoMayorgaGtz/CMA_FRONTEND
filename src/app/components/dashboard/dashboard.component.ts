@@ -6,6 +6,7 @@ import { AlertService } from 'src/app/service/alert.service';
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { ExitService } from 'src/app/service/exit.service';
 import { SignalService } from 'src/app/service/signal_websocket.service';
+import { MenuToolService } from 'src/app/service/tool-button-navigate';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +25,8 @@ export class DashboardComponent implements OnInit {
     private signalsService: SignalService,
     private router: Router,
     private dashboardService: DashboardService,
-    private alertService: AlertService) { }
+    private alertService: AlertService,
+    private menuToolService: MenuToolService) { }
 
 
 
@@ -45,6 +47,7 @@ export class DashboardComponent implements OnInit {
             this.alertService.setMessageAlert("Dashboard creado correctamente.");
             this.getDashboard();
             setTimeout(() => {
+              this.viewCreateDashboardButton = true;
               this.menu_tool = 0;
             }, 2000);
           }, (err: HttpErrorResponse) => {
@@ -123,6 +126,10 @@ export class DashboardComponent implements OnInit {
     // })
 
     this.getDashboard();
+
+    this.menuToolService.menuToolChange.subscribe((tool: number) => {
+      this.menu_tool = tool; // Actualiza menu_tool con el nuevo valor
+    });
 
   }
 

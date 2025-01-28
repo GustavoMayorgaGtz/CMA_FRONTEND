@@ -1,10 +1,11 @@
 <div class="main">
     <div class="create_user_container">
+        <div class="content_nav">
+            Perfil
+        </div>
         <div class="form-container">
-            Datos principales
-            <div class="line"></div>
             <div class="campo">
-                <label for="username" class="subtitle">Nombre de usuario</label>
+                <label for="username" class="subtitle" style="white-space: nowrap;">Nombre de usuario</label>
                 <input type="text" name="username" id="username" class="ipt_text" #username
                     (click)="secundary_user_functions.input_nombre_usuario = username.value"
                     (keyup)="secundary_user_functions.input_nombre_usuario = username.value"
@@ -24,10 +25,11 @@
             </div>
             <div class="line_soft"></div>
             <div class="line"></div>
-            Permisos del usuario: Funciones de variables
+            <span class="title-category">
+                Permisos del usuario: Funciones de variables
+            </span>
             <div class="line"></div>
             <div class="permisos-container">
-
                 <div class="container-roles">
                     <div class="subtitle">
                         Acceso a creacion de variables
@@ -84,57 +86,64 @@
                             [checked]="userSelected?.access_functions?.drop_endpoint_connection">
                     </div>
                 </div>
-                <div class="line"></div>
+               
+            </div>
+            <div class="line"></div>
+            <span class="title-category">
                 Permisos del usuario: Funciones de dashboard
-                <div class="line"></div>
-                <div class="permisos-container">
-                    <div class="container-roles">
-                        <div class="subtitle">
-                            Acceso del dashboard
-                        </div>
-                        <div class="rol">
-                            <div class="subtitle">Manipular dashboard</div>
-                            <input type="checkbox" disabled #manipule_tieldmap
-                                (change)="secundary_user_functions.input_modify_tieldmap = manipule_tieldmap.checked"
-                                [checked]="userSelected?.access_functions?.modify_tieldmap">
-                        </div>
-                        <div class="rol">
-                            <div class="subtitle">Crear graficos lineales</div>
-                            <input type="checkbox" disabled #create_line_graph
-                                (change)="secundary_user_functions.input_crear_line_graph = create_line_graph.checked"
-                                [checked]="userSelected?.access_functions?.create_line_graph">
-                        </div>
-                        <div class="rol">
-                            <div class="subtitle">Crear botones simples</div>
-                            <input type="checkbox" disabled #create_simple_button
-                                (change)="secundary_user_functions.input_crear_simple_button = create_simple_button.checked"
-                                [checked]="userSelected?.access_functions?.create_simple_button">
-                        </div>
+            </span>
+            <div class="line"></div>
+            <div class="permisos-container">
+                <div class="container-roles">
+                    <div class="subtitle">
+                        Acceso del dashboard
                     </div>
-                    <div class="line"></div>
-                    Permisos del usuario: Funciones de alertas
-                    <div class="line"></div>
-                    <div class="permisos-container">
-                        <div class="container-roles">
-                            <div class="subtitle">
-                                Acceso a alertas
-                            </div>
-                            <div class="rol">
-                                <div class="subtitle">Ver eventos de las alertas sms</div>
-                                <input type="checkbox" disabled #view_logs_alert_sms
-                                    (change)="secundary_user_functions.input_logs_alertas_sms = view_logs_alert_sms.checked"
-                                    [checked]="userSelected?.access_functions?.view_alert_sms_logs">
-                            </div>
-                            <div class="rol">
-                                <div class="subtitle">Crear alertas sms</div>
-                                <input type="checkbox" disabled #create_alert_sms
-                                    (change)="secundary_user_functions.input_crear_alertas_sms = create_alert_sms.checked"
-                                    [checked]="userSelected?.access_functions?.create_alert_sms">
-                            </div>
-                        </div>
+                    <div class="rol">
+                        <div class="subtitle">Manipular dashboard</div>
+                        <input type="checkbox" disabled #manipule_tieldmap
+                            (change)="secundary_user_functions.input_modify_tieldmap = manipule_tieldmap.checked"
+                            [checked]="userSelected?.access_functions?.modify_tieldmap">
+                    </div>
+                    <div class="rol">
+                        <div class="subtitle">Crear graficos lineales</div>
+                        <input type="checkbox" disabled #create_line_graph
+                            (change)="secundary_user_functions.input_crear_line_graph = create_line_graph.checked"
+                            [checked]="userSelected?.access_functions?.create_line_graph">
+                    </div>
+                    <div class="rol">
+                        <div class="subtitle">Crear botones simples</div>
+                        <input type="checkbox" disabled #create_simple_button
+                            (change)="secundary_user_functions.input_crear_simple_button = create_simple_button.checked"
+                            [checked]="userSelected?.access_functions?.create_simple_button">
+                    </div>
+                </div>
+             
+            </div>
+            <div class="line"></div>
+            <span class="title-category">
+                Permisos del usuario: Funciones de alertas
+            </span>
+            <div class="line"></div>
+            <div class="permisos-container">
+                <div class="container-roles">
+                    <div class="subtitle">
+                        Acceso a alertas
+                    </div>
+                    <div class="rol">
+                        <div class="subtitle">Ver eventos de las alertas sms</div>
+                        <input type="checkbox" disabled #view_logs_alert_sms
+                            (change)="secundary_user_functions.input_logs_alertas_sms = view_logs_alert_sms.checked"
+                            [checked]="userSelected?.access_functions?.view_alert_sms_logs">
+                    </div>
+                    <div class="rol">
+                        <div class="subtitle">Crear alertas sms</div>
+                        <input type="checkbox" disabled #create_alert_sms
+                            (change)="secundary_user_functions.input_crear_alertas_sms = create_alert_sms.checked"
+                            [checked]="userSelected?.access_functions?.create_alert_sms">
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

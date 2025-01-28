@@ -1,0 +1,69 @@
+@media screen and (max-width: 700px) {
+    .main {
+        .create_user_container {
+            display: flex;
+            flex-direction: column;
+
+            .content_nav {
+                width: 100vw;
+                background-color: #fafafa;
+                display: flex;
+                justify-content: space-between;
+                padding: 0px 20px;
+                align-items: center;
+                font-weight: bold;
+                box-sizing: border-box;
+                height: 50px;
+                border-bottom: 1px solid rgb(182, 182, 182);
+            }
+
+
+            .form-container {
+                padding: 13px;
+                width: 100%;
+                height: calc(100vh - 128px);
+                overflow-x: hidden;
+                overflow-y: scroll; 
+
+                .title-category{
+                    width: 100vw;
+                    padding: 0px 13px;
+                    font-weight: bold;
+                    font-size: 1em;
+                    white-space: nowrap;
+                }
+
+                .campo {
+                    display: flex;
+                    align-items: left;
+                    justify-content: left;
+                    flex-direction: column;
+                    margin: 10px;
+                    width: 90%;
+                    box-sizing: border-box;
+
+                    label{
+                        width: 100vw;
+                        min-width: 100vw;
+                        font-weight: bold;
+                        font-size: 1.3em;
+                        white-space: nowrap;
+                    }
+
+                    .ipt_text {
+                        width: 100%;
+                        height: 35px;
+                        border-radius: 5px;
+                        border: 1px solid rgb(167, 167, 167);
+                    }
+                }
+                .line {
+                    display: none;
+                }
+                .permisos-container{
+                    padding: 13px;
+                }
+            }
+        }
+    }
+}

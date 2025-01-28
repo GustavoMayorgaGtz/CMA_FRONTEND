@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit{
   }
 
   
-  public optionEnable: number = 3;
+  public optionEnable: number = 7;
   /**
    * Funcion para cambiar la vista del menu
    */

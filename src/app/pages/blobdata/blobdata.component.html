@@ -115,22 +115,22 @@
                 </tr>
                 <tr>
                     <td class="columna">
-                        {{stadistics.min}}
+                        {{stadistics?stadistics.min:"NaN"}}
                     </td>
                     <td class="columna">
-                        {{stadistics.max}}
+                        {{stadistics?stadistics.max:'NaN'}}
                     </td>
                     <td class="columna">
-                        {{stadistics.mean}}
+                        {{stadistics?stadistics.mean:"NaN"}}
                     </td>
                     <td class="columna">
-                        {{stadistics.iqr}}
+                        {{stadistics?stadistics.iqr:"NaN"}}
                     </td>
                     <td class="columna">
-                        {{stadistics.limitMin}}
+                        {{stadistics?stadistics.limitMin:"NaN"}}
                     </td>
                     <td class="columna">
-                        {{stadistics.limitMax}}
+                        {{stadistics? stadistics.limitMax: "NaN"}}
                     </td>
                 </tr>
             </table>

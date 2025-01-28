@@ -92,10 +92,16 @@ export class CameraViewComponent implements OnInit, OnChanges {
     })
   }
 
+ arrayBufferToBlob(arrayBuffer: ArrayBuffer, mimeType: string){
+    // Crea un Blob con el tipo MIME especificado
+    return new Blob([arrayBuffer], { type: mimeType });
+}
+
   listenStreaming(list: ICamera_Recive) {
     this.Connect_Socket().then((connection) => {
       this.socket.emit('joinGroup', { group: list.groupname }); // Unirse al grupo
       this.socket.on(list.groupname, (data) => {
+        console.log(data)
         const blob_data = new Blob([data])
         const buffer_blob = URL.createObjectURL(blob_data);
         this.streaming_data = buffer_blob;

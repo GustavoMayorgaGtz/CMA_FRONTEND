@@ -3,7 +3,6 @@ import { IlineChartConfiguration, getParamsLineChart } from '../interfaces/Line_
 import { IJsonVariable } from '../interfaces/JsonEndpointsInterfaces/JsonEndpointI';
 import { AlertService } from '../service/alert.service';
 import { VarsService } from '../service/vars';
-import { AllService } from '../service/all.service';
 import { JsonVariableClass } from '../functions/json_functions';
 import { EventEmitter } from '@angular/core';
 import { IMemoryVar } from '../interfaces/Modbus.interfaces/ModbusInterfaces';
@@ -16,7 +15,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../service/auth.service';
 import { Router } from '@angular/router';
 import { auth_class } from './auth_class';
-import { compileDeclareNgModuleFromMetadata } from '@angular/compiler';
 
 
 export class LineGraph {
@@ -278,14 +276,18 @@ export class LineGraph {
             let copiaDate: string[] = [];
             copiaData = copiaData.concat(this.copyDataBlobData)
             copiaDate = copiaDate.concat(this.copyDateBlobData)
-            const limite_inferior = response.stadistic.limitMin;
-            const limite_superior = response.stadistic.limitMax;
-            this.limiteInferiorData = copiaData.map(m => limite_inferior);
-            this.limiteSuperiorData = copiaData.map(m => limite_superior);          
-            this.setValueData(this.limiteInferiorData, 0);
-            this.setValueData(this.limiteSuperiorData, 1);
-            this.setValueData(copiaData);
-            this.setValueLabel(copiaDate);
+            if(this.groupByDateOption != 0){
+              this.groupByDate(this.groupByDateOption)
+            }else{
+              const limite_inferior = response.stadistic.limitMin;
+              const limite_superior = response.stadistic.limitMax;
+              this.limiteInferiorData = copiaData.map(m => limite_inferior);
+              this.limiteSuperiorData = copiaData.map(m => limite_superior);          
+              this.setValueData(this.limiteInferiorData, 0);
+              this.setValueData(this.limiteSuperiorData, 1);
+              this.setValueData(copiaData);
+              this.setValueLabel(copiaDate);
+            }
             this.enableBlobData = false;
 
             //Calcular tiempo en milisgundos del polling
@@ -306,7 +308,7 @@ export class LineGraph {
               }
             }
             this.reloadBlobData = setTimeout(() => {
-              this.reloadData(option, vars, varsName)
+              this.reloadData(option, vars, varsName, allData)
             },time);
           })
           .catch((err) => {
@@ -393,13 +395,14 @@ export class LineGraph {
     }
 
     //Configuracion con la peticion asignada a la grafica
-    if (option.general.idVariableJson) {
+    if (option.general.idVariableJson && !this.idBlobData) {
       //Protocolo "http
+      
       this.getVariableJson(option.general.idVariableJson, time);
-    } else if (option.general.idVariableModbus) {
+    } else if (option.general.idVariableModbus && !this.idBlobData) {
       //Protocolo modbus tcp/ip
       this.getVariableModbus(option.general.idVariableModbus, time);
-    } else if (option.general.idVariableMemory) {
+    } else if (option.general.idVariableMemory && !this.idBlobData) {
       //Variable de memoria 
       this.varsService.getMemoryVarById(option.general.idVariableMemory).subscribe((variable) => {
         if (vars && varsName) {
@@ -414,7 +417,7 @@ export class LineGraph {
           }, time)
         }
       })
-    } else if (option.general.idVariableEndpoint) {
+    } else if (option.general.idVariableEndpoint && !this.idBlobData) {
       this.getVariableEndpoint(option.general.idVariableEndpoint, time);
     }
   }
@@ -509,6 +512,7 @@ export class LineGraph {
         this.no_de_elementos_recibidos = this.copyDataBlobData.length;
 
         if (this.groupByDateOption > 0) {
+
           this.groupByDate(this.groupByDateOption)
         } else {
           this.lineChartData.datasets[this.dataset_important_index].data = this.var1_dataset;
@@ -531,7 +535,6 @@ export class LineGraph {
       }
       this.idInterval = setInterval(() => {
         this.cma_endpoint.getOneEndpointById(idEndpoint, this.no_de_elementos_recibidos, this.muestreo)
-          // .pipe(timeout(time < -5000 ? -5000 : time))
           .subscribe((blobdata) => {
             if (blobdata && blobdata.length > 0) {
               if (blobdata[0]) {
@@ -626,6 +629,7 @@ export class LineGraph {
             this.copyDataBlobData.push(value);
             this.copyDateBlobData.push(this.parsearFecha(dateNow));
             if (this.groupByDateOption > 0) {
+
               this.groupByDate(this.groupByDateOption)
             } else {
               this.lineChartData.datasets[this.dataset_important_index].data = this.var1_dataset;
@@ -663,6 +667,7 @@ export class LineGraph {
           this.copyDataBlobData.push(parseFloat(value as string));
           this.copyDateBlobData.push(this.parsearFecha(dateNow));
           if (this.groupByDateOption > 0) {
+
             this.groupByDate(this.groupByDateOption)
           } else {
             this.lineChartData.datasets[this.dataset_important_index].data = this.var1_dataset;
@@ -702,6 +707,7 @@ export class LineGraph {
             if (this.copyDateBlobData)
               this.copyDateBlobData.push(this.parsearFecha(dateNow));
             if (this.groupByDateOption > 0) {
+
               this.groupByDate(this.groupByDateOption)
             } else {
               this.lineChartData.datasets[this.dataset_important_index].data = this.var1_dataset;

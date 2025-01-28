@@ -26,3 +26,14 @@
         }
     }
 }
+
+@media screen and (max-width: 700px){
+    .primary-container{
+        .title{
+            font-size: calc(0.6vw + 10px);
+        }
+    
+        
+    }
+    
+}

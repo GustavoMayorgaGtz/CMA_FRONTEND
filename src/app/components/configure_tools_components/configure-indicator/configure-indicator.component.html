@@ -11,24 +11,25 @@
         <div class="chart-container">
             <div class="content-button" #button>
                <div class="left">
-                  <div class="container-icon">
-                     <img src="./assets/lightbulb.svg" alt="Luz" class="Luz" *ngIf="get_indicator_type_data_design === 'light'">
-                     <img src="./assets/engine.svg" 
-                     style="filter: invert(0)" alt="Motor" class="Motor" *ngIf="get_indicator_type_data_design === 'motor'">
-                     <img src="./assets/machine.svg" alt="Maquina" class="Maquibna" *ngIf="get_indicator_type_data_design === 'machine'">
-                     <img src="./assets/airwave.svg" alt="Aire" class="Aire" *ngIf="get_indicator_type_data_design === 'air'">
-                     <img src="./assets/thermostat.svg" alt="Temperatura" class="Temperatura" *ngIf="get_indicator_type_data_design === 'temperature'">
-                     <img src="./assets/water_drop.svg" alt="Humedad" class="Humedad" *ngIf="get_indicator_type_data_design === 'wet'">
-                     <img src="./assets/check.svg" alt="warning" class="warning" *ngIf="get_indicator_type_data_design === 'status'">
-                     <img src="./assets/warning.png" alt="warning" class="warning" *ngIf="get_indicator_type_data_design === 'other'">
+                  <div class="container-icon"  [ngStyle]="{backgroundColor: backgroundColor}">
+                    <img src="./assets/lightbulb.svg"   style="filter: invert(0); opacity: 45%;" alt="Luz"  *ngIf="get_indicator_type_data_design === 'light'">
+                    <img src="./assets/engine.svg"    style="filter: invert(0); opacity: 45%;" alt="Motor"  *ngIf="get_indicator_type_data_design === 'motor'">
+                    <img src="./assets/machine.svg" style="filter: invert(1); opacity: 45%;" alt="Maquina" *ngIf="get_indicator_type_data_design === 'machine'">
+                    <img src="./assets/airwave.svg" alt="Aire"  style="filter: invert(1); opacity: 45%;" *ngIf="get_indicator_type_data_design === 'air'">
+                    <img src="./assets/thermostat.svg" alt="Temperatura" style="filter: invert(1);  opacity: 45%;" *ngIf="get_indicator_type_data_design === 'temperature'">
+                    <img src="./assets/humedad.svg" alt="Humedad"  style=" opacity: 65%;" *ngIf="get_indicator_type_data_design === 'wet'">
+                    <img src="./assets/check.svg" alt="warning" style="filter: invert(1); opacity: 45%;" *ngIf="get_indicator_type_data_design === 'status'">
+                    <img src="./assets/warning.svg" alt="warning" style="filter: invert(1); opacity: 45%;"  *ngIf="get_indicator_type_data_design === 'other'">
                   </div>
                </div>
                <div class="right">
-                  <div class="container-content">
-                      <div class="title">{{get_indicator_title}}</div>
-                      <div class="content">LOW FLOW <span class="symbol">{{get_indicator_symbol}}</span></div>
-                  </div>
-               </div>
+               <div class="status_enabled">conectado</div>
+                
+                <div class="container-content" >
+                    <div class="title">{{get_indicator_title}}</div>
+                    <div class="content">48<span class="symbol">{{get_indicator_symbol}}</span></div>
+                </div>
+             </div>
             </div>
         </div>
         <div class="description">
@@ -80,7 +81,7 @@
                 <div class="campo">
                     <div class="title">Diseño</div>
                     <div class="description">Define el tipo de diseño que mas se acerca a tu indicador.</div>
-                    <select #type_data_design (change)="set_indicator_type_data_design = type_data_design.value" >
+                    <select #type_data_design_select (change)="set_indicator_type_data_design = type_data_design_select.value" >
                         <option disabled >Selecciona estilo</option>
                         <option value="light" selected>Luz</option>
                         <option value="temperature">Temperatura</option>

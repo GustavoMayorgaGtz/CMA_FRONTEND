@@ -8,7 +8,8 @@
     "buildProduction": "ng build --configuration=production && cp .htaccess dist/cma",
     "deploy": "git add . && git commit -a -m deploy && git push -u origin master",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "cordova_build": "npx cap sync android && ng build && npx cap copy && npx cap open android"
   },
   "private": true,
   "dependencies": {
@@ -21,10 +22,10 @@
     "@angular/platform-browser-dynamic": "^15.0.0",
     "@angular/router": "^15.0.0",
     "@capacitor/android": "^6.1.2",
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^6.1.2",
     "@capacitor/core": "^6.1.2",
-    "@ionic/angular": "^6.7.5",
-    "@ionic/angular-toolkit": "^6.1.0",
+    "@capacitor/splash-screen": "^6.0.2",
     "apexcharts": "^3.40.0",
     "axios": "^1.6.8",
     "chart.js": "^3.8.0",

@@ -1,0 +1,14 @@
+{
+  "platforms": {
+    "android": {
+      "icon": {
+        "background": "#EFF2E6",
+        "foreground": "assets/icon-only.png"
+      },
+      "splash": {
+        "background": "#EFF2E6",
+        "image": "assets/splash.png"
+      }
+    }
+  }
+}

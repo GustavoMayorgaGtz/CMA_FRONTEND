@@ -4,7 +4,7 @@ import { AlertService } from 'src/app/service/alert.service';
 @Component({
   selector: 'app-alerta',
   templateUrl: './alerta.component.html',
-  styleUrls: ['./alerta.component.scss']
+  styleUrls: ['./alerta.component.scss', './alerta.component.mobile.scss']
 })
 export class AlertaComponent implements OnInit, AfterViewInit{
 

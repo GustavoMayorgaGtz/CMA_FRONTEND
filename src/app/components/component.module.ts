@@ -22,6 +22,7 @@ import { ConfigureLinearGraphComponent } from './configure_tools_components/conf
 import { ConfigureSimpleButtonComponent } from './configure_tools_components/configure-simple-button/configure-simple-button.component';
 import { LineChartComponent } from './dashboard_tools/line-chart/line-chart.component';
 import { TieldmapComponent } from './tieldmap/tieldmap.component';
+import { ToolsButtonComponent } from './tools-button/tools-button.component';
 import { TieldmapSequenceComponent } from './tieldmap-sequence/tieldmap-sequence.component';
 import { MiCuentaComponent } from './cuenta/mi-cuenta/mi-cuenta.component';
 import { GestionCuentasComponent } from './cuenta/gestion-cuentas/gestion-cuentas.component';
@@ -31,6 +32,9 @@ import { ConfigureCaneraComponent } from './configure_tools_components/configure
 import { CameraViewComponent } from './dashboard_tools/camera_view/camera_view.component';
 import { PulsacionComponent } from './dashboard_tools/pulsacion/pulsacion.component';
 import { ConfigurePulsacionComponent } from './configure_tools_components/configure-pulsacion/configure-pulsacion.component';
+import { BillingComponent } from './billing/billing.component';
+import { TicketComponent } from './tickets/ticket.component';
+import { HttpClientModule } from '@angular/common/http';
 
 const components = [NavComponent,
   MenuComponent,
@@ -59,7 +63,10 @@ const components = [NavComponent,
   AccesosApiComponent,
   ConfigureCaneraComponent,
   CameraViewComponent,
-  PulsacionComponent]
+  PulsacionComponent,
+  ToolsButtonComponent,
+  BillingComponent,
+  TicketComponent]
 
 @NgModule({
   declarations: components,
@@ -67,7 +74,8 @@ const components = [NavComponent,
     CommonModule,
     ReactiveFormsModule,
     NgApexchartsModule,
-    NgChartsModule
+    NgChartsModule,
+    HttpClientModule
   ],
   exports: components
 })

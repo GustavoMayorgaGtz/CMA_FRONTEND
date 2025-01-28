@@ -1,0 +1,7 @@
+
+<!-- payment.component.html -->
+<form (submit)="pay(); $event.preventDefault();">
+  <div id="card-element"><!-- Stripe.js insertará el formulario de la tarjeta aquí --></div>
+  <button type="submit">Pagar</button>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+</form>

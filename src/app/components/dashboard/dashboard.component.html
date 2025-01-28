@@ -8,7 +8,6 @@
             </div>
         </div>
         <div class="container_dashboards">
-            <!-- <img [src]="src" alt="nose que pasa"  > -->
             <div class="card-dashboard" *ngFor="let dashboard of dashboards; let idx = index"
                 (click)="selectDashboard(dashboard.id_dashboard, dashboard.title)">
                 <span class="title">
@@ -18,14 +17,16 @@
                     {{dashboard.description}}
                 </span>
             </div>
+
         </div>
     </div>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 1">
     <div class="main">
-        <div class="nav_btn" (click)="set_menu_tool = 0">Regresar | Dashboards</div>
+        <div class="nav" (click)="set_menu_tool = 0">Regresar | Dashboards</div>
         <div class="content">
-            <app-tieldmap [id_dashboard]="(selectedDashboard? selectedDashboard:0)"  [name_dashboard]="name_dashboard" style="width: 100%; height: 100%;">
+            <app-tieldmap [id_dashboard]="(selectedDashboard? selectedDashboard:0)" [name_dashboard]="name_dashboard"
+                style="width: 100%; height: 100%;">
             </app-tieldmap>
 
         </div>
@@ -45,7 +46,7 @@
                 <div class="box-graph disabled">
                     <img src="./assets/graphs/bar_chart.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
-                        <div class="title">Gráfica  ica de barras</div>
+                        <div class="title">Gráfica ica de barras</div>
                     </div>
                 </div>
                 <div class="box-graph disabled">
@@ -118,34 +119,43 @@
     <app-configure-indicator [id_dashboard_selected]="selectedDashboard"></app-configure-indicator>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 5">
-    <app-configure-camera  style="width: 100%;" [id_dashboard_selected]="selectedDashboard"></app-configure-camera>
+    <app-configure-camera style="width: 100%;" [id_dashboard_selected]="selectedDashboard"></app-configure-camera>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 6">
-    <app-configure-pulsacion  style="width: 100%;" [id_dashboard_selected]="selectedDashboard"></app-configure-pulsacion>
+    <app-configure-pulsacion style="width: 100%;" [id_dashboard_selected]="selectedDashboard"></app-configure-pulsacion>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 10">
     <div class="create-dashboard">
-        <div class="nav_btn" (click)="set_menu_tool = 0">Cancelar</div>
+        <div class="nav">
+                Creación de dashboard
+        </div>
 
         <div class="content">
-            <div class="title">
-                CREACIÓN DE DASHBOARD
-            </div>
             <br>
             <div class="campo">
-                <label for="">Nombre de dashboard</label>
-                <input type="text" #title>
+                <label for="title">Nombre de dashboard</label>
+                <p>Asigna una palabra clave para poder identificar mejor tu dashboard.</p>
+                <input type="text" name="title" #title>
             </div>
-
+            <br>
             <div class="line"></div>
-
+            <br>
             <div class="campo">
-                <label for="">Descripción</label>
-                <input type="text" #description>
+                <label for="description">Descripción</label>
+                <p>Describe el uso de tu dashboard.</p>
+                <input type="text" name="description" #description>
             </div>
             <br>
-            <div class="btn-create" *ngIf="viewCreateDashboardButton" style="background-color: rgb(185, 152, 241);" (click)="createDashboard(title, description)">
+            <div class="line"></div>
+            <br>
+            <div class="container-controls">
+                <div class="btn-create" *ngIf="viewCreateDashboardButton" style="background-color: #b998f1;"
+                (click)="createDashboard(title, description)">
                 Crear dashboard
+            </div>
+            <div class="cancelar" (click)="set_menu_tool = 0">
+                Cancelar
+           </div>
             </div>
         </div>
     </div>

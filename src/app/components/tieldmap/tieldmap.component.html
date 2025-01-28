@@ -11,10 +11,13 @@
             Puedes modificar las herramientas de la interfaz; las modificaciones se guardarán automáticamente.
         </div>
     </div>
-    <div class="tieldmap" #tieldmap (mousemove)="getPosition($event, tieldmap)" (mouseleave)="endAllEvents()"
-        (mouseup)="endAllEvents()">
+    <div class="tieldmap" #tieldmap (mousemove)="getPosition($event, tieldmap)"
+    (touchmove)="getPosition($event, tieldmap);"
+    (mouseleave)="endAllEvents()"
+    (touchend)="endAllEvents()"
+    (mouseup)="endAllEvents()">
         <div class="contenido" #contenido [ngStyle]="setContenidoElement(contenido)"></div>
-        <!-- <span class="Loading" style="margin: auto; display:flex; justify-content: center; 
+        <!-- <span class="Loading" style="margin: auto; display:flex; justify-content: center;
          align-items: center; width: 100%; height: 100%;"> Cargando...</span> -->
         <span class="Loading" style="margin: auto; display:flex; justify-content: center; align-items:
          center; width: 100%; height: 100%;" *ngIf="shadow_container.length === 0">
@@ -38,12 +41,17 @@
                 <img src="./assets/x-makeme.svg" draggable="false">
             </div>
             <div class="resize" *ngIf="shadow.type != 'indicator' && modify_check.checked" (mousedown)="enableResizeShadow(idShadow)"
-                (mouseup)="endResizeShadow()">
+                (mouseup)="endResizeShadow()"
+                (touchstart)="enableResizeShadow(idShadow);$event.preventDefault()"
+                (touchend)="endResizeShadow()">
                 <img src="./assets/resize-makeme.svg" draggable="false">
             </div>
-            <div class="move" (mousedown)="enableMoveShadow(idShadow)" *ngIf="modify_check.checked" (mouseup)="endMoveShadow()">
+            <div class="move" (mousedown)="enableMoveShadow(idShadow)" *ngIf="modify_check.checked" (mouseup)="endMoveShadow()" (touchstart)="enableMoveShadow(idShadow);$event.preventDefault()" (touchend)="endMoveShadow()">
                 <img src="./assets/move-makeme.svg" draggable="false">
             </div>
         </div>
     </div>
+</div>
+<div>
+  <app-tools-button></app-tools-button>
 </div>

@@ -1,22 +1,33 @@
 <div class="content-button" #button>
    <div class="left">
-      <div class="container-icon"  [ngStyle]="{backgroundColor: backgroundColor}">
-         <img src="./assets/lightbulb.svg"   style="filter: invert(0); opacity: 45%;" alt="Luz"  *ngIf="type_data_design === 'light'">
-         <img src="./assets/engine.svg"    style="filter: invert(0); opacity: 45%;" alt="Motor"  *ngIf="type_data_design === 'motor'">
-         <img src="./assets/machine.svg" style="filter: invert(1); opacity: 45%;" alt="Maquina" *ngIf="type_data_design === 'machine'">
-         <img src="./assets/airwave.svg" alt="Aire"  style="filter: invert(1); opacity: 45%;" *ngIf="type_data_design === 'air'">
-         <img src="./assets/thermostat.svg" alt="Temperatura" style="filter: invert(1);  opacity: 45%;" *ngIf="type_data_design === 'temperature'">
-         <img src="./assets/humedad.svg" alt="Humedad"  style=" opacity: 65%;" *ngIf="type_data_design === 'wet'">
-         <img src="./assets/check.svg" alt="warning" style="filter: invert(1); opacity: 45%;" *ngIf="type_data_design === 'status'">
-         <img src="./assets/warning.svg" alt="warning" style="filter: invert(1); opacity: 45%;"  *ngIf="type_data_design === 'other'">
+      <div class="container-icon" [ngStyle]="{backgroundColor: (type_data_design != 'status')? backgroundColor : (data && data.message) == 1? backgroundColor: '#e25a5a'}">
+         <img src="./assets/lightbulb.svg" style="filter: invert(0); opacity: 45%;" alt="Luz"
+            *ngIf="type_data_design === 'light'">
+         <img src="./assets/engine.svg" style="filter: invert(0); opacity: 45%;" alt="Motor"
+            *ngIf="type_data_design === 'motor'">
+         <img src="./assets/machine.svg" style="filter: invert(1); opacity: 45%;" alt="Maquina"
+            *ngIf="type_data_design === 'machine'">
+         <img src="./assets/airwave.svg" alt="Aire" style="filter: invert(1); opacity: 45%;"
+            *ngIf="type_data_design === 'air'">
+         <img src="./assets/thermostat.svg" alt="Temperatura" style="filter: invert(1);  opacity: 45%;"
+            *ngIf="type_data_design === 'temperature'">
+         <img src="./assets/humedad.svg" alt="Humedad" style=" opacity: 65%;" *ngIf="type_data_design === 'wet'">
+         <img src="./assets/check.svg" alt="warning" style="filter: invert(1); opacity: 45%;"
+            *ngIf="type_data_design === 'status' && (data && data.message) == 1">
+            <img src="./assets/close.svg" alt="warning" style=" opacity: 45%;"
+            *ngIf="type_data_design === 'status' && ( data && (data.message) == 0 || !data)">
+         <img src="./assets/close.svg" alt="warning" style="filter: invert(1); opacity: 45%;"
+            *ngIf="type_data_design === 'other'">
       </div>
    </div>
    <div class="right">
       <div class="status_enabled" *ngIf="status">conectado</div>
       <div class="status_disabled" *ngIf="!status">desconectado</div>
       <div class="container-content">
-          <div class="title">{{title}}</div>
-          <div class="content">  {{data}}<span class="symbol">{{symbol}}</span></div>
+         <div class="title">{{title}}</div>
+         <div class="content" *ngIf="type_data_design != 'status'"> {{data?.message}}<span
+               class="symbol">{{symbol}}</span></div>
+         <div class="content" *ngIf="type_data_design == 'status'"> {{(data && data.message) == 1? 'Encendido': 'Apagado'}}</div>
       </div>
    </div>
 </div>

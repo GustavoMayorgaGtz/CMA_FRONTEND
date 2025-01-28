@@ -94,7 +94,7 @@ export class LoginComponent {
       const correo = this.registerGroup.controls.correo.value;
       const password = this.registerGroup.controls.password.value;
       const telefono = this.registerGroup.controls.telefono.value;
-      this.servicios.registerPrimaryUser( nombre_usuario, correo,telefono , password ).subscribe((res) => {
+      this.servicios.registerPrimaryUser( nombre_usuario, correo , password, telefono ).subscribe((res) => {
         this.isLoadingRegister = true;
         this.alertService.setMessageAlert("Usuario registrado");
         this.isLogin = true;

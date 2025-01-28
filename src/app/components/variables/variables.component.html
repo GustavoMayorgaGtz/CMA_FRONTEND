@@ -1,4 +1,7 @@
 <div class="main">
+    <div class="content_nav">
+        Variables
+    </div>
     <div class="nav">
         <div class="opcion-nav" *ngIf="menu===1" (click)="changeStatusMenu(2)">
             <img src="./assets/add.png" alt="add">
@@ -62,7 +65,7 @@
             </div>
             <div class="value_var">
                 {{modbusVar.value[0]}}
-            </div>
+            </div>  
         </div>
         <div class="card-variable" *ngFor="let memoryVar of memoryVariables; let j = index">
             <div class="header">
@@ -86,7 +89,7 @@
             </div>
             <div class="value_var" style="display: flex; flex-direction: column;">
                 <!-- {{memoryVar.result}} -->
-                 <span class="groupName" style="color: #a31414;">{{indicatorVar.groupname}}</span>
+                <span class="groupName" style="color: #a31414;">{{indicatorVar.groupname}}</span>
 
             </div>
         </div>
@@ -100,7 +103,7 @@
             </div>
             <div class="value_var" style="display: flex; flex-direction: column;">
                 <!-- {{memoryVar.result}} -->
-                 <span class="groupName" style="color: #a31414;">{{camaraVar.groupname}}</span>
+                <span class="groupName" style="color: #a31414;">{{camaraVar.groupname}}</span>
 
             </div>
         </div>
@@ -114,7 +117,7 @@
             </div>
             <div class="value_var" style="display: flex; flex-direction: column;">
                 <!-- {{memoryVar.result}} -->
-                 <span class="groupName" style="color: #a31414;">{{pulseVar.groupname}}</span>
+                <span class="groupName" style="color: #a31414;">{{pulseVar.groupname}}</span>
 
             </div>
         </div>
@@ -124,12 +127,14 @@
                 <div class="type" style="color: #319c9c;">CMA Endpoint</div>
             </div>
             <div class="value_var">
-                <p>{{server}}cma_endpoint/insertValue<span
-                        style="color: #0062ff">?</span><b>id_endpoint</b>={{cma_endpoint.id_endpoint}}<span
-                        style="color: rgb(0, 98, 255)">&</span><b>token</b>={{cma_endpoint.token}}<span
-                        style="color: rgb(0, 98, 255)">&</span><b>value</b>=Valor
-                    <!-- {{cma_endpoint.description}} -->
-                    <!-- {{modbusVar.value[0]}} -->
+                <p>{{server}}cma_endpoint/insertValue<span class="endpoint-symbol">?</span>
+                    <b>id_endpoint</b>={{cma_endpoint.id_endpoint}}
+                    <span class="endpoint-symbol">&</span>
+                    <b>token</b>={{cma_endpoint.token}}
+                    <span class="endpoint-symbol">&</span>
+                    <b>value</b>=Valor
+                </p>
+
             </div>
         </div>
     </div>
@@ -310,7 +315,7 @@
                         <option>Binary</option>
                         <option>Float</option>
                         <option>Float inverse</option>
-                        <option>Double</option> 
+                        <option>Double</option>
                         <option>Double inverse</option>
                         <option>Long</option>
                         <option>Long inverse</option>
