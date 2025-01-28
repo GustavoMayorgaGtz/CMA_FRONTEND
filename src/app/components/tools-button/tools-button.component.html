@@ -1,0 +1,20 @@
+<nav class="menu"
+  (mousedown)="onDragStart($event)"
+  [ngStyle]="{ 'opacity': buttonOpacity }"
+>
+  <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open" />
+  <label class="menu-open-button" (click)="toggleTools()" for="menu-open">
+    <div class="menu-open-image-container">
+      <img src="./assets/design/gear.png" width="35px" height="35px" alt="">
+    </div>
+ </label>
+
+<ng-container>
+  <a (click)="setMenuTool(2)" class="menu-item blue"><div class="image-item-content"><img _ngcontent-jlv-c22="" src="./assets/graphs/line_chart.svg" alt="line chart" class="image_contet"></div></a>
+  <a (click)="setMenuTool(3)"  class="menu-item green"><div class="image-item-content"><img _ngcontent-jlv-c22="" src="./assets/graphs/switch.svg" alt="line chart" class="image_contet"></div> </a>
+  <a (click)="setMenuTool(4)"  class="menu-item red"> <div class="image-item-content"><img _ngcontent-jlv-c22="" src="./assets/graphs/indicator.svg" alt="line chart" class="image_contet"></div> </a>
+  <a (click)="setMenuTool(5)"  class="menu-item purple"> <div class="image-item-content"><img _ngcontent-jlv-c22="" src="./assets/graphs/camera.svg" alt="camera" class="image_contet"></div>  </a>
+  <a (click)="setMenuTool(6)"  class="menu-item orange"> <div class="image-item-content"><img _ngcontent-jlv-c22="" src="./assets/graphs/pulse.svg" alt="pulse" class="image_contet"></div>  </a>
+</ng-container>
+
+</nav>

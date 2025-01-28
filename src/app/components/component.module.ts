@@ -22,6 +22,7 @@ import { ConfigureLinearGraphComponent } from './configure_tools_components/conf
 import { ConfigureSimpleButtonComponent } from './configure_tools_components/configure-simple-button/configure-simple-button.component';
 import { LineChartComponent } from './dashboard_tools/line-chart/line-chart.component';
 import { TieldmapComponent } from './tieldmap/tieldmap.component';
+import { ToolsButtonComponent } from './tools-button/tools-button.component';
 import { TieldmapSequenceComponent } from './tieldmap-sequence/tieldmap-sequence.component';
 import { MiCuentaComponent } from './cuenta/mi-cuenta/mi-cuenta.component';
 import { GestionCuentasComponent } from './cuenta/gestion-cuentas/gestion-cuentas.component';
@@ -63,8 +64,9 @@ const components = [NavComponent,
   ConfigureCaneraComponent,
   CameraViewComponent,
   PulsacionComponent,
+  ToolsButtonComponent,
   BillingComponent,
-  TicketComponent]  
+  TicketComponent]
 
 @NgModule({
   declarations: components,

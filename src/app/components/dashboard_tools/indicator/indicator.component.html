@@ -15,7 +15,7 @@
          <img src="./assets/check.svg" alt="warning" style="filter: invert(1); opacity: 45%;"
             *ngIf="type_data_design === 'status' && (data && data.message) == 1">
             <img src="./assets/close.svg" alt="warning" style=" opacity: 45%;"
-            *ngIf="type_data_design === 'status' && ((data.message) == 0 || !data)">
+            *ngIf="type_data_design === 'status' && ( data && (data.message) == 0 || !data)">
          <img src="./assets/close.svg" alt="warning" style="filter: invert(1); opacity: 45%;"
             *ngIf="type_data_design === 'other'">
       </div>
