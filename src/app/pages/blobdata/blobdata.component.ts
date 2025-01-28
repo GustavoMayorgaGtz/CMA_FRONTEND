@@ -73,6 +73,7 @@ export class BlobdataComponent implements OnInit, OnDestroy{
       let type = params['type']; //Este es el tipo de la grafica
 
 
+
       this.blobdataServices.getOneBlobDataById(idblobdata).subscribe((blobdata) => {
         if (blobdata && blobdata.value) {
           this.stadistics = blobdata.stadistic;
@@ -84,6 +85,7 @@ export class BlobdataComponent implements OnInit, OnDestroy{
       }, (err: HttpErrorResponse) => {
         console.log(err)
       })
+
 
       //Validar que tipo de grafica se va a mostrar por el momento
       const token = sessionStorage.getItem("token");
@@ -151,8 +153,8 @@ export class BlobdataComponent implements OnInit, OnDestroy{
 
   /**
    * Se usa esta funcion para obtener el objeto de la grafica
-   * @param graficas 
-   * @returns 
+   * @param graficas
+   * @returns
    */
   public chart!: BaseChartDirective<"line", (number | ScatterDataPoint | null)[], unknown>;
   obtenerObjeto(graficas: HTMLCanvasElement) {

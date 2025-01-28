@@ -74,5 +74,5 @@ export class AuthService {
     return this.http.post<any>(server+"auth/validateAuth", {idUser}, {headers})
   }
 
-  
+
 }

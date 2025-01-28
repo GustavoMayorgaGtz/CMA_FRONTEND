@@ -28,7 +28,7 @@ export class TieldmapComponent implements OnChanges {
       const idUser = sessionStorage.getItem("idUser");
       const token = sessionStorage.getItem("token");
       if (idUser && parseInt(idUser) > 0 && token && this.id_dashboard) {
-        //Obtener las variables 
+        //Obtener las variables
         this.linechart_Service.getAllLineChart(token, parseInt(idUser), this.id_dashboard).subscribe((linecharts) => {
           linecharts.forEach((line_chart) => {
 
@@ -143,8 +143,8 @@ export class TieldmapComponent implements OnChanges {
 
   /**
    * Funcion que sirve para determinar los valores para los diferentes eventos de shadow
-   * @param event 
-   * @param tieldmap 
+   * @param event
+   * @param tieldmap
    */
   getPosition(event: MouseEvent, tieldmap: HTMLDivElement) {
     const tieldmap_positionX = tieldmap.getBoundingClientRect().x;
@@ -201,9 +201,9 @@ export class TieldmapComponent implements OnChanges {
 
   /**
    * Funcion que sirve para colocar las propiedades
-   * @param shadow 
-   * @param idShadow 
-   * @returns 
+   * @param shadow
+   * @param idShadow
+   * @returns
    */
 
   public setPositionsSizes!: Object;
@@ -289,9 +289,9 @@ export class TieldmapComponent implements OnChanges {
     }
 
     shadow.setAttribute("style", `position: absolute;
-     top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+     top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px;
      left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
-      width: ${this.shadow_container[idShadow].width}px; 
+      width: ${this.shadow_container[idShadow].width}px;
       height: ${this.shadow_container[idShadow].height}px;
        background-color: white;
      border: 1px solid rgba(0, 0, 0, 0.127);; border-radius: 5px;`);
@@ -317,7 +317,7 @@ export class TieldmapComponent implements OnChanges {
       const x_end = temp_shadow.x * this.lastBloqueWidth + temp_shadow.width;
       let inX = false;
       let inY = false;
-    
+
       //dos validaciones para x
       if (shadow_container_x >= x_init && shadow_container_x <= x_end) {
         inX = true;
@@ -352,9 +352,9 @@ export class TieldmapComponent implements OnChanges {
     switch (type) {
       case 'indicator': {
         shadow.setAttribute("style", `position: absolute;
-        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px;
         left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
-        max-width: 300px; 
+        max-width: 300px;
         height: 70px;
         min-width: 250px;
         width: 100%;
@@ -364,9 +364,9 @@ export class TieldmapComponent implements OnChanges {
       }
       case 'linechart': {
         shadow.setAttribute("style", `position: absolute;
-        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px;
         left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
-        width: ${this.shadow_container[idShadow].width}px; 
+        width: ${this.shadow_container[idShadow].width}px;
         height: ${this.shadow_container[idShadow].height}px;
         background-color: white;
         font-size: clamp(6px, 100%, 24px);
@@ -378,11 +378,11 @@ export class TieldmapComponent implements OnChanges {
         const fontSize = shadow.offsetWidth / 8;  // Puedes ajustar el divisor según sea necesario
         // shadow.style.fontSize = `${fontSize}px`;
         shadow.setAttribute("style", `position: absolute;
-        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px;
         left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
-        width: ${this.shadow_container[idShadow].width}px; 
+        width: ${this.shadow_container[idShadow].width}px;
         height: ${this.shadow_container[idShadow].height}px;
-      
+
         font-size: ${fontSize}px`);
         break;
       }
@@ -390,9 +390,9 @@ export class TieldmapComponent implements OnChanges {
 
         // const container = document.querySelector('.container');
         shadow.setAttribute("style", `position: absolute;
-        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px;
         left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
-        width: ${this.shadow_container[idShadow].width}px; 
+        width: ${this.shadow_container[idShadow].width}px;
         height: ${this.shadow_container[idShadow].height}px;
         overflow: hidden;
         background-color: white;
@@ -408,9 +408,9 @@ export class TieldmapComponent implements OnChanges {
         // console.log("Este es el valor de la pulsacion")
         // console.log(this.shadow_container[idShadow])
         shadow.setAttribute("style", `position: absolute;
-        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+        top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px;
         left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
-        width: ${this.shadow_container[idShadow].width}px; 
+        width: ${this.shadow_container[idShadow].width}px;
         height: ${this.shadow_container[idShadow].height}px;
         font-size: ${fontSize}px`);
         break;
@@ -432,7 +432,7 @@ export class TieldmapComponent implements OnChanges {
   public idShadowMove: number = 0;
   /**
    * Funcion para mover uno de los contenedores ya creados
-   * @param idShadow 
+   * @param idShadow
    */
   enableMoveShadow(idShadow: number) {
     if (!this.isMove) {
@@ -460,7 +460,7 @@ export class TieldmapComponent implements OnChanges {
   public idShadowResize: number = 0;
   /**
    * Funcion para mover uno de los contenedores ya creados
-   * @param idShadow 
+   * @param idShadow
    */
   enableResizeShadow(idShadow: number) {
     if (!this.isResize) {

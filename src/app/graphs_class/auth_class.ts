@@ -12,10 +12,10 @@ export class auth_class {
     validateUser() {
         const idUser = sessionStorage.getItem("idUser")
         const token = sessionStorage.getItem("token")
-       
+
         if (idUser && token) {
             this.authService.authUser(parseInt(idUser), token).subscribe((response) => {
-                
+
             }, (err: HttpErrorResponse) => {
                 this.alertService.setMessageAlert("Vuelve a iniciar sesion...")
                 this.router.navigate(['/login'])
