@@ -34,6 +34,8 @@ export interface registerBuilder extends FormGroup {
     controls: {
         nombre_usuario: AbstractControl<string>,
         correo: AbstractControl<string>,
+        zona_horaria: AbstractControl<string>,
+        password2: AbstractControl<string>,
         password: AbstractControl<string>,
         telefono: AbstractControl<string>
     }

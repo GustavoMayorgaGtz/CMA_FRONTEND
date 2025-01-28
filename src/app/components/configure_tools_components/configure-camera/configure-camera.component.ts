@@ -81,7 +81,7 @@ export class ConfigureCaneraComponent implements OnInit {
             this.alertService.setMessageAlert("No se creo la camara correctamente, vuelve a intentarlo mas tarde.");
           })
         } else {
-          this.alertService.setMessageAlert("Vuelve a iniciar sesion...")
+          this.alertService.setMessageAlert("6. Vuelve a iniciar sesion...")
           this.router.navigate(['/login']);
         }
     }

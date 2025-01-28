@@ -14,14 +14,14 @@ export class auth_class {
         const token = sessionStorage.getItem("token")
        
         if (idUser && token) {
-            this.authService.authUser(parseInt(idUser), token).subscribe((response) => {
-                
+            this.authService.authUser(parseInt(idUser), token).subscribe((response) => {           
             }, (err: HttpErrorResponse) => {
-                this.alertService.setMessageAlert("Vuelve a iniciar sesion...")
-                this.router.navigate(['/login'])
+                console.log(err);
+                this.alertService.setMessageAlert("9. Vuelve a iniciar sesion...")
+                    this.router.navigate(['/login'])
             })
         } else {
-            this.alertService.setMessageAlert("Vuelve a iniciar sesion...")
+            this.alertService.setMessageAlert("10. Vuelve a iniciar sesion...")
             this.router.navigate(['/login']);
         }
 

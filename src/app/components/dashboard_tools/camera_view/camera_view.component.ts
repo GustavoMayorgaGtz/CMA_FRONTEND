@@ -101,7 +101,6 @@ export class CameraViewComponent implements OnInit, OnChanges {
     this.Connect_Socket().then((connection) => {
       this.socket.emit('joinGroup', { group: list.groupname }); // Unirse al grupo
       this.socket.on(list.groupname, (data) => {
-        console.log(data)
         const blob_data = new Blob([data])
         const buffer_blob = URL.createObjectURL(blob_data);
         this.streaming_data = buffer_blob;

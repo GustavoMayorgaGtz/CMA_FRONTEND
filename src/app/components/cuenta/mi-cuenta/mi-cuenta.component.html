@@ -12,6 +12,17 @@
                     value={{userSelected?.nombre_usuario}}>
             </div>
             <div class="campo">
+                <label for="username" class="subtitle" style="white-space: nowrap;">Zona horaria</label>
+                <select type="text" name="username" id="username" class="ipt_text" #zona_horaria (change)="change_zona_horaria(zona_horaria.value)" >
+                    <option value={{userSelected?.zona_horaria}} selected disabled>
+                        {{userSelected?.zona_horaria}}
+                    </option>
+                    <option *ngFor="let horarios of zonas_horarias; let i = index" value="{{horarios.nombre}}">
+                        {{horarios.nombre}}
+                    </option>
+                </select>
+            </div>
+            <div class="campo">
                 <label for="email" class="subtitle">Correo electronico</label>
                 <input type="text" name="email" id="email" class="ipt_text" #email
                     (click)="secundary_user_functions.input_correo= email.value"
@@ -48,7 +59,7 @@
                     </div>
                     <div class="rol">
                         <div class="subtitle">Crear variables de memoria</div>
-                        <input type="checkbox"  disabled #create_memoria
+                        <input type="checkbox" disabled #create_memoria
                             (change)="secundary_user_functions.input_crear_variable_memory = create_memoria.checked"
                             [checked]="userSelected?.access_functions?.edit_memory_connection">
                     </div>
@@ -75,7 +86,7 @@
                     </div>
                     <div class="rol">
                         <div class="subtitle">Eliminar variables memoria</div>
-                        <input type="checkbox" disabled  #eliminar_memory
+                        <input type="checkbox" disabled #eliminar_memory
                             (change)="secundary_user_functions.input_eliminar_variable_memory = eliminar_memory.checked"
                             [checked]="userSelected?.access_functions?.drop_memory_connection">
                     </div>
@@ -86,7 +97,7 @@
                             [checked]="userSelected?.access_functions?.drop_endpoint_connection">
                     </div>
                 </div>
-               
+
             </div>
             <div class="line"></div>
             <span class="title-category">
@@ -117,7 +128,7 @@
                             [checked]="userSelected?.access_functions?.create_simple_button">
                     </div>
                 </div>
-             
+
             </div>
             <div class="line"></div>
             <span class="title-category">

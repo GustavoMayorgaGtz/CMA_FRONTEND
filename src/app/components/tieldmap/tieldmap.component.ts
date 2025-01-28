@@ -120,9 +120,6 @@ export class TieldmapComponent implements OnChanges {
     private alertService: AlertService,
     private router: Router,
     private finalizeServices: finalizeService) {
-
-
-
   }
 
 
@@ -140,13 +137,25 @@ export class TieldmapComponent implements OnChanges {
   public lastBloqueWidth: number = 25;
 
 
+  /**
+   * Funcion para cambiar el menu de opciones
+   * @param menu_options 
+   */
+  change_status_menu_options(menu_options: HTMLDivElement) {
+    const class_name = menu_options.className;
+    if (class_name == 'menu-list-hidden') {
+      menu_options.setAttribute("class", "menu-list");
+    } else {
+      menu_options.setAttribute("class", "menu-list-hidden");
+    }
+  }
 
   /**
    * Funcion que sirve para determinar los valores para los diferentes eventos de shadow
    * @param event
    * @param tieldmap
    */
-  getPosition(event: MouseEvent| TouchEvent, tieldmap: HTMLDivElement) {
+  getPosition(event: MouseEvent | TouchEvent, tieldmap: HTMLDivElement) {
     // event.preventDefault();
     const tieldmap_positionX = tieldmap.getBoundingClientRect().x;
     const tieldmap_positionY = tieldmap.getBoundingClientRect().y;
@@ -158,11 +167,11 @@ export class TieldmapComponent implements OnChanges {
     if (event instanceof MouseEvent) {
       // Si es un evento de mouse
       positionX = event.clientX - tieldmap_positionX;
-      positionY = (event.clientY  - tieldmap_positionY) + tieldmap.scrollTop;
+      positionY = (event.clientY - tieldmap_positionY) + tieldmap.scrollTop;
     } else if (event instanceof TouchEvent) {
       // Si es un evento táctil
       positionX = event.touches[0].clientX - tieldmap_positionX;
-      positionY = (event.touches[0].clientY  - tieldmap_positionY) + tieldmap.scrollTop;
+      positionY = (event.touches[0].clientY - tieldmap_positionY) + tieldmap.scrollTop;
     }
     // const positionX = event.clientX - tieldmap_positionX;
     // const positionY = (event.clientY - tieldmap_positionY) + tieldmap.scrollTop;
@@ -360,7 +369,6 @@ export class TieldmapComponent implements OnChanges {
 
   public propiedadAplicada: number[] = [];
   setChanges(shadow: HTMLDivElement, idShadow: number, tieldmap: HTMLDivElement) {
-    // console.log("Datos de la sombra: ",);
     const type = this.shadow_container[idShadow].type;
     switch (type) {
       case 'indicator': {
@@ -387,9 +395,7 @@ export class TieldmapComponent implements OnChanges {
         break;
       }
       case 'simplebutton': {
-        // const container = document.querySelector('.container');
         const fontSize = shadow.offsetWidth / 8;  // Puedes ajustar el divisor según sea necesario
-        // shadow.style.fontSize = `${fontSize}px`;
         shadow.setAttribute("style", `position: absolute;
         top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px;
         left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
@@ -400,7 +406,6 @@ export class TieldmapComponent implements OnChanges {
         break;
       }
       case 'streaming': {
-
         // const container = document.querySelector('.container');
         shadow.setAttribute("style", `position: absolute;
         top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px;
@@ -414,12 +419,7 @@ export class TieldmapComponent implements OnChanges {
         break;
       }
       case 'pulsacion': {
-        // const container = document.querySelector('.container');
         const fontSize = shadow.offsetWidth / 8;  // Puedes ajustar el divisor según sea necesario
-        // shadow.style.fontSize = `${fontSize}px`;
-
-        // console.log("Este es el valor de la pulsacion")
-        // console.log(this.shadow_container[idShadow])
         shadow.setAttribute("style", `position: absolute;
         top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px;
         left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
@@ -432,7 +432,6 @@ export class TieldmapComponent implements OnChanges {
 
     if (this.propiedadAplicada.indexOf(idShadow) == -1) {
       this.propiedadAplicada.push(idShadow);
-      //this.setPropietiesShadow(shadow, idShadow, tieldmap);
     }
 
     return { backgroundColor: "" }
@@ -450,7 +449,6 @@ export class TieldmapComponent implements OnChanges {
   enableMoveShadow(idShadow: number) {
     if (!this.isMove) {
       this.Update = true;
-      // alert("Activo el move");
       this.isDraw = false;
       this.isMove = true;
       this.idShadowMove = idShadow;
@@ -563,7 +561,7 @@ export class TieldmapComponent implements OnChanges {
             }
           }
           this.router.navigate(['/blobdata'], navigationExtras);
-        }else{
+        } else {
           this.alertService.setMessageAlert("No se puede abrir esta grafica")
         }
       })

@@ -15,7 +15,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../service/auth.service';
 import { Router } from '@angular/router';
 import { auth_class } from './auth_class';
+import Chart from 'chart.js/auto';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
+Chart.register(zoomPlugin);
 
 export class LineGraph {
   public jsonBuilder = new JsonVariableClass(this.varsService, this.router, this.alertService);
@@ -100,6 +103,22 @@ export class LineGraph {
 
       tooltip: {
         enabled: true // Opcional: controla si los tooltips están habilitados
+      }
+      ,
+      zoom: {
+        zoom: {
+          wheel: {
+            enabled: true, // Permitir zoom con la rueda del ratón
+          },
+          pinch: {
+            enabled: true, // Permitir zoom con gestos táctiles
+          },
+          mode: 'x', // Modo de zoom: 'x', 'y', o 'xy'
+        },
+        pan: {
+          enabled: true, // Permitir desplazamiento (pan)
+          mode: 'x', // Modo de pan: 'x', 'y', o 'xy'
+        },
       }
     },
     maintainAspectRatio: false, // Esto permite que el gráfico no mantenga un aspecto de cuadrado
@@ -258,6 +277,7 @@ export class LineGraph {
     if (varsName)
       this.varsName_global = varsName;
 
+    
     //BlobData operations
     if (!this.enableBlobData) {
       this.idBlobData = option.general.idblobdata;

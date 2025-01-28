@@ -1,5 +1,6 @@
 import { AfterContentInit, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AlertService } from 'src/app/service/alert.service';
+import { Alert_Event_SMS_Service } from 'src/app/service/alert_events.sms.service';
 
 @Component({
   selector: 'app-alerta',
@@ -11,15 +12,17 @@ export class AlertaComponent implements OnInit, AfterViewInit{
   @ViewChild("contenedor") ContenedorLinked!: ElementRef<HTMLDivElement>;
   public contenedor!: HTMLDivElement;
   constructor(private alertService: AlertService){
-
   }
+  
   ngAfterViewInit(): void {
     if(this.ContenedorLinked.nativeElement){
       this.contenedor = this.ContenedorLinked.nativeElement;
       this.contenedor.className = "hidde";
      }
   }
-  
+
+
+ 
 
 
   public message: string = "Bienvenido";

@@ -33,6 +33,7 @@ export interface access_functions {
 
 export interface UsersRecive{
     nombre_usuario: string,
+    zona_horaria: string,
     access_functions: string,
     correo: string,
     id_usuario: number,
@@ -43,6 +44,7 @@ export interface UsersRecive{
 
 export interface Users{
     nombre_usuario: string,
+    zona_horaria: string,
     access_functions: access_functions,
     correo: string,
     id_usuario: number,

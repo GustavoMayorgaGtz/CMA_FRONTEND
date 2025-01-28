@@ -25,7 +25,7 @@
       <div class="status_disabled" *ngIf="!status">desconectado</div>
       <div class="container-content">
          <div class="title">{{title}}</div>
-         <div class="content" *ngIf="type_data_design != 'status'"> {{data?.message}}<span
+         <div class="content" *ngIf="type_data_design != 'status'"> {{(data && data.message)? data.message:""}}<span
                class="symbol">{{symbol}}</span></div>
          <div class="content" *ngIf="type_data_design == 'status'"> {{(data && data.message) == 1? 'Encendido': 'Apagado'}}</div>
       </div>

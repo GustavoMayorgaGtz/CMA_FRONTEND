@@ -21,8 +21,9 @@ export class Add_User_Secundary_Class {
    */
   add_user(primaryUser: number, token: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      if (primaryUser && token && this.correo.includes("@")) {
-        this.authService.registerSecondaryUser(this.nombre_usuario,
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (primaryUser && token && regex.test(this.correo)){
+        this.authService.registerSecondaryUser(this.nombre_usuario, this.zona_horaria,
           this.correo, this.password, this.telefono, primaryUser, this.access_functions, token)
           .subscribe((response) => {
             this.alert.setMessageAlert("Usuario creado");
@@ -60,7 +61,7 @@ export class Add_User_Secundary_Class {
   update_user(id_user_selected: number, primaryUser: number, token: string) {
     return new Promise((resolve, reject) => {
       if (primaryUser && token && this.correo.includes("@")) {
-        this.authService.updateUser(this.nombre_usuario,
+        this.authService.updateUser(this.nombre_usuario, this.zona_horaria,
           this.correo, this.password, this.telefono, primaryUser, id_user_selected, this.access_functions, token)
           .subscribe((response) => {
             this.alert.setMessageAlert("Usuario actualizado");
@@ -91,6 +92,12 @@ export class Add_User_Secundary_Class {
   private nombre_usuario = "";
   set input_nombre_usuario(nombre_usuario: string) {
     this.nombre_usuario = nombre_usuario;
+  }
+
+  //Entrada para la zona horaria
+  private zona_horaria = "";
+  set input_zona_horaria(zona_horaria: string) {
+    this.zona_horaria = zona_horaria;
   }
 
   //Entrada para el correo

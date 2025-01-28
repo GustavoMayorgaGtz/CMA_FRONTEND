@@ -7,7 +7,7 @@
                 Crear dashboard
             </div>
         </div>
-        <div class="container_dashboards">
+        <div class="container_dashboards" *ngIf="dashboards.length > 0">
             <div class="card-dashboard" *ngFor="let dashboard of dashboards; let idx = index"
                 (click)="selectDashboard(dashboard.id_dashboard, dashboard.title)">
                 <span class="title">
@@ -18,6 +18,9 @@
                 </span>
             </div>
 
+        </div>
+        <div class="container_dashboards" *ngIf="dashboards.length == 0">
+            No hay dashboards creados aun...
         </div>
     </div>
 </div>

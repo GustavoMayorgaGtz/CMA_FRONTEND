@@ -18,15 +18,26 @@ export class MenuComponent {
       private authService: AuthService,
       private alertService: AlertService,
     ){
+      console.log("CALL 0")
       this.authClass.validateUser();
     }
 
    change_option_event(option: number){
     if(option == 6){
-          this.router.navigate(['/login']);
+      localStorage.removeItem("pwd");
+      localStorage.removeItem("usrname");
+      localStorage.removeItem("idUser");
+      localStorage.removeItem("token");
+      localStorage.removeItem("menu_number");
+      sessionStorage.removeItem("idUser");
+      sessionStorage.removeItem("token");
+      sessionStorage.clear();
+      localStorage.clear();
+      this.router.navigate(['/login']);
     }else{
       this.finalizeService.finalizeAllPolling_Event();
       this.option.emit(option);
+      console.log("CALL 1")
       this.authClass.validateUser();
 
     }

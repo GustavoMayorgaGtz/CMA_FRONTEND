@@ -105,9 +105,9 @@ export class ConfigurePulsacionComponent implements OnInit {
       this.alertService.setMessageAlert("Ocurrio algun error al seleccionar el dashboard.")
     } else {
         //Obtener el id del usuario
-        this.authClass.validateUser();
         const idUser = sessionStorage.getItem("idUser")
         const token = sessionStorage.getItem("token")
+        this.authClass.validateUser();
         if (idUser && token) {
           //Crear objeto
           let object: ICreate_Pulsacion = {
@@ -129,7 +129,7 @@ export class ConfigurePulsacionComponent implements OnInit {
             this.alertService.setMessageAlert("No se creo el boton pulsación correctamente, vuelve a intentarlo mas tarde.");
           })
         } else {
-          this.alertService.setMessageAlert("Vuelve a iniciar sesion...")
+          this.alertService.setMessageAlert("8. Vuelve a iniciar sesion...")
           this.router.navigate(['/login']);
         }
     }

@@ -122,11 +122,7 @@ export class PulsacionComponent implements OnInit, OnChanges, AfterViewInit {
   private intentosReconexion = 0;
   Connect_Socket() {
     return new Promise((resolve, reject) => {
-      //deshabilitar el actual socket
-      // if (this.socket) {
-      //   this.socket.disconnect();
-      //   this.socket.removeAllListeners();
-      // }
+     
       if (!this.socket || this.socket.connected == false) {
         console.log("Vamos a conectar")
       //Tratando de conectar

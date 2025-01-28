@@ -36,6 +36,7 @@
         <div class="title-column">
             Nombre de usuario
         </div>
+        
         <div class="title-column">
             Correo
         </div>
@@ -65,6 +66,19 @@
                     (click)="secundary_user_functions.input_nombre_usuario = username.value"
                     (keyup)="secundary_user_functions.input_nombre_usuario = username.value"
                     value={{userSelected?.nombre_usuario}}>
+            </div>
+            <div class="campo">
+                <label for="email" class="subtitle">Zona horaria</label>
+                <select type="text" name="zona_horaria" id="zona_horaria" class="ipt_text" #zona_horaria
+                    (change)="secundary_user_functions.input_zona_horaria= zona_horaria.value"
+                  >
+                <option disabled selected>
+                   Selecciona la zona horaria
+                </option>
+                <option *ngFor="let horarios of zonas_horarias; let i = index">
+                {{horarios.nombre}}
+                </option>
+            </select>
             </div>
             <!-- <div class="line_soft"></div> -->
             <div class="campo">

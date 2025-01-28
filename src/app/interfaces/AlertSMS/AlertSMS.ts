@@ -10,7 +10,8 @@ export interface IAlertSMS_Create {
     waiting_send_first_message: number,
     equal: string,
     type_data: string,
-    description: string
+    description: string,
+    primary_id_user: number
 }
 
 export interface IAlertSMS_Database extends IAlertSMS_Create{
