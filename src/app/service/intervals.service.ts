@@ -15,10 +15,13 @@ export class IntervalsService {
 
   clearAllIntervals(){
     console.log("Borrando los intervalos")
-    this.arr_intervals.forEach((interval, idx) => {
-      clearTimeout(interval);
-    })
+    while(this.arr_intervals.length != 0){
+      clearTimeout(this.arr_intervals.pop()); 
+    }
     this.arr_intervals = [];
+    while(this.arr_intervals.length != 0){
+      clearTimeout(this.arr_intervals.pop()); 
+    }
     console.log(this.arr_intervals)
   }
 }

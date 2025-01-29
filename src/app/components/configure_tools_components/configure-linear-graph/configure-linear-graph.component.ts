@@ -491,6 +491,9 @@ export class ConfigureLinearGraphComponent implements OnInit, OnChanges {
   private polling_time: number = 10;
   set setPolling_Time(time: string) {
     this.polling_time = parseInt(time);
+    if((this.polling_time < 10 && this.polling_type == "sg") || this.polling_time == 0){
+      this.polling_time = 10;
+    }
     this.redefineOptions((this.linear_chart_configuration && this.linear_chart_configuration.general) ? this.linear_chart_configuration.general.idblobdata : null);
   }
 
