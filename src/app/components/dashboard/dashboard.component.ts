@@ -5,7 +5,7 @@ import { IDashboardGet } from 'src/app/interfaces/DasboardInterface/dashboard.in
 import { AlertService } from 'src/app/service/alert.service';
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { ExitService } from 'src/app/service/exit.service';
-import { SignalService } from 'src/app/service/signal_websocket.service';
+import { IntervalsService } from 'src/app/service/intervals.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,17 +16,40 @@ export class DashboardComponent implements OnInit {
   public menu_tool: number = 0;
 
   set set_menu_tool(option: number) {
+    this.intervals_service.clearAllIntervals();
     this.menu_tool = option;
   }
 
   constructor(
     private exitService: ExitService,
-    private signalsService: SignalService,
     private router: Router,
     private dashboardService: DashboardService,
-    private alertService: AlertService) { }
+    private alertService: AlertService,
+    private intervals_service: IntervalsService) { }
 
-
+  public edit_id_tool:number = 0;
+  recibeToolEdit(data_edit: { type: string, id_tool: number }) {
+    switch (data_edit.type) {
+      case 'linechart': {
+        this.edit_id_tool = data_edit.id_tool;
+        this.menu_tool = 2;
+        break;
+      }
+      case 'indicator': {
+        this.menu_tool = 4;
+        this.edit_id_tool = data_edit.id_tool;
+        break;
+      }
+      case 'streaming': {
+        this.menu_tool = 5;
+        break;
+      }
+      case 'pulsacion': {
+        this.menu_tool = 6;
+        break;
+      }
+    }
+  }
 
   /**
    * Funcion para crear dashboard
@@ -97,11 +120,12 @@ export class DashboardComponent implements OnInit {
         sessionStorage.setItem("id_dashboard", "0");
         sessionStorage.setItem("name_dashboard", "");
         this.set_menu_tool = 0;
+        this.intervals_service.clearAllIntervals();
       } else {
         this.set_menu_tool = 1;
         let id_dashboard = sessionStorage.getItem("id_dashboard");
         let name_dashboard = sessionStorage.getItem("name_dashboard");
-
+        this.intervals_service.clearAllIntervals();
         if (id_dashboard && name_dashboard) {
           this.selectedDashboard = parseInt(id_dashboard);
           this.name_dashboard = name_dashboard;
@@ -147,6 +171,7 @@ export class DashboardComponent implements OnInit {
 
   private stateToolsMenu: boolean = false;
   hiddenTools(menuElement: HTMLDivElement) {
+    this.edit_id_tool = 0;
     if (this.stateToolsMenu) {
       menuElement.setAttribute("class", `menu-hidden`);
       this.stateToolsMenu = false;

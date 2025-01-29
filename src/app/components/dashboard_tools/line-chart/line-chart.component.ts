@@ -9,6 +9,7 @@ import { AllService } from 'src/app/service/all.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { CMA_ENDPOINT_SERVICES } from 'src/app/service/cma_endpoints.service';
 import { finalizeService } from 'src/app/service/finalize.service';
+import { IntervalsService } from 'src/app/service/intervals.service';
 import { LineChartService } from 'src/app/service/linechart_service';
 import { VarsService } from 'src/app/service/vars';
 
@@ -26,7 +27,8 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
     this.authService,
     this.router,
     this.finalizeService,
-    this.cma_endpointService);
+    this.cma_endpointService,
+    this.intervals_service);
   private linear_chart_configuration!: IlineChartConfiguration;
   @ViewChild(BaseChartDirective) canvas_chart!: BaseChartDirective;
   public linear1!: getParamsLineChart;
@@ -41,7 +43,8 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
     private authService: AuthService,
     private linechartservice: LineChartService,
     private finalizeService: finalizeService,
-    private cma_endpointService: CMA_ENDPOINT_SERVICES) {
+    private cma_endpointService: CMA_ENDPOINT_SERVICES,
+    private intervals_service: IntervalsService) {
     this.getVariables();
   }
   ngOnDestroy(): void {
@@ -69,7 +72,7 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
       const token = sessionStorage.getItem("token");
       const id_user = sessionStorage.getItem("idUser");
       if (token && id_user) {
-        this.linechartservice.getOneById(this.id, parseInt(id_user), token).subscribe((configuration) => {
+        this.linechartservice.getOneById(this.id).subscribe((configuration) => {
           this.linear_chart_configuration = {
             id_usuario: configuration.id_usuario,
             id_dashboard: configuration.id_dashboard,

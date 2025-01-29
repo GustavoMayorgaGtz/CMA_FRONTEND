@@ -34,15 +34,15 @@
                     <div class="title">Titulo</div>
                     <div class="description">Asigna el titulo de la grafica.</div>
                     <input type="text" class="input-text" name="title" id="title" #title
-                        (change)="setTitle = title.value" (keyup)="setTitle = title.value" value="Linear">
+                        (change)="setTitle = title.value" (keyup)="setTitle = title.value" value="{{linear_chart_configuration?linear_chart_configuration.general.title:'Title'}}">
                 </div>
                 <div class="campo">
                     <div class="title">Descripcion</div>
                     <div class="description">Describe el uso de la grafica.</div>
                     <input type="text" class="input-text" name="description" id="description" #description
-                        (change)="setDescription = description.value" value="Descripción basica de una grafica lineal">
+                        (change)="setDescription = description.value" value="{{linear_chart_configuration?linear_chart_configuration.general.description:'Title'}}">
                 </div>
-                <div class="campo">
+                <div class="campo" *ngIf="!id_graph_selected || id_graph_selected == 0 ">
                     <div class="title">Variable</div>
                     <div class="description">Elige el valor a graficar.</div>
                     <!-- En esta parte creamos las 2 opciones, disponibles y el contenedor -->
@@ -73,26 +73,32 @@
                     <div class="content-polling">
                         <input type="number" class="input-text" #polling_time
                             (change)="setPolling_Time = polling_time.value"
-                            (keyup)="setPolling_Time = polling_time.value" name="polling_time" id="polling_time" value="10">
+                            (keyup)="setPolling_Time = polling_time.value" name="polling_time" id="polling_time" value="{{linear_chart_configuration?linear_chart_configuration.general.polling.time : 10}}" >
                         <select name="polling_type" id="polling_type" #polling_type
                             (change)="setPolling_Type = polling_type.value">
-                            <option disabled>Tipo de tiempo</option>
-                            <option value="sg" selected>Segundos</option>
+                            <option disabled selected value="{{linear_chart_configuration?linear_chart_configuration.general.polling.type : 'Tipo de tiempo'}}">
+                                <ng-container 
+                                [ngSwitch]="linear_chart_configuration.general.polling.type">
+                            <div class="case" *ngSwitchCase="'sg'">
+                                Segundos
+                            </div>
+                            <div class="case" *ngSwitchCase="'mn'">
+                                Minutos
+                            </div>
+                            <div class="case" *ngSwitchCase="'Horas'">
+                                Horas
+                            </div>
+                        </ng-container>
+                            </option>
+                            <option value="sg">Segundos</option>
                             <option value="mn">Minutos</option>
                             <option value="hr">Horas</option>
                         </select>
                     </div>
 
                 </div>
-                <div class="campo boolean-campo">
-                    <div class="content-information">
-                        <div class="title">Definir como arreglo</div>
-                        <div class="description">La variable manda un arreglo como dato de entrada</div>
-                    </div>
-                    <input type="checkbox" class="input-text" #isArray (change)="set_isArray = isArray.checked"
-                        (keyup)="set_isArray = isArray.checked" name="isArray" id="isArray" disabled>
-                </div>
-                <div class="campo boolean-campo">
+
+                <div class="campo boolean-campo" *ngIf="!id_graph_selected || id_graph_selected == 0 ">
                     <div class="content-information">
                         <div class="title">Guardar datos en un espacio virtual</div>
                         <div class="description">Los datos van a guardarse para posteriormente ser analizados o graficados.</div>
@@ -107,7 +113,10 @@
                     </div>
                     <input type="checkbox" class="input-text" #line_stepped
                         (change)="setLine_Stepped=line_stepped.checked" (keyup)="setLine_Stepped=line_stepped.checked"
-                        name="line_stepped" id="line_stepped">
+                        name="line_stepped" id="line_stepped" *ngIf="!linear_chart_configuration.styles.line_stepped">
+                        <input type="checkbox" class="input-text" #line_stepped
+                        (change)="setLine_Stepped=line_stepped.checked" (keyup)="setLine_Stepped=line_stepped.checked"
+                        name="line_stepped" id="line_stepped" *ngIf="linear_chart_configuration.styles.line_stepped" checked>
                 </div>
                 <div class="campo">
                     <div class="title">Numero de muestreo</div>
@@ -135,15 +144,17 @@
                         <div class="description">Define si la grafica tenga un area de color.</div>
                     </div>
                     <input type="checkbox" class="input-text" #fill (change)="setFill = fill.checked"
-                        (keyup)="setFill = fill.checked" name="fill" id="fill" checked>
+                        (keyup)="setFill = fill.checked" name="fill" id="fill" checked *ngIf="linear_chart_configuration.styles.fill">
+                        <input type="checkbox" class="input-text" #fill (change)="setFill = fill.checked"
+                        (keyup)="setFill = fill.checked" name="fill" id="fill" *ngIf="!linear_chart_configuration.styles.fill">
                 </div>
-                <div class="campo boolean-campo ">
+                <div class="campo boolean-campo " *ngIf="linear_chart_configuration.styles.fill">
                     <div class="content-information">
                         <div class="title">Color de fondo</div>
                         <div class="description">Define el color del area.</div>
                     </div>
                     <div class="content-color">
-                        <input type="color" value="#33556F" class="input-color" name="fill_color" id="fill_color"
+                        <input type="color" value={{linear_chart_configuration.styles.fill_color}} class="input-color" name="fill_color" id="fill_color"
                             #fill_color (change)="setFill_Color = fill_color.value"
                             (keyup)="setFill_Color = fill_color.value"> 
                     </div>
@@ -153,17 +164,19 @@
                         <div class="title">Linea conectora</div>
                         <div class="description">Graficar una linea conectora.</div>
                     </div>
-                    <input type="checkbox" class="input-text" name="line" id="line" #line
-                        (change)="setLine = line.checked" (keyup)="setFill = fill.checked" value="2" checked>
+                    <input type="checkbox" class="input-text" name="line" id="line" #line_tool
+                        (change)="setLine = line_tool.checked" (keyup)="setFill = line_tool.checked" checked *ngIf="this.linear_chart_configuration.styles.line">
+                        <input type="checkbox" class="input-text" name="line" id="line" #line_tool
+                        (change)="setLine = line_tool.checked" (keyup)="setFill = line_tool.checked" *ngIf="!this.linear_chart_configuration.styles.line">
                 </div>
-                <div class="campo boolean-campo">
+                <div class="campo boolean-campo" *ngIf="this.linear_chart_configuration.styles.line">
                     <div class="content-information">
                         <div class="title">Color de la linea conectora</div>
                         <div class="description">Define el color de la linea conectora.</div>
                     </div>
                     <div class="content-color">
                         <input type="color" class="input-color" name="line_color" id="line_color" #line_color
-                            (change)="setLine_Color = line_color.value" (keyup)="setLine_Color = line_color.value" value="#000000">
+                            (change)="setLine_Color = line_color.value" (keyup)="setLine_Color = line_color.value" value="{{linear_chart_configuration.styles.line_color}}">
                     </div>
                 </div>
                 <div class="campo">
@@ -177,7 +190,7 @@
                     <div class="title">Tamaño del punto</div>
                     <div class="description">Define el tamaño del punto conector.</div>
                     <input type="number" class="input-text" #point_width (change)="setPoint_Width = point_width.value"
-                        (keyup)="setPoint_Width = point_width.value" name="point_width" id="point_width" value="2">
+                        (keyup)="setPoint_Width = point_width.value" name="point_width" id="point_width" value={{linear_chart_configuration.styles.point_width}}>
                 </div>
                 <div class="campo boolean-campo">
                     <div class="content-information">
@@ -187,7 +200,7 @@
                     <div class="content-color">
                         <input type="color" value="#33556F" class="input-color" #point_color
                             (change)="setPoint_Color = point_color.value" (keyup)="setPoint_Color = point_color.value"
-                            id="input-point_color" name="point_color">
+                            id="input-point_color" name="point_color" value={{linear_chart_configuration.styles.point_color}}>
                     </div>
                 </div>
                 <div class="campo">
@@ -196,16 +209,27 @@
                     <select name="point_style" id="point_style" #point_style
                         (change)="setPoint_Style = point_style.value">
                         <option disabled>Selecciona estilo</option>
-                        <option select>circle</option>
-                        <option>cross</option>
-                        <option>crossRot</option>
-                        <option>dash</option>
-                        <option>line</option>
-                        <option>rect</option>
-                        <option>rectRounded</option>
-                        <option>rectRot</option>
-                        <option>start</option>
-                        <option>triangle</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style == 'circle'" selected>circle</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style == 'cross'" selected>cross</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style == 'crossRot'" selected>crossRot</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style == 'dash'" selected>dash</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style == 'line'" selected>line</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style == 'rect'" selected>rect</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style == 'rectRounded'" selected>rectRounded</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style == 'rectRot'" selected>rectRot</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style == 'star'" selected>star</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style == 'triangle'" selected>triangle</option>
+
+                        <option *ngIf="linear_chart_configuration.styles.point_style != 'circle'">circle</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style != 'cross'">cross</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style != 'crossRot'">crossRot</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style != 'dash'">dash</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style != 'line'">line</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style != 'rect'">rect</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style != 'rectRounded'">rectRounded</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style != 'rectRot'">rectRot</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style != 'star'">star</option>
+                        <option *ngIf="linear_chart_configuration.styles.point_style != 'triangle'">triangle</option>
                     </select>
                 </div>
                 <div class="campo">
@@ -214,7 +238,7 @@
                     <input type="number" class="input-text" #point_border_size
                         (keyup)="setPoint_Border_Size = point_border_size.value"
                         (change)="setPoint_Border_Size = point_border_size.value" name="point_border_size"
-                        id="point_border_size" value="2">
+                        id="point_border_size" value={{linear_chart_configuration.styles.point_border_size}}>
                 </div>
 
                 <div class="campo boolean-campo">
@@ -223,7 +247,7 @@
                         <div class="description">Define el color del borde del punto conector.</div>
                     </div>
                     <div class="content-color">
-                        <input type="color" value="#ffffff" class="input-color" #point_border_color
+                        <input type="color" value={{linear_chart_configuration.styles.point_border_color}} class="input-color" #point_border_color
                             (change)="setPoint_Border_Color = point_border_color.value"
                             (keyup)="setPoint_Border_Color = point_border_color.value" name="point_border_color"
                             id="point_border_color">

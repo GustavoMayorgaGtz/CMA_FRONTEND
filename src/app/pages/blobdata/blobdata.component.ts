@@ -14,6 +14,7 @@ import { AuthService } from 'src/app/service/auth.service';
 import { BlobDataService } from 'src/app/service/blobdata_service';
 import { CMA_ENDPOINT_SERVICES } from 'src/app/service/cma_endpoints.service';
 import { finalizeService } from 'src/app/service/finalize.service';
+import { IntervalsService } from 'src/app/service/intervals.service';
 import { LineChartService } from 'src/app/service/linechart_service';
 import { VarsService } from 'src/app/service/vars';
 
@@ -34,7 +35,8 @@ export class BlobdataComponent implements OnInit, OnDestroy{
     this.authService,
     this.router,
     this.finalizeServices,
-    this.cma_endpointServices);
+    this.cma_endpointServices,
+    this.intervals_service);
   @ViewChild(BaseChartDirective) canvas_chart!: BaseChartDirective;
   private blobData = new BLOBDATA(this.varsServices);
   public linear1!: getParamsLineChart;
@@ -51,7 +53,8 @@ export class BlobdataComponent implements OnInit, OnDestroy{
     private blobdataServices: BlobDataService,
     private finalizeServices: finalizeService,
     private cma_endpointServices: CMA_ENDPOINT_SERVICES,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private intervals_service: IntervalsService) {
     this.authClass.validateUser();
   }
 
@@ -90,7 +93,7 @@ export class BlobdataComponent implements OnInit, OnDestroy{
       const id_user = sessionStorage.getItem("idUser");
       if (token && id_user) {
         this.typeChart = type;
-        this.linechart.getOneById(idgraph, parseInt(id_user),  token).subscribe((graph_line) => {
+        this.linechart.getOneById(idgraph).subscribe((graph_line) => {
           this.title = graph_line.title;
           this.description = graph_line.description;
           this.samplingNumber = graph_line.sampling_number;

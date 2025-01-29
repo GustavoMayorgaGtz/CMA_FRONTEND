@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, Input, OnChanges, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { IConfigurationShadow } from 'src/app/interfaces/TieldmapInterfaces/tieldmapinterfaces';
 import { AlertService } from 'src/app/service/alert.service';
@@ -111,6 +111,18 @@ export class TieldmapComponent implements OnChanges {
       }
     }
   }
+
+
+  private struct_edit_tool !: {type:string, id_tool:number};
+  @Output('editTool') event_edit_toool:EventEmitter<{type:string, id_tool:number}> = new EventEmitter<{type:string, id_tool:number}>();
+  editTool(type:string, id_tool: number){
+    this.struct_edit_tool = {
+      type,
+      id_tool
+    }
+    this.event_edit_toool.emit(this.struct_edit_tool);
+  }
+
 
   constructor(private linechart_Service: LineChartService,
     private simplebutton_Service: SimpleButtonService,
@@ -365,6 +377,8 @@ export class TieldmapComponent implements OnChanges {
     })
   }
 
+  
+
 
 
   public propiedadAplicada: number[] = [];
@@ -538,6 +552,7 @@ export class TieldmapComponent implements OnChanges {
    */
   erasedShadow(idShadow: number) {
     this.shadow_container.splice(idShadow, 1);
+    
   }
 
 
@@ -550,7 +565,7 @@ export class TieldmapComponent implements OnChanges {
     const token = sessionStorage.getItem("token");
     const id_user = sessionStorage.getItem("idUser");
     if (token && id_user) {
-      this.linechart_Service.getOneById(idShadow, parseInt(id_user), token).subscribe((line_chart) => {
+      this.linechart_Service.getOneById(idShadow).subscribe((line_chart) => {
         if (line_chart.issaveblobdata) {
           const idblobdata = line_chart.idblobdata;
           const navigationExtras: NavigationExtras = {

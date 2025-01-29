@@ -24,19 +24,19 @@
             No hay herramientas creadas.</span>
         <div class="shadow" *ngFor="let shadow of shadow_container; let idShadow = index;" #shadow_container
             [ngStyle]="setChanges(shadow_container, idShadow, tieldmap)">
-            <div class="menu" (click)="change_status_menu_options(menu_options)">
+            <div class="menu" (click)="change_status_menu_options(menu_options)" *ngIf="modify_check.checked">
                 <img src="./assets/menu.png" alt="menu" class="menu-icon">
             </div>
-            <div class="menu-list-hidden" #menu_options>
-                <div class="option">
+            <div class="menu-list-hidden" #menu_options >
+                <div class="option" (click)="editTool(shadow.type, shadow.id)" *ngIf="modify_check.checked">
                     Editar herramienta
                 </div>
-                <div class="option">
+                <!-- <div class="option">
                     Leer descripción
                 </div>
                 <div class="option">
                     Eliminar herramienta
-                </div>
+                </div> -->
             </div>
             <span class="title" *ngIf="shadow.type === 'linechart'">
                 {{shadow.name}}

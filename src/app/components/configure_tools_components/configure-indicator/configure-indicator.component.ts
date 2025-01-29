@@ -1,9 +1,9 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { auth_class } from 'src/app/graphs_class/auth_class';
-import { ICreate_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
+import { ICreate_Indicator, IRecive_Indicator } from 'src/app/interfaces/IndicatorInterfaces/indicator_interfaces';
 import { AlertService } from 'src/app/service/alert.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { ExitService } from 'src/app/service/exit.service';
@@ -15,7 +15,7 @@ import { IndicatorService } from 'src/app/service/indicators_service';
   styleUrls: ['./configure-indicator.component.scss']
 })
 
-export class ConfigureIndicatorComponent implements OnInit {
+export class ConfigureIndicatorComponent implements OnInit, OnChanges {
   public type_data_design: string = "";
   public type_data_in: string = "";
   public backgroundColor: string = "";
@@ -130,6 +130,26 @@ export class ConfigureIndicatorComponent implements OnInit {
     private authService: AuthService) {
     this.authClass.validateUser();
   }
+ 
+
+  @Input() id_indicator_selected!: number|undefined;
+    public indicator_saved!: IRecive_Indicator;
+    ngOnChanges(changes: SimpleChanges): void {
+      if (changes) {
+        const idUserString = sessionStorage.getItem("idUser");
+        if (idUserString && this.id_indicator_selected) {
+          this.indicatorService.getOne(parseInt(idUserString), this.id_indicator_selected).subscribe((data) => {
+            this.indicator_saved = data;
+            this.set_indicator_type_data_design = data.type_data_design;
+            this.set_indicator_title = data.title;
+            this.set_indicator_symbol = data.symbol;
+            this.set_indicator_description = data.description;
+            
+          })
+        }
+      }
+    }
+
 
 
 
@@ -182,13 +202,27 @@ export class ConfigureIndicatorComponent implements OnInit {
                     issaveblobdata: this.indicator_blobdata,
                     primary_user: parseInt(idUser)
                   }
-                  this.indicatorService.create_indicator(object).subscribe((response) => {
-                    this.alertService.setMessageAlert("Se creo el indicador correctamente.");
-                    this.show_save_button = true;
-                    window.location.reload();
-                  }, (err: HttpErrorResponse) => {
-                    this.alertService.setMessageAlert("No se creo el indicador correctamente, vuelve a intentarlo mas tarde.");
-                  })
+
+                  if(!this.id_indicator_selected || this.id_indicator_selected == 0){
+                    this.indicatorService.create_indicator(object).subscribe((response) => {
+                      this.alertService.setMessageAlert("Se creo el indicador correctamente.");
+                      this.show_save_button = true;
+                      window.location.reload();
+                    }, (err: HttpErrorResponse) => {
+                      this.alertService.setMessageAlert("No se creo el indicador correctamente, vuelve a intentarlo mas tarde.");
+                      this.show_save_button = true;
+                    })
+                  }else{
+                    this.indicatorService.update_indicator(object, this.id_indicator_selected).subscribe((response) => {
+                      this.alertService.setMessageAlert("Se actualizo el indicador correctamente.");
+                      this.show_save_button = true;
+                      window.location.reload();
+                    }, (err: HttpErrorResponse) => {
+                      this.alertService.setMessageAlert("No se actualizo el indicador correctamente, vuelve a intentarlo mas tarde.");
+                      this.show_save_button = true;
+                    })
+                  }
+                  
                 } else {
                   this.alertService.setMessageAlert("7. Vuelve a iniciar sesion...")
                   this.router.navigate(['/login']);

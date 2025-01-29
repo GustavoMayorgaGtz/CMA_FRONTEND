@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { auth_class } from './auth_class';
 import Chart from 'chart.js/auto';
 import zoomPlugin from 'chartjs-plugin-zoom';
+import { IntervalsService } from '../service/intervals.service';
 
 Chart.register(zoomPlugin);
 
@@ -149,7 +150,8 @@ export class LineGraph {
     private authService: AuthService,
     private router: Router,
     private finalizeService: finalizeService,
-    private cma_endpoint: CMA_ENDPOINT_SERVICES) {
+    private cma_endpoint: CMA_ENDPOINT_SERVICES,
+    private intervals_service: IntervalsService) {
     //Simulador de destructor desde otros lados
     this.finalizeService.finalizeAllPolling.subscribe(() => {
       if (this.idInterval) {
@@ -176,7 +178,6 @@ export class LineGraph {
     this.lineChartData.datasets[index].data = array_number;
     this.eventData.emit({
       lineChartData: this.lineChartData,
-
       lineChartOptions: this.lineChartOptions
     });
   }
@@ -215,8 +216,7 @@ export class LineGraph {
   }
 
   public eventData: EventEmitter<getParamsLineChart> = new EventEmitter<getParamsLineChart>();
-  sendParams() {
-  }
+  
 
 
   /**
@@ -267,7 +267,7 @@ export class LineGraph {
   private option_global!: IlineChartConfiguration;
   private vars_global !: AllVar[];
   private varsName_global !: string[];
-  private reloadBlobData!: NodeJS.Timeout;
+  public reloadBlobData!: NodeJS.Timeout;
 
   reloadData(option: IlineChartConfiguration, vars?: AllVar[], varsName?: string[], allData?: boolean) {
     //Asignar Variables en caso del muestreo
@@ -287,9 +287,9 @@ export class LineGraph {
         this.muestreo = option.general.sampling_number;
       }
       if (this.idBlobData) {
+        
         this.blobData.getBlobData(this.idBlobData)
           .then((response) => {
-            console.log(response)
             this.copyDataBlobData = response.value;
             this.copyDateBlobData = response.register_date;
             let copiaData: number[] = [];
@@ -330,6 +330,7 @@ export class LineGraph {
             this.reloadBlobData = setTimeout(() => {
               this.reloadData(option, vars, varsName, allData)
             },time);
+            this.intervals_service.addInterval(this.reloadBlobData);
           })
           .catch((err) => {
             this.enableBlobData = true;

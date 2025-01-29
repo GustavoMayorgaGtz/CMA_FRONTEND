@@ -15,6 +15,7 @@ import { AuthService } from 'src/app/service/auth.service';
 import { CMA_ENDPOINT_SERVICES } from 'src/app/service/cma_endpoints.service';
 import { ExitService } from 'src/app/service/exit.service';
 import { finalizeService } from 'src/app/service/finalize.service';
+import { IntervalsService } from 'src/app/service/intervals.service';
 import { SimpleButtonService } from 'src/app/service/simple_button_service';
 import { VarsService } from 'src/app/service/vars';
 
@@ -39,7 +40,8 @@ export class ConfigureSimpleButtonComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private exitService: ExitService,
-    private cma_endpointService: CMA_ENDPOINT_SERVICES) {
+    private cma_endpointService: CMA_ENDPOINT_SERVICES,
+    private intervals_service: IntervalsService) {
   }
 
   public grafica_linear = new LineGraph(
@@ -48,7 +50,8 @@ export class ConfigureSimpleButtonComponent implements OnInit {
     this.authService,
     this.router,
     this.finalizeServices,
-    this.cma_endpointService
+    this.cma_endpointService,
+    this.intervals_service
   );
 
   public linear1!: getParamsLineChart;

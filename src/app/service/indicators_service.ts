@@ -26,6 +26,18 @@ export class IndicatorService {
     return this.http.post<String>(server + "indicators/create", payload, { headers });
   }
 
+  update_indicator(payload: ICreate_Indicator, id_indicator:number) {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      this.router.navigate(['/login']);
+    }
+    // Agrega el token Bearer al encabezado de la solicitud
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post<String>(server + "indicators/update", {...payload, id_indicator}, { headers });
+  }
+
 
   getAll_Dashboard(token: string, id_user: number, id_dashboard: number) {
     // Agrega el token Bearer al encabezado de la solicitud
