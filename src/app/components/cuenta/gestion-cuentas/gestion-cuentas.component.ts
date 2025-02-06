@@ -41,7 +41,7 @@ export class GestionCuentasComponent {
   }
 
   public zonas_horarias: Zona_Horaria[] = [];
-  get_zona_horaria(){
+  get_zona_horaria() {
     this.zona_horaria_service.getZonaHoraria().subscribe((response) => {
       this.zonas_horarias = response;
     })
@@ -49,12 +49,13 @@ export class GestionCuentasComponent {
   /**
    * Obtener todos los usuarios by id_usuario_primario
    */
-  getUsers() {
+  getUsers(showAlert?: boolean) {
     if (this.token && this.id_user) {
       this.authService.getUsers(this.id_user, this.token).subscribe((users) => {
+        if(!showAlert)
         this.alert.setMessageAlert("Usuarios cargados...");
         this.users = [];
-        if(users){
+        if (users) {
           users.forEach(user => {
             const functionsacces = user.access_functions.replaceAll(/[()]/g, "").split(",").map((v) => v == 't' ? true : false);
             const access_functions_this: access_functions = {
@@ -88,17 +89,33 @@ export class GestionCuentasComponent {
               view_alert_sms_logs: functionsacces[27],
               modify_tieldmap: functionsacces[28]
             }
-  
+
             const userTransform: Users = { ...user, access_functions: access_functions_this }
             this.users.push(userTransform);
           })
         }
-      
+
 
       }, (err: HttpErrorResponse) => {
         this.alert.setMessageAlert("No se ha podido recuperar los usuarios")
       })
     }
+  }
+
+
+  enabledPasswordChange(input: HTMLInputElement){
+    input.disabled = false
+  }
+
+  changeEnableduser(modify_id_user: number, status: boolean) {
+    this.authService.changeEnableduser(modify_id_user, status).subscribe((payload) => {
+      this.alert.setMessageAlert("Estado de usuario cambiado.");
+      this.getUsers(true);
+      console.log("respuesta de cambio: ", payload)
+    }, (err: HttpErrorResponse) => {
+      this.alert.setMessageAlert("Error al cambiar el estado del usuario.");
+      console.log("Error de respuesta: ", err.message)
+    })
   }
 
 
@@ -210,17 +227,17 @@ export class GestionCuentasComponent {
         })
   }
 
-public search_user_value: string = "";
-  searchUser(search_user: string){
+  public search_user_value: string = "";
+  searchUser(search_user: string) {
     this.search_user_value = search_user;
   }
 
 
-  getPermissionsCount(user: Users): number{
+  getPermissionsCount(user: Users): number {
     let counter = 0;
     Object.keys(user.access_functions).forEach((key) => {
       const access = user.access_functions[key as keyof typeof user.access_functions];
-      if(access){
+      if (access) {
         counter++;
       }
     });

@@ -39,7 +39,8 @@ export interface UsersRecive{
     id_usuario: number,
     primary_id_user: number,
     role: 'PRIMARY' | 'SECONDARY',
-    telefono: string
+    telefono: string,
+    enabled: boolean
 }
 
 export interface Users{
@@ -50,5 +51,6 @@ export interface Users{
     id_usuario: number,
     primary_id_user: number,
     role: 'PRIMARY' | 'SECONDARY',
-    telefono: string
+    telefono: string,
+    enabled: boolean
 }

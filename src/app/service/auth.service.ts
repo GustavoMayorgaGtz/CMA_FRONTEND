@@ -5,12 +5,13 @@ import { login, register } from '../interfaces/LoginInterface/login.interface';
 import { timeout } from 'rxjs';
 import { server } from 'src/environments/environment';
 import { access_functions, UsersRecive } from '../interfaces/GestionUsuarios/GestionUsuarios.Interface';
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   //peticion para iniciar sesion
   login_user(body: login) {
@@ -46,6 +47,20 @@ export class AuthService {
       'Authorization': `Bearer ${token}` 
     });
     return this.http.post<any>(server+"auth/updateUser", {username, zona_horaria, correo, password, telefono, idUserQuery, rango, idUserFactory}, {headers})
+  }
+
+  //Peticion para actualizar el estado de un usuario secundario
+  changeEnableduser( modify_id_user: number, enabled: boolean) {
+    const id_user = sessionStorage.getItem('idUser')
+    const token = sessionStorage.getItem("token")
+    if(!id_user || !token){
+       this.router.navigate(['/login'])
+    }
+  
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}` 
+    });
+    return this.http.post<any>(server+"auth/changeEnabledUser", {idUser: id_user, idUserModify: modify_id_user, enabled}, {headers})
   }
 
   //Observable para obtener los usuarios asociados a un usuario
