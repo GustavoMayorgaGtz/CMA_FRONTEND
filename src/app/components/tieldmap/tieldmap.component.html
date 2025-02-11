@@ -1,11 +1,11 @@
 <div class="container-primary">
     <div class="move-tieldmap">
         <div class="campo">
-            <b style="text-decoration: underline; color: rgb(106, 134, 60)">{{name_dashboard}}</b> / Modificar
-            herramientas
+            <b style="text-decoration: underline; color: rgb(106, 134, 60)">{{name_dashboard}}</b> <span style="display: flex; flex-wrap: nowrap; gap: 20px;" *ngIf="modify_position_tools">/ Modificar
             <div class="checkbox-wrapper-2">
-                <input type="checkbox" #modify_check class="sc-gJwTLC ikxBAC">
+                <input type="checkbox" #modify_check class="sc-gJwTLC ikxBAC" (change)="modify_access_event(modify_check.checked)">
             </div>
+        </span>
         </div>
 
         <!-- <div class="nota" *ngIf="modify_check.checked">
@@ -24,11 +24,11 @@
             No hay herramientas creadas.</span>
         <div class="shadow" *ngFor="let shadow of shadow_container; let idShadow = index;" #shadow_container
             [ngStyle]="setChanges(shadow_container, idShadow, tieldmap)">
-            <div class="menu" (click)="change_status_menu_options(menu_options)" *ngIf="modify_check.checked">
+            <div class="menu" (click)="change_status_menu_options(menu_options)" *ngIf="edit_tools">
                 <img src="./assets/menu.png" alt="menu" class="menu-icon">
             </div>
             <div class="menu-list-hidden" #menu_options >
-                <div class="option" (click)="editTool(shadow.type, shadow.id)" *ngIf="modify_check.checked">
+                <div class="option" (click)="editTool(shadow.type, shadow.id)" *ngIf="edit_tools">
                     Editar herramienta
                 </div>
                 <!-- <div class="option">
@@ -51,15 +51,15 @@
             <div class="opendata" *ngIf="shadow.type === 'linechart'" (click)="openData(shadow.id)">
                 <img src="./assets/open.svg">
             </div>
-            <div class="erased" (click)="erasedShadow(idShadow)" *ngIf="modify_check.checked">
+            <div class="erased" (click)="erasedShadow(idShadow)" *ngIf="modify_acces_status">
                 <img src="./assets/x-makeme.svg" draggable="false">
             </div>
-            <div class="resize" *ngIf="shadow.type != 'indicator' && modify_check.checked"
+            <div class="resize" *ngIf="shadow.type != 'indicator' && modify_acces_status"
                 (mousedown)="enableResizeShadow(idShadow)" (mouseup)="endResizeShadow()"
                 (touchstart)="enableResizeShadow(idShadow);$event.preventDefault()" (touchend)="endResizeShadow()">
                 <img src="./assets/resize-makeme.svg" draggable="false">
             </div>
-            <div class="move" (mousedown)="enableMoveShadow(idShadow)" *ngIf="modify_check.checked"
+            <div class="move" (mousedown)="enableMoveShadow(idShadow)" *ngIf="modify_acces_status"
                 (mouseup)="endMoveShadow()" (touchstart)="enableMoveShadow(idShadow);$event.preventDefault()"
                 (touchend)="endMoveShadow()">
                 <img src="./assets/move-makeme.svg" draggable="false">

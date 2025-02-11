@@ -70,35 +70,11 @@ export class MiCuentaComponent {
         this.alert.setMessageAlert("Usuarios cargado");
         const functionsacces = user[0].access_functions.replaceAll(/[()]/g, "").split(",").map((v) => v == 't' ? true : false);
         const access_functions_this = {
-          edit_json_connection: functionsacces[0],
-          drop_json_connection: functionsacces[1],
-          modify_json_connection: functionsacces[2],
-          use_json_connection: functionsacces[3],
-          edit_modbus_connection: functionsacces[4],
-          drop_modbus_connection: functionsacces[5],
-          modify_modbus_connection: functionsacces[6],
-          use_modbus_connection: functionsacces[7],
-          edit_memory_connection: functionsacces[8],
-          drop_memory_connection: functionsacces[9],
-          modify_memory_connection: functionsacces[10],
-          use_memory_connection: functionsacces[11],
-          edit_endpoint_connection: functionsacces[12],
-          drop_endpoint_connection: functionsacces[13],
-          modify_endpoint_connection: functionsacces[14],
-          use_endpoint_connection: functionsacces[15],
-          create_line_graph: functionsacces[16],
-          drop_line_graph: functionsacces[17],
-          edit_line_graph: functionsacces[18],
-          modify_line_graph: functionsacces[19],
-          create_simple_button: functionsacces[20],
-          drop_simple_button: functionsacces[21],
-          edit_simple_button: functionsacces[22],
-          modify_simple_button: functionsacces[23],
-          create_alert_sms: functionsacces[24],
-          edit_alert_sms: functionsacces[25],
-          drop_alert_sms: functionsacces[26],
-          view_alert_sms_logs: functionsacces[27],
-          modify_tieldmap: functionsacces[28]
+          modify_position_tools: functionsacces[0],
+          edit_tools: functionsacces[1],
+          create_tools: functionsacces[2],
+          alerts: functionsacces[3],
+          watch_variables: functionsacces[4]
         }
         const userTransform: Users = { ...user[0], access_functions: access_functions_this }
         this.userSelected = userTransform;

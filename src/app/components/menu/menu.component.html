@@ -10,13 +10,14 @@
         </div>
         <div class="title">Dashboard</div>
     </div>
-    <div class="options" (click)="change_option_event(5)">
+    <div class="options" (click)="change_option_event(5)" *ngIf="watch_variables">
         <div class="icon">
             <img src="./assets/tag.svg" alt="📉">
         </div>
         <div class="title">Variables</div>
+       
     </div>
-    <div class="options" (click)="change_option_event(4)">
+    <div class="options" (click)="change_option_event(4)" *ngIf="alerts">
         <div class="icon">
             <img src="./assets/functions.png" alt="📉">
         </div>

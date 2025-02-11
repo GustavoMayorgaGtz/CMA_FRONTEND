@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IDashboardGet } from 'src/app/interfaces/DasboardInterface/dashboard.interface';
 import { AlertService } from 'src/app/service/alert.service';
+import { AuthService } from 'src/app/service/auth.service';
 import { DashboardService } from 'src/app/service/dashboard.service';
 import { ExitService } from 'src/app/service/exit.service';
 import { IntervalsService } from 'src/app/service/intervals.service';
@@ -20,12 +21,21 @@ export class DashboardComponent implements OnInit {
     this.menu_tool = option;
   }
 
+  public create_tool:boolean = false;
   constructor(
     private exitService: ExitService,
+    private authsevice: AuthService,
     private router: Router,
     private dashboardService: DashboardService,
     private alertService: AlertService,
-    private intervals_service: IntervalsService) { }
+    private intervals_service: IntervalsService) { 
+
+      this.authsevice.permission('create_tools').subscribe((response) => {
+            this.create_tool = response.access;
+      }, (err: HttpErrorResponse)=> {
+        console.log(err);
+      });
+    }
 
   public edit_id_tool:number = 0;
   recibeToolEdit(data_edit: { type: string, id_tool: number }) {

@@ -62,13 +62,17 @@
                     &nbsp; permisos otorgados
                 </span>
                 <span class="user">
-                    <div class="checkbox-wrapper-10" *ngIf="user.enabled" (click)="changeEnableduser(user.id_usuario, false)">
-                        <input class="tgl tgl-flip" id={{user.id_usuario}} type="checkbox" checked/>
-                        <label class="tgl-btn" data-tg-off="Inactivo" data-tg-on="Activo" for={{user.id_usuario}}></label>
+                    <div class="checkbox-wrapper-10" *ngIf="user.enabled"
+                        (click)="changeEnableduser(user.id_usuario, false)">
+                        <input class="tgl tgl-flip" id={{user.id_usuario}} type="checkbox" checked />
+                        <label class="tgl-btn" data-tg-off="Inactivo" data-tg-on="Activo"
+                            for={{user.id_usuario}}></label>
                     </div>
-                    <div class="checkbox-wrapper-10" *ngIf="!user.enabled" (click)="changeEnableduser(user.id_usuario, true)">
-                        <input class="tgl tgl-flip" id={{user.id_usuario}} type="checkbox"/>
-                        <label class="tgl-btn" data-tg-off="Inactivo" data-tg-on="Activo" for={{user.id_usuario}}></label>
+                    <div class="checkbox-wrapper-10" *ngIf="!user.enabled"
+                        (click)="changeEnableduser(user.id_usuario, true)">
+                        <input class="tgl tgl-flip" id={{user.id_usuario}} type="checkbox" />
+                        <label class="tgl-btn" data-tg-off="Inactivo" data-tg-on="Activo"
+                            for={{user.id_usuario}}></label>
                     </div>
                 </span>
             </div>
@@ -109,9 +113,10 @@
             <div class="campo">
                 <label for="password" class="subtitle">Contraseña</label>
                 <input type="text" name="password" id="password" class="ipt_text" #password
-                (click)="secundary_user_functions.input_password= password.value"
-                (keyup)="secundary_user_functions.input_password= password.value" disabled>
-                <span style="color: red; cursor: pointer;"  *ngIf="userSelected" (click)="enabledPasswordChange(password)">Cambiar contraseña</span>
+                    (click)="secundary_user_functions.input_password= password.value"
+                    (keyup)="secundary_user_functions.input_password= password.value" disabled>
+                <span style="color: red; cursor: pointer;" *ngIf="userSelected"
+                    (click)="enabledPasswordChange(password)">Cambiar contraseña</span>
             </div>
             <div class="campo">
                 <label for="phone" class="subtitle">Telefono</label>
@@ -121,125 +126,53 @@
             </div>
             <div class="line_soft"></div>
             <div class="line"></div>
-            Permisos del usuario: Funciones de variables
+            Permisos del usuario
             <div class="line"></div>
             <div class="permisos-container">
 
                 <div class="container-roles">
                     <div class="subtitle">
-                        Acceso a creacion de variables
+                        Permisos en la plataforma
                     </div>
                     <div class="rol">
-                        <div class="subtitle">Crear variables json endpoint</div>
-                        <input type="checkbox" #create_json
-                            (change)="secundary_user_functions.input_crear_variable_json = create_json.checked"
-                            [checked]="userSelected?.access_functions?.edit_json_connection">
-                    </div>
-                    <div class="rol">
-                        <div class="subtitle">Crear variables modbus</div>
-                        <input type="checkbox" #create_modbus
-                            (change)="secundary_user_functions.input_crear_variable_modbus = create_modbus.checked"
-                            [checked]="userSelected?.access_functions?.edit_modbus_connection">
-                    </div>
-                    <div class="rol">
-                        <div class="subtitle">Crear variables de memoria</div>
-                        <input type="checkbox" #create_memoria
-                            (change)="secundary_user_functions.input_crear_variable_memory = create_memoria.checked"
-                            [checked]="userSelected?.access_functions?.edit_memory_connection">
-                    </div>
-                    <div class="rol">
-                        <div class="subtitle">Crear variables cma endpoint</div>
-                        <input type="checkbox" #create_endpoint
-                            (change)="secundary_user_functions.input_crear_variable_endpoint = create_endpoint.checked"
-                            [checked]="userSelected?.access_functions?.edit_endpoint_connection">
-                    </div>
-                    <div class="subtitle">
-                        Eliminar la creacion de variable
-                    </div>
-                    <div class="rol">
-                        <div class="subtitle">Eliminar variables json endpoint</div>
-                        <input type="checkbox" #eliminar_json
-                            (change)="secundary_user_functions.input_eliminar_variable_json = eliminar_json.checked"
-                            [checked]="userSelected?.access_functions?.drop_json_connection">
-                    </div>
-                    <div class="rol">
-                        <div class="subtitle">Eliminar variables modbus</div>
-                        <input type="checkbox" #eliminar_modbus
-                            (change)="secundary_user_functions.input_eliminar_variable_modbus = eliminar_modbus.checked"
-                            [checked]="userSelected?.access_functions?.drop_modbus_connection">
-                    </div>
-                    <div class="rol">
-                        <div class="subtitle">Eliminar variables memoria</div>
-                        <input type="checkbox" #eliminar_memory
-                            (change)="secundary_user_functions.input_eliminar_variable_memory = eliminar_memory.checked"
-                            [checked]="userSelected?.access_functions?.drop_memory_connection">
-                    </div>
-                    <div class="rol">
-                        <div class="subtitle">Eliminar variables cma endpoint</div>
-                        <input type="checkbox" #eliminar_endpoint
-                            (change)="secundary_user_functions.input_eliminar_variable_endpoint = eliminar_endpoint.checked"
-                            [checked]="userSelected?.access_functions?.drop_endpoint_connection">
-                    </div>
-                </div>
-                <div class="line"></div>
-                Permisos del usuario: Funciones de dashboard
-                <div class="line"></div>
-                <div class="permisos-container">
-                    <div class="container-roles">
-                        <div class="subtitle">
-                            Acceso del dashboard
-                        </div>
-                        <div class="rol">
-                            <div class="subtitle">Manipular dashboard</div>
-                            <input type="checkbox" #manipule_tieldmap
-                                (change)="secundary_user_functions.input_modify_tieldmap = manipule_tieldmap.checked"
-                                [checked]="userSelected?.access_functions?.modify_tieldmap">
-                        </div>
-                        <div class="rol">
-                            <div class="subtitle">Crear graficos lineales</div>
-                            <input type="checkbox" #create_line_graph
-                                (change)="secundary_user_functions.input_crear_line_graph = create_line_graph.checked"
-                                [checked]="userSelected?.access_functions?.create_line_graph">
-                        </div>
-                        <div class="rol">
-                            <div class="subtitle">Crear botones simples</div>
-                            <input type="checkbox" #create_simple_button
-                                (change)="secundary_user_functions.input_crear_simple_button = create_simple_button.checked"
-                                [checked]="userSelected?.access_functions?.create_simple_button">
-                        </div>
-                    </div>
-                    <div class="line"></div>
-                    Permisos del usuario: Funciones de alertas
-                    <div class="line"></div>
-                    <div class="permisos-container">
-                        <div class="container-roles">
-                            <div class="subtitle">
-                                Acceso a alertas
-                            </div>
-                            <div class="rol">
-                                <div class="subtitle">Ver eventos de las alertas sms</div>
-                                <input type="checkbox" #view_logs_alert_sms
-                                    (change)="secundary_user_functions.input_logs_alertas_sms = view_logs_alert_sms.checked"
-                                    [checked]="userSelected?.access_functions?.view_alert_sms_logs">
-                            </div>
-                            <div class="rol">
-                                <div class="subtitle">Crear alertas sms</div>
-                                <input type="checkbox" #create_alert_sms
-                                    (change)="secundary_user_functions.input_crear_alertas_sms = create_alert_sms.checked"
-                                    [checked]="userSelected?.access_functions?.create_alert_sms">
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="btn-guardar" (click)="saveUser()" *ngIf="!userSelected">
-                        Crear usuario
-                    </div>
-                    <div class="btn-guardar" (click)="updateUser()" *ngIf="userSelected">
-                        Actualizar usuario
+                        <div class="subtitle">Modificar posiciones y tamaños de las herramientas</div>
+                        <input type="checkbox" #modify_positions
+                            (change)="secundary_user_functions.set_modify_position_tools = modify_positions.checked"
+                            [checked]="userSelected?.access_functions?.modify_position_tools">
                     </div>
 
+                    <div class="rol">
+                        <div class="subtitle">Editar herramientas</div>
+                        <input type="checkbox" #edit_tools
+                            (change)="secundary_user_functions.set_edit_tools = edit_tools.checked"
+                            [checked]="userSelected?.access_functions?.edit_tools">
+                    </div>
+                
+                    <div class="rol">
+                        <div class="subtitle">Crear herramientas</div>
+                        <input type="checkbox" #create_alerts
+                            (change)="secundary_user_functions.set_create_tools = create_alerts.checked"
+                            [checked]="userSelected?.access_functions?.create_tools">
+                    </div>
+                    <div class="rol">
+                        <div class="subtitle">Gestionar alertas</div>
+                        <input type="checkbox" #alerts
+                            (change)="secundary_user_functions.set_alerts = alerts.checked"
+                            [checked]="userSelected?.access_functions?.alerts">
+                    </div>
+                    <div class="rol">
+                        <div class="subtitle">Ver variables</div>
+                        <input type="checkbox" #watch_tools
+                            (change)="secundary_user_functions.set_watch_variables = watch_tools.checked"
+                            [checked]="userSelected?.access_functions?.watch_variables">
+                    </div>
                 </div>
+            </div>
+            <div class="btn-guardar" (click)="saveUser()" *ngIf="!userSelected">
+                Crear usuario
+            </div>
+            <div class="btn-guardar" (click)="updateUser()" *ngIf="userSelected">
+                Actualizar usuario
             </div>
         </div>
     </div>
-</div>

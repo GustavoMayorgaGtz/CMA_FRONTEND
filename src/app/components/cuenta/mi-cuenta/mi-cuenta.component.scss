@@ -35,6 +35,9 @@
 
                 .subtitle {
                     width: 120px;
+                    height: 35px;
+                    display: flex;
+                    align-items: center;
                     font-size: 0.9em;
                     font-weight: bold;
                 }
@@ -42,6 +45,8 @@
                 .ipt_text {
                     width: 400px;
                     height: 35px;
+                    padding: 5px;
+                    box-sizing: border-box;
                     border-radius: 5px;
                     border: 1px solid rgb(167, 167, 167);
                 }
