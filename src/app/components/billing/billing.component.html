@@ -1,7 +1,31 @@
+<div class="container-cards" *ngIf="menu == 'prices'">
+  <div class="subscription-container">
+    <span class="title">Planes de Suscripción</span>
 
-<!-- payment.component.html -->
-<form (submit)="pay(); $event.preventDefault();">
-  <div id="card-element"><!-- Stripe.js insertará el formulario de la tarjeta aquí --></div>
-  <button type="submit">Pagar</button>
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-</form>
+    <div class="plans-grid">
+      <div *ngFor="let plan of plans" class="plan-card" [class.recommended]="plan.recommended">
+        <div class="plan-header">
+          <h2>{{plan.name}}</h2>
+          <p class="price">${{plan.price}} <span>/mes</span></p>
+        </div>
+        <ul class="features">
+          <li *ngFor="let feature of plan.features">
+            ✓ {{feature}}
+          </li>
+        </ul>
+        <button class="subscribe-btn" (click)="seleccionar_precio(plan.priceId)">
+          Suscribirse
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-cards" *ngIf="menu == 'payment'">
+  <form (submit)="pay(); $event.preventDefault();">
+    <div id="card-element"><!-- Stripe.js insertará el formulario de la tarjeta aquí --></div>
+    <button type="submit">Pagar</button>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    
+  </form>
+</div>

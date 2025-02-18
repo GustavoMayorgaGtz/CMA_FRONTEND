@@ -1,16 +1,23 @@
 <div class="container-primary">
     <app-nav></app-nav>
-    <div class="title-header"> Dashboard</div>
+    <div class="title-header">
+        <div class="title">
+            Dashboard
+        </div>
+        <div class="user">
+            <span class="user_text" (click)="setOptionEnable(2)">{{userSelected?.nombre_usuario}}</span><div class="circle_live"></div>
+        </div>
+    </div>
     <div class="main">
-        <app-menu (option)="setOptionEnable($event)" class="menu_app">  </app-menu>
+        <app-menu (option)="setOptionEnable($event)" class="menu_app"> </app-menu>
         <div class="container-pages">
-           <app-autentificacion *ngIf="optionEnable === 1"></app-autentificacion>
-           <app-cuenta *ngIf="optionEnable === 2"></app-cuenta>
-           <app-dashboard *ngIf="optionEnable === 3" ></app-dashboard>
-           <app-funciones *ngIf="optionEnable === 4" ></app-funciones>
-           <app-variables *ngIf="optionEnable === 5" ></app-variables>
-           <app-billing *ngIf="optionEnable === 7" ></app-billing>
-           <app-tickets *ngIf="optionEnable === 8" ></app-tickets>
+            <app-autentificacion *ngIf="optionEnable === 1"></app-autentificacion>
+            <app-cuenta *ngIf="optionEnable === 2"></app-cuenta>
+            <app-dashboard *ngIf="optionEnable === 3"></app-dashboard>
+            <app-funciones *ngIf="optionEnable === 4"></app-funciones>
+            <app-variables *ngIf="optionEnable === 5"></app-variables>
+            <app-billing *ngIf="optionEnable === 7"></app-billing>
+            <app-tickets *ngIf="optionEnable === 8"></app-tickets>
         </div>
     </div>
 </div>

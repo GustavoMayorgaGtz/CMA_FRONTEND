@@ -114,7 +114,6 @@ export class ConfigureIndicatorComponent implements OnInit, OnChanges {
   }
   public set set_indicator_blobdata(blobdata: boolean) {
     //TODO: QUITAR
-    alert(blobdata);
     this.indicator_blobdata = blobdata;
   }
   /*-----*/
@@ -204,6 +203,7 @@ export class ConfigureIndicatorComponent implements OnInit, OnChanges {
                   }
 
                   if(!this.id_indicator_selected || this.id_indicator_selected == 0){
+                   
                     this.indicatorService.create_indicator(object).subscribe((response) => {
                       this.alertService.setMessageAlert("Se creo el indicador correctamente.");
                       this.show_save_button = true;

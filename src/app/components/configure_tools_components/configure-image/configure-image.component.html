@@ -1,0 +1,51 @@
+<div class="primary-container">
+    <nav>
+        <span class="title">
+            Configuración de Imagen
+        </span>
+        <span class="regresar" (click)="return()">
+            Regresar
+        </span>
+    </nav>
+    <div class="left">
+        <div class="chart-container">
+            <img src={{get_url}} alt="" class="source">
+        </div>
+    </div>
+    <div class="right">
+        <div class="content-create-tool">
+            <div class="class-configuration">
+                <div class="title">
+                    General
+                </div>
+                <div class="line">
+
+                </div>
+                <div class="updown">
+                    <img src="./assets/expand_more.png" class="open">
+                </div>
+            </div>
+            <div class="container-class">
+                <div class="campo">
+                    <div class="title">Titulo</div>
+                    <div class="description">Asigna el titulo del boton pulso.</div>
+                    <input type="text" class="input-text" name="title" id="title" #title (change)="set_title = title.value" (keyup)="set_title = title.value" value={{get_title}}>
+                </div>
+                <div class="campo">
+                    <div class="title">URL</div>
+                    <div class="description">Direccion de la imagen (URL).</div>
+                    <input type="text" class="input-text" name="url" id="url" #url (change)="set_url = url.value" (keyup)="set_url = url.value" value={{get_url}}>
+                </div>
+                <div class="campo">
+                    <div class="title">Mostrar contorno de herramienta</div>
+                    <div class="description">Mostraras la imagen con el contorno tipico de las herrmientas.</div>
+                    <input type="checkbox" class="input-text"  #contorno_input (change)="set_contorno = contorno_input.checked" *ngIf="!get_contorno" >
+                    <input type="checkbox" class="input-text"  #contorno_input (change)="set_contorno = contorno_input.checked" *ngIf="get_contorno" checked>
+                </div>
+                <div class="btn-guardar" (click)="save_image()">
+                    Guardar configuracion
+                </div>
+
+            </div>
+        </div>
+    </div>

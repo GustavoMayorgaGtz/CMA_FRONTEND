@@ -12,11 +12,35 @@
         min-height: 50px;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         box-sizing: border-box;
         font-size: 1.3em;
         font-weight: bold;
         padding: 0px 20px;
         border-bottom: 1px solid rgb(154, 154, 154);
+
+        .user
+        {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            font-size: calc(0.4vw + 6px);
+
+            .user_text{
+                text-decoration: underline;
+                cursor: pointer;
+            }
+            .circle_live{
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                width: 15px;
+                height: 15px;
+                background-color: rgb(155, 224, 52);
+            }
+        }
     }
 
     .main{

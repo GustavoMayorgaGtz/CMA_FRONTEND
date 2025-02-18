@@ -32,14 +32,14 @@ export class LineGraph {
   public lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: [
     ],
-    
+
     datasets: [
       {
         data: this.limiteInferiorData,
 
         label: "Limite inferior",
         // this dataset is drawn below
-        
+
         fill: false,
         tension: 0.4,
         borderColor: 'red',
@@ -48,7 +48,7 @@ export class LineGraph {
         pointBackgroundColor: 'rgb(255, 0, 0)',
         borderWidth: 1,
         showLine: true,
-        animation: false,
+        // animation: true,
         pointRadius: 1
       },
       {
@@ -81,7 +81,6 @@ export class LineGraph {
         borderWidth: 1,
         showLine: true,
         animation: false
-        
       }
     ]
   };
@@ -125,19 +124,40 @@ export class LineGraph {
     maintainAspectRatio: false, // Esto permite que el gráfico no mantenga un aspecto de cuadrado
     scales: {
       x: {
+        grid: {
+          display: true, // Mostrar líneas de la cuadrícula
+          color: 'rgba(200, 200, 200, 0.2)', // Color de las líneas de la cuadrícula
+          borderDash: [5, 5] // Patrón de líneas discontinuas en la cuadrícula
+        },
         alignToPixels: true,
         beginAtZero: false,
         ticks: {
           maxRotation: 100,
           autoSkip: true,
-          minRotation: 35
-        }
+          minRotation: 35,
+          color: 'black', // Color del texto en el eje
+          font: { size: 12, weight: 'normal' } // Estilo del texto
+        },
+        // ticks: {
+        //   maxRotation: 100,
+        //   autoSkip: true,
+        //   minRotation: 35
+        // }
       },
       y: {
+        grid: {
+          display: true, // Mostrar líneas de la cuadrícula
+          color: 'rgba(200, 200, 200, 0.2)', // Color de las líneas de la cuadrícula
+          borderDash: [5, 5] // Patrón de líneas discontinuas en la cuadrícula
+        },
         beginAtZero: false,
         ticks: {
-          // stepSize: .1  // Paso entre cada marca en el eje Y
-        }
+          autoSkip: true, // Saltar etiquetas si hay muchas
+          maxRotation: 45, // Rotar etiquetas para mejor legibilidad
+          minRotation: 0,
+          color: 'black', // Color del texto en el eje
+          font: { size: 12, weight: 'normal' } // Estilo del texto
+        },
       }
     }
   };
@@ -168,7 +188,7 @@ export class LineGraph {
    * @param isMuestreo 
    */
   setValueData(array_number: number[], index: number = this.dataset_important_index) {
-    
+
     //Validamos si la copia original de los datos supera el numero de muestreo
     if (array_number.length > this.muestreo) {
       const restarCount = (array_number.length + 1) - (this.muestreo);
@@ -216,7 +236,7 @@ export class LineGraph {
   }
 
   public eventData: EventEmitter<getParamsLineChart> = new EventEmitter<getParamsLineChart>();
-  
+
 
 
   /**
@@ -253,8 +273,8 @@ export class LineGraph {
 
 
 
-  closeBlobData(){
-    if(this.reloadBlobData){
+  closeBlobData() {
+    if (this.reloadBlobData) {
       clearInterval(this.reloadBlobData);
     }
   }
@@ -277,17 +297,17 @@ export class LineGraph {
     if (varsName)
       this.varsName_global = varsName;
 
-    
+
     //BlobData operations
     if (!this.enableBlobData) {
       this.idBlobData = option.general.idblobdata;
-      if(allData){
+      if (allData) {
         this.muestreo = 1000;
-      }else{
+      } else {
         this.muestreo = option.general.sampling_number;
       }
       if (this.idBlobData) {
-        
+
         this.blobData.getBlobData(this.idBlobData)
           .then((response) => {
             this.copyDataBlobData = response.value;
@@ -296,13 +316,13 @@ export class LineGraph {
             let copiaDate: string[] = [];
             copiaData = copiaData.concat(this.copyDataBlobData)
             copiaDate = copiaDate.concat(this.copyDateBlobData)
-            if(this.groupByDateOption != 0){
+            if (this.groupByDateOption != 0) {
               this.groupByDate(this.groupByDateOption)
-            }else{
+            } else {
               const limite_inferior = response.stadistic.limitMin;
               const limite_superior = response.stadistic.limitMax;
               this.limiteInferiorData = copiaData.map(m => limite_inferior);
-              this.limiteSuperiorData = copiaData.map(m => limite_superior);          
+              this.limiteSuperiorData = copiaData.map(m => limite_superior);
               this.setValueData(this.limiteInferiorData, 0);
               this.setValueData(this.limiteSuperiorData, 1);
               this.setValueData(copiaData);
@@ -329,7 +349,7 @@ export class LineGraph {
             }
             this.reloadBlobData = setTimeout(() => {
               this.reloadData(option, vars, varsName, allData)
-            },time);
+            }, time);
             this.intervals_service.addInterval(this.reloadBlobData);
           })
           .catch((err) => {
@@ -418,7 +438,7 @@ export class LineGraph {
     //Configuracion con la peticion asignada a la grafica
     if (option.general.idVariableJson && !this.idBlobData) {
       //Protocolo "http
-      
+
       this.getVariableJson(option.general.idVariableJson, time);
     } else if (option.general.idVariableModbus && !this.idBlobData) {
       //Protocolo modbus tcp/ip
@@ -746,7 +766,7 @@ export class LineGraph {
   }
 
 
-  
+
   /**
    * Funcion para agrupar por fecha, la opcion indica si es por minuto, hora, dia, mes o año
    * @param option opcion del metodo de agrupamiento

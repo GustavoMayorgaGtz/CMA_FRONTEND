@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <div class="box-graph" (click)="set_menu_tool = 11">
-                    <img src="./assets/graphs/switch.svg" alt="line chart" class="image_contet">
+                    <img src="./assets/notes.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
                         <div class="title">Notas</div>
                     </div>
@@ -111,6 +111,12 @@
                         <div class="title">Entrada de texto</div>
                     </div>
                 </div>
+                <div class="box-graph" (click)="set_menu_tool = 7">
+                    <img src="./assets/image.svg" alt="line chart" class="image_contet">
+                    <div class="title-content">
+                        <div class="title">Imagen</div>
+                    </div>
+                </div>
                 <div class="separador" style="margin-bottom: 50px; width: 100%; "></div>
             </div>
         </div>
@@ -130,6 +136,9 @@
 </div>
 <div class="primary-container" *ngIf="menu_tool == 6">
     <app-configure-pulsacion style="width: 100%;" [id_dashboard_selected]="selectedDashboard"></app-configure-pulsacion>
+</div>
+<div class="primary-container" *ngIf="menu_tool == 7">
+    <app-configure-image style="width: 100%;" [id_dashboard_selected]="selectedDashboard" [id_image_selected]="edit_id_tool"></app-configure-image>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 11">
     <app-configure-pulsacion style="width: 100%;" [id_dashboard_selected]="selectedDashboard"></app-configure-pulsacion>

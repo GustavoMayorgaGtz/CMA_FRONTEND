@@ -4,6 +4,7 @@ export interface IConfigurationShadow{
     y: number;
     width: number;
     height: number;
-    type: 'linechart' | 'simplebutton' | 'indicator' | 'streaming' | 'pulsacion',
-    id: number
+    type: 'linechart' | 'simplebutton' | 'indicator' | 'streaming' | 'pulsacion' | 'image',
+    id: number,
+    contorno: boolean
 }

@@ -58,6 +58,15 @@ export class DashboardComponent implements OnInit {
         this.menu_tool = 6;
         break;
       }
+      case 'camara': {
+        // this.menu_tool = 7;
+        break;
+      }
+      case 'image': {
+        this.menu_tool = 7;
+        this.edit_id_tool = data_edit.id_tool;
+        break;
+      }
     }
   }
 

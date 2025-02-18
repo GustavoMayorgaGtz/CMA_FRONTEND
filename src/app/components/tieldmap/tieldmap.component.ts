@@ -1,12 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HtmlParser } from '@angular/compiler';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
+import { ControlContainer } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { IConfigurationShadow } from 'src/app/interfaces/TieldmapInterfaces/tieldmapinterfaces';
 import { AlertService } from 'src/app/service/alert.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { CameraService } from 'src/app/service/camera_service';
 import { finalizeService } from 'src/app/service/finalize.service';
+import { ImageService } from 'src/app/service/image.service';
 import { IndicatorService } from 'src/app/service/indicators_service';
 import { LineChartService } from 'src/app/service/linechart_service';
 import { PulsacionService } from 'src/app/service/pulsacion.service';
@@ -41,7 +43,8 @@ export class TieldmapComponent implements OnChanges {
               x: line_chart.x ? line_chart.x : 0,
               y: line_chart.y ? line_chart.y : 0,
               type: 'linechart',
-              id: line_chart.idlinealchart
+              id: line_chart.idlinealchart,
+              contorno: true
             })
           })
         })
@@ -55,7 +58,8 @@ export class TieldmapComponent implements OnChanges {
               x: simplebutton.x ? simplebutton.x : 0,
               y: simplebutton.y ? simplebutton.y : 0,
               type: 'simplebutton',
-              id: simplebutton.idsimplebutton
+              id: simplebutton.idsimplebutton,
+              contorno: true
             })
           })
         })
@@ -69,7 +73,8 @@ export class TieldmapComponent implements OnChanges {
               x: data.x ? data.x : 0,
               y: data.y ? data.y : 0,
               type: 'indicator',
-              id: data.id_indicator
+              id: data.id_indicator,
+              contorno: true,
             })
 
           })
@@ -86,7 +91,8 @@ export class TieldmapComponent implements OnChanges {
               x: data.x ? data.x : 0,
               y: data.y ? data.y : 0,
               type: 'streaming',
-              id: data.id_camera
+              id: data.id_camera,
+              contorno: true
             })
           })
         }, (err: HttpErrorResponse) => {
@@ -102,12 +108,47 @@ export class TieldmapComponent implements OnChanges {
               x: data.x ? data.x : 0,
               y: data.y ? data.y : 0,
               type: 'pulsacion',
-              id: data.id_pulsacion
+              id: data.id_pulsacion,
+              contorno: true
             })
           })
         }, (err: HttpErrorResponse) => {
           console.log(err);
         })
+        //-----------
+        this.imagesService.getAll_Dashboard(this.id_dashboard).subscribe((response) => {
+          response.forEach((data) => {
+            this.shadow_container.push({
+              name: data.title,
+              width: data.width ? data.width : 300,
+              height: data.height ? data.height : 150,
+              x: data.x ? data.x : 0,
+              y: data.y ? data.y : 0,
+              type: 'image',
+              id: data.id_imagen,
+              contorno: data.contorno
+            })
+          })
+        }, (err: HttpErrorResponse) => {
+          console.log(err);
+        })
+           //-----------
+           this.imagesService.getAll_Dashboard(this.id_dashboard).subscribe((response) => {
+            response.forEach((data) => {
+              this.shadow_container.push({
+                name: data.title,
+                width: data.width ? data.width : 300,
+                height: data.height ? data.height : 150,
+                x: data.x ? data.x : 0,
+                y: data.y ? data.y : 0,
+                type: 'image',
+                id: data.id_imagen,
+                contorno: data.contorno
+              })
+            })
+          }, (err: HttpErrorResponse) => {
+            console.log(err);
+          })
       } else {
         this.router.navigate(['/'])
       }
@@ -134,15 +175,16 @@ export class TieldmapComponent implements OnChanges {
     private authService: AuthService,
     private alertService: AlertService,
     private router: Router,
+    private imagesService: ImageService,
     private finalizeServices: finalizeService) {
-      this.define_permisos();
-     }
+    this.define_permisos();
+  }
 
-    
-  
+
+
   public modify_acces_status: boolean = false;
-  modify_access_event(checked: boolean){
-  this.modify_acces_status = checked;
+  modify_access_event(checked: boolean) {
+    this.modify_acces_status = checked;
   }
 
 
@@ -154,7 +196,7 @@ export class TieldmapComponent implements OnChanges {
   public modify_position_tools: boolean = false;
   define_permisos() {
     this.authService.permission('edit_tools').subscribe((edit_tools) => {
-        this.edit_tools = edit_tools.access;
+      this.edit_tools = edit_tools.access;
     }, (err) => {
       console.log(err);
       console.log("edit_tools response error")
@@ -163,7 +205,7 @@ export class TieldmapComponent implements OnChanges {
 
     this.authService.permission('modify_position_tools')
       .subscribe((modify_position_tools) => {
-         this.modify_position_tools = modify_position_tools.access;
+        this.modify_position_tools = modify_position_tools.access;
       }, (err) => {
         console.log(err);
         console.log("modify_position_tools response error")
@@ -344,7 +386,8 @@ export class TieldmapComponent implements OnChanges {
       x: this.shadow_container[idShadow].x,
       y: this.shadow_container[idShadow].y,
       type: this.shadow_container[idShadow].type,
-      id: this.shadow_container[idShadow].id
+      id: this.shadow_container[idShadow].id,
+      contorno: this.shadow_container[idShadow].contorno
     })
     if (this.last_height < this.shadow_container[idShadow].y) {
       this.last_height = this.shadow_container[idShadow].y;
@@ -364,8 +407,8 @@ export class TieldmapComponent implements OnChanges {
      left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
       width: ${this.shadow_container[idShadow].width}px; 
       height: ${this.shadow_container[idShadow].height}px;
-       background-color: white;
-     border: 1px solid rgba(0, 0, 0, 0.127);; border-radius: 5px;`);
+    background-color: white;
+     border: 1px solid rgba(0, 0, 0, 0.127); border-radius: 5px;`);
   }
 
   validacion_overarea(shadow_container: IConfigurationShadow, idShadow: number) {
@@ -419,7 +462,7 @@ export class TieldmapComponent implements OnChanges {
 
 
   public propiedadAplicada: number[] = [];
-  setChanges(shadow: HTMLDivElement, idShadow: number, tieldmap: HTMLDivElement) {
+  setChanges(shadow: HTMLDivElement, idShadow: number, tieldmap: HTMLDivElement, contorno: boolean) {
     const type = this.shadow_container[idShadow].type;
     switch (type) {
       case 'indicator': {
@@ -445,6 +488,29 @@ export class TieldmapComponent implements OnChanges {
         border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 5px;`);
         break;
       }
+      case 'image': {
+        if (contorno) {
+          shadow.setAttribute("style", `position: absolute;
+            top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+            left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
+            width: ${this.shadow_container[idShadow].width}px; 
+            height: ${this.shadow_container[idShadow].height}px;
+            background-color: white;
+            font-size: clamp(6px, 100%, 24px);
+            border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 5px;`);
+        } else {
+          shadow.setAttribute("style", `position: absolute;
+          top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
+          left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
+          width: ${this.shadow_container[idShadow].width}px; 
+          height: ${this.shadow_container[idShadow].height}px;
+          background-color: white;
+          font-size: clamp(6px, 100%, 24px);
+          border:none;
+          background-color: rgba(0,0,0,0);`);
+        }
+        break;
+      }
       case 'simplebutton': {
         const fontSize = shadow.offsetWidth / 8;  // Puedes ajustar el divisor según sea necesario
         shadow.setAttribute("style", `position: absolute;
@@ -452,7 +518,6 @@ export class TieldmapComponent implements OnChanges {
         left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
         width: ${this.shadow_container[idShadow].width}px; 
         height: ${this.shadow_container[idShadow].height}px;
-      
         font-size: ${fontSize}px`);
         break;
       }
@@ -476,7 +541,8 @@ export class TieldmapComponent implements OnChanges {
         left: ${this.shadow_container[idShadow].x * this.lastBloqueWidth}px;
         width: ${this.shadow_container[idShadow].width}px; 
         height: ${this.shadow_container[idShadow].height}px;
-        font-size: ${fontSize}px`);
+        font-size: ${fontSize}px;`);
+
         break;
       }
     }
@@ -574,6 +640,11 @@ export class TieldmapComponent implements OnChanges {
 
         if (shadow.type == 'pulsacion') {
           this.pulsacion_Service.updatePositionAndSizeIndicators(shadow).subscribe((response) => {
+          })
+        }
+        if (shadow.type == 'image') {
+          this.imagesService.updatePositionAndSizeImages(shadow).subscribe((response) => {
+            console.log(response);
           })
         }
       })

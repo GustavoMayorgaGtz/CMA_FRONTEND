@@ -34,6 +34,8 @@ import { ConfigurePulsacionComponent } from './configure_tools_components/config
 import { BillingComponent } from './billing/billing.component';
 import { TicketComponent } from './tickets/ticket.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ImageComponent } from './dashboard_tools/image/image.component';
+import { ConfigureImageComponent } from './configure_tools_components/configure-image/configure-image.component';
 
 const components = [NavComponent,
   MenuComponent,
@@ -64,7 +66,9 @@ const components = [NavComponent,
   CameraViewComponent,
   PulsacionComponent,
   BillingComponent,
-  TicketComponent]  
+  TicketComponent,
+  ImageComponent,
+ConfigureImageComponent]  
 
 @NgModule({
   declarations: components,

@@ -1,0 +1,109 @@
+<div class="primary-container">
+    <nav>
+        <span class="title">
+            Configuración de Imagen
+        </span>
+        <span class="regresar" (click)="return()">
+            Regresar 
+        </span>
+    </nav>
+    <div class="left">
+        <div class="chart-container">
+            <div class="threeCanvas" #threeCanvas></div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="content-create-tool">
+            <div class="class-configuration">
+                <div class="title">
+                    General
+                </div>
+                <div class="line">
+ 
+                </div>
+                <div class="updown">
+                    <img src="./assets/expand_more.png" class="open">
+                </div>
+            </div>
+            <div class="container-class">
+                <div class="campo">
+                    <div class="title">Titulo</div>
+                    <div class="description">Asigna el titulo del boton pulso.</div>
+                    <input type="text" class="input-text" name="title" id="title" #title>
+                </div>
+               
+                <!--
+                <div class="campo">
+                    <div class="title">Descripcion</div>
+                    <div class="description">Describe el uso del pulso.</div>
+                    <input type="text" class="input-text" name="description" id="description" #description
+                    (change)="set_pulsacion_description = description.value" (keyup)="set_pulsacion_description = description.value" value={{get_pulsacion_description}}>
+                </div>
+            </div> -->
+            <div class="class-configuration">
+                <div class="title">
+                    Estilos
+                </div>
+                <div class="line">
+                </div>
+                <div class="updown">
+                    <img src="./assets/expand_more.png" class="open">
+                </div>
+            </div>
+            <!-- <div class="container-class">
+                <div class="campo boolean-campo">
+                    <div class="content-information">
+                        <div class="title">Color de fondo</div>
+                        <div class="description">Define el color del area.</div>
+                    </div>
+                    <div class="content-color">
+                        <input type="color" value="#33556F" class="input-color" name="fill_color" id="fill_color"
+                            #fill_color (change)="setFill_Color(fill_color.value, button)"
+                            (keyup)="setFill_Color(fill_color.value, button)" > 
+                    </div>
+                </div>
+                <div class="campo boolean-campo">
+                    <div class="content-information">
+                        <div class="title">Color de texto</div>
+                        <div class="description">Define el color del texto.</div>
+                    </div>
+                    <div class="content-color">
+                        <input type="color" value="#00000" class="input-color" name="fill_color" id="fill_color"
+                        #text_color  (change)="setText_Color(text_color.value, button)"
+                        (keyup)="setText_Color(text_color.value, button)" > 
+                    </div>
+                </div>
+                <div class="campo boolean-campo">
+                    <div class="content-information">
+                        <div class="title">Texto en negritas</div>
+                        <div class="description">El texto va tiene estilo negritas.</div>
+                    </div>
+                    <input type="checkbox" class="input-text" #isSaveBlobData (change)="set_isSaveBlobData(isSaveBlobData.checked, button)"
+                        (keyup)="set_isSaveBlobData(isSaveBlobData.checked, button)" name="isSaveBlobData" id="isSaveBlobData">
+                </div>
+                <div class="campo">
+                    <div class="title">Radio del borde</div>
+                    <div class="description">Define el radio de los bordes.</div>
+                    <input type="range"  value="0" min="0" max="50" class="input-text" name="title" id="title" #border_radius
+                        (change)="setStyle_Button(border_radius.value, button)">
+                </div>
+                <div class="campo">
+                    <div class="title">Icono del boton</div>
+                    <div class="description">Define si el botón debe remplazar el texto por algún icono.</div>
+                    <select #button_icon (change)="setIcon(button_icon.options[button_icon.selectedIndex].value, button)">                    <option disabled>Selecciona icono</option>
+                        <option select value="null">Sin icono</option>
+                        <option value="left">Izquierda</option>
+                        <option value="right">Derecha</option>
+                        <option value="up">Arriba</option>
+                        <option value="bottom">Abajo</option>
+                        <option value="center">Centro</option>
+                        <option value="drop">Eliminar</option>
+                    </select>
+                </div>
+                <div class="btn-guardar" (click)="createPulsacion()">
+                    Guardar configuracion
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>

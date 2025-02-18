@@ -19,12 +19,12 @@ import { VarsService } from 'src/app/service/vars';
 export class TieldmapSequenceComponent implements OnInit {
   public jsonBuilder = new JsonVariableClass(this.varsService, this.router, this.alertService);
   public menu_tool: number = 1;
-  
+
 
   constructor(private router: Router,
     private alertService: AlertService,
     private varsService: VarsService,
-    ) {
+  ) {
     const idUser = sessionStorage.getItem("idUser");
     const token = sessionStorage.getItem("token");
     if (idUser && parseInt(idUser) > 0 && token) {
@@ -312,7 +312,8 @@ export class TieldmapSequenceComponent implements OnInit {
       x: this.shadow_container[idShadow].x,
       y: this.shadow_container[idShadow].y,
       type: this.shadow_container[idShadow].type,
-      id: this.shadow_container[idShadow].id
+      id: this.shadow_container[idShadow].id,
+      contorno: this.shadow_container[idShadow].contorno
     })
     shadow.setAttribute("style", `position: absolute;
      top: ${this.shadow_container[idShadow].y * this.lastBloqueWidth}px; 
