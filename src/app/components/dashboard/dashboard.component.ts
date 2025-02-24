@@ -188,7 +188,7 @@ export class DashboardComponent implements OnInit {
 
 
 
-  private stateToolsMenu: boolean = false;
+  private stateToolsMenu: boolean = true;
   hiddenTools(menuElement: HTMLDivElement) {
     this.edit_id_tool = 0;
     if (this.stateToolsMenu) {

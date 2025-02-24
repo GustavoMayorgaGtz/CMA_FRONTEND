@@ -3,7 +3,6 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/service/alert.service';
 import { PaymentServices } from 'src/app/service/payments.services';
-import * as THREE from 'three';
 
 declare var Stripe: any;
 
@@ -142,7 +141,7 @@ export class BillingComponent implements OnInit, AfterViewInit {
       console.error(error);
     } else {
 
-      this.paymentService.createCustomer(paymentMethod.id, 'price_1QtxNvGjikWMLoVQJLQeeLJC')
+      this.paymentService.createCustomer(paymentMethod.id, this.price_id)
         .subscribe((response) => {
           console.log(response);
           this.alertsService.setMessageAlert("Suscripcion creada exitosamente");

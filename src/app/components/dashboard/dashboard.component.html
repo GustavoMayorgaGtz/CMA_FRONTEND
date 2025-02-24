@@ -17,8 +17,14 @@
                 </span>
             </div>
         </div>
-        <div class="container_dashboards" *ngIf="dashboards.length == 0">
-            No hay dashboards creados aun...
+        <div class="container_dashboards" *ngIf="dashboards.length == 0"
+            style="display: flex; align-items: center; flex-direction: column;">
+            <br>
+            <iframe width="760" height="415" src="https://www.youtube.com/embed/Fy2I9lJapNY?si=b7MjLTX6a015XjaQ"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <span> Empieza a implementar tus herramientas en un dashboard</span>
         </div>
     </div>
 </div>
@@ -26,8 +32,8 @@
     <div class="main">
         <div class="nav" (click)="set_menu_tool = 0">Regresar | Dashboards</div>
         <div class="content">
-            <app-tieldmap (editTool)="recibeToolEdit($event)" [id_dashboard]="(selectedDashboard? selectedDashboard:0)" [name_dashboard]="name_dashboard"
-                style="width: 100%; height: 100%;">
+            <app-tieldmap (editTool)="recibeToolEdit($event)" [id_dashboard]="(selectedDashboard? selectedDashboard:0)"
+                [name_dashboard]="name_dashboard" style="width: 100%; height: 100%;">
             </app-tieldmap>
 
         </div>
@@ -36,7 +42,7 @@
         <div class="toggle-button-menu " (click)="hiddenTools(menu)">
             <img src="./assets/graphs/expand.svg" alt="">
         </div>
-        <div class="menu-hidden" #menu>
+        <div class="menu-content" #menu>
             <div class="content-type-graphs">
                 <div class="box-graph" (click)="set_menu_tool = 2">
                     <img src="./assets/graphs/line_chart.svg" alt="line chart" class="image_contet">
@@ -44,13 +50,13 @@
                         <div class="title">Gráfica linear</div>
                     </div>
                 </div>
-                <div class="box-graph disabled">
+                <!-- <div class="box-graph disabled">
                     <img src="./assets/graphs/bar_chart.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
                         <div class="title">Gráfica ica de barras</div>
                     </div>
-                </div>
-                <div class="box-graph disabled">
+                </div> -->
+                <!-- <div class="box-graph disabled">
                     <img src="./assets/graphs/traffic.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
                         <div class="title">Semáforo</div>
@@ -61,13 +67,13 @@
                     <div class="title-content">
                         <div class="title">Gauge</div>
                     </div>
-                </div>
-                <div class="box-graph disabled">
+                </div> -->
+                <!-- <div class="box-graph disabled">
                     <img src="./assets/graphs/text.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
                         <div class="title">Texto</div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="box-graph" (click)="set_menu_tool = 3">
                     <img src="./assets/graphs/switch.svg" alt="line chart" class="image_contet">
@@ -81,12 +87,12 @@
                         <div class="title">Notas</div>
                     </div>
                 </div>
-                <div class="box-graph disabled">
+                <!-- <div class="box-graph disabled">
                     <img src="./assets/graphs/alert.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
                         <div class="title">Alerta</div>
                     </div>
-                </div>
+                </div> -->
                 <div class="box-graph" (click)="set_menu_tool = 4">
                     <img src="./assets/graphs/indicator.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
@@ -105,12 +111,12 @@
                         <div class="title">Pulsación</div>
                     </div>
                 </div>
-                <div class="box-graph disabled">
+                <!-- <div class="box-graph disabled">
                     <img src="./assets/graphs/input.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
                         <div class="title">Entrada de texto</div>
                     </div>
-                </div>
+                </div> -->
                 <div class="box-graph" (click)="set_menu_tool = 7">
                     <img src="./assets/image.svg" alt="line chart" class="image_contet">
                     <div class="title-content">
@@ -123,13 +129,15 @@
     </div>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 2">
-    <app-configure-linear-graph [id_graph_selected]="edit_id_tool" [id_dashboard_selected]="selectedDashboard"></app-configure-linear-graph>
+    <app-configure-linear-graph [id_graph_selected]="edit_id_tool"
+        [id_dashboard_selected]="selectedDashboard"></app-configure-linear-graph>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 3">
     <app-configure-simple-button [id_dashboard_selected]="selectedDashboard"></app-configure-simple-button>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 4">
-    <app-configure-indicator  [id_indicator_selected]="edit_id_tool"  [id_dashboard_selected]="selectedDashboard"></app-configure-indicator>
+    <app-configure-indicator [id_indicator_selected]="edit_id_tool"
+        [id_dashboard_selected]="selectedDashboard"></app-configure-indicator>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 5">
     <app-configure-camera style="width: 100%;" [id_dashboard_selected]="selectedDashboard"></app-configure-camera>
@@ -138,7 +146,8 @@
     <app-configure-pulsacion style="width: 100%;" [id_dashboard_selected]="selectedDashboard"></app-configure-pulsacion>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 7">
-    <app-configure-image style="width: 100%;" [id_dashboard_selected]="selectedDashboard" [id_image_selected]="edit_id_tool"></app-configure-image>
+    <app-configure-image style="width: 100%;" [id_dashboard_selected]="selectedDashboard"
+        [id_image_selected]="edit_id_tool"></app-configure-image>
 </div>
 <div class="primary-container" *ngIf="menu_tool == 11">
     <app-configure-pulsacion style="width: 100%;" [id_dashboard_selected]="selectedDashboard"></app-configure-pulsacion>
@@ -146,7 +155,7 @@
 <div class="primary-container" *ngIf="menu_tool == 10">
     <div class="create-dashboard">
         <div class="nav">
-                Creación de dashboard
+            Creación de dashboard
         </div>
         <div class="content">
             <br>
@@ -168,12 +177,12 @@
             <br>
             <div class="container-controls">
                 <div class="btn-create" *ngIf="viewCreateDashboardButton" style="background-color: #b998f1;"
-                (click)="createDashboard(title, description)">
-                Crear dashboard
-            </div>
-            <div class="cancelar" (click)="set_menu_tool = 0">
-                Cancelar
-           </div> 
+                    (click)="createDashboard(title, description)">
+                    Crear dashboard
+                </div>
+                <div class="cancelar" (click)="set_menu_tool = 0">
+                    Cancelar
+                </div>
             </div>
         </div>
     </div>

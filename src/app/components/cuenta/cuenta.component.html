@@ -18,6 +18,12 @@
                     </div>
                     <div class="title">Gestion de cuentas</div>
                 </div>
+                <div class="options" (click)="changeMenuCuenta(3)" *ngIf="rango === 'PRIMARY'">
+                    <div class="icon">
+                        <img src="./assets/payment.png" alt="💵">
+                    </div>
+                    <div class="title">Mi suscripción</div>
+                </div>
                 <!-- <div class="options" (click)="changeMenuCuenta(3)">
                     <div class="icon">
                         <img src="./assets/api.svg" alt="🌐">
@@ -29,7 +35,7 @@
         <div class="right">
             <app-mi-cuenta *ngIf="menuCuenta == 1" style="width: 100%;"></app-mi-cuenta>
             <app-gestion-cuentas *ngIf="menuCuenta == 2" style="width: 100%;"></app-gestion-cuentas>
-            <!-- <app-accesos-api *ngIf="menuCuenta == 3" style="width: 100%;"></app-accesos-api> -->
+            <app-accesos-api *ngIf="menuCuenta == 3" style="width: 100%;"></app-accesos-api>
         </div>
     </div>
 </div>

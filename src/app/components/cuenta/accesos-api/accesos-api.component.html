@@ -1,1 +1,53 @@
-<p>accesos-api works!</p>
+<div class="container-main">
+    <h1>Gestión de suscripción</h1>
+    <div class="status">
+        Suscripción activa
+        <div class="status-circle"></div>
+    </div>
+    <!--  -->
+    <div class="card_subscripcion">
+        <span class="nombre_de_subscripcion">
+            {{suscripcion.suscription_id}}
+        </span>
+        <span class="expire_in">
+            Tienes acceso hasta {{suscripcion.expire_in}}
+        </span>
+    </div>
+    <br>
+    <div class="report_suscription">
+        <div class="usage_suscription">
+            <b>Uso: </b>
+            <ul>
+                <li>{{suscripcion.tools_used}}/{{suscripcion.tools_capacity}} herramientas ocupadas</li>
+                <li *ngIf="suscripcion.camara_capacity">{{suscripcion.camara_used}}/{{suscripcion.camara_capacity}}
+                    camaras ocupadas</li>
+                <li>{{suscripcion.manageable_users}}/{{suscripcion.manageable_users}} usuarios gestionables creados</li>
+            </ul>
+            <!-- <div class="container-manageable_suscription">
+                <div class="actions_suscription">
+                    Cancelar suscripción
+                </div>
+                <div class="actions_suscription">
+                    Cambiar suscripción
+                </div>
+            </div> -->
+        </div>
+        <!--  -->
+        <div class="details_suscription">
+            <b>Tu suscripción incluye: </b>
+            <ul>
+                <li>{{suscripcion.tools_capacity}} herramientas</li>
+                <li *ngIf="suscripcion.camara_capacity">{{suscripcion.camara_capacity}} camaras</li>
+                <li>{{suscripcion.historical_data}} datos de almacenamiento por herramienta</li>
+                <li *ngIf="suscripcion.alerts_enabled">Alertas</li>
+                <li *ngIf="suscripcion.alerts_number_dedicated">Numero dedicado</li>
+                <li>{{suscripcion.manageable_users}} usuarios gestionables</li>
+                <li>Actualizaciones constantes</li>
+                <li>Acceso aplicación móvil</li>
+                <li *ngIf="suscripcion.access_api">Acceso a API</li>
+                <li *ngIf="suscripcion.access_api">Acceso anticipado</li>
+            </ul>
+        </div>
+    </div>
+
+</div>

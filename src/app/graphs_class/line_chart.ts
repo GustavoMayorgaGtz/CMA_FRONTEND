@@ -289,13 +289,24 @@ export class LineGraph {
   private varsName_global !: string[];
   public reloadBlobData!: NodeJS.Timeout;
 
-  reloadData(option: IlineChartConfiguration, vars?: AllVar[], varsName?: string[], allData?: boolean) {
+  reloadData(option: IlineChartConfiguration, vars?: AllVar[], varsName?: string[], allData?: boolean, reloadBlobdata?: boolean) {
     //Asignar Variables en caso del muestreo
     this.option_global = option;
     if (vars)
       this.vars_global = vars;
     if (varsName)
       this.varsName_global = varsName;
+
+    if (reloadBlobdata) {
+      this.limiteInferiorData = [];
+      this.limiteSuperiorData = [];
+      this.copyDataBlobData = [];
+      this.copyDateBlobData = [];
+      this.setValueData(this.copyDataBlobData)
+      this.setValueLabel(this.copyDateBlobData)
+      this.enableBlobData = false;
+      this.idBlobData = option.general.idblobdata;
+    }
 
 
     //BlobData operations
@@ -307,7 +318,6 @@ export class LineGraph {
         this.muestreo = option.general.sampling_number;
       }
       if (this.idBlobData) {
-
         this.blobData.getBlobData(this.idBlobData)
           .then((response) => {
             this.copyDataBlobData = response.value;

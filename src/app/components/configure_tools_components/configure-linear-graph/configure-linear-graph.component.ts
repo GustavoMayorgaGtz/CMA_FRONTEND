@@ -10,11 +10,12 @@ import { LineGraph } from 'src/app/graphs_class/line_chart';
 import { ICMA_ENDPOINT_DATABASE } from 'src/app/interfaces/CMA_EndpointInterfaces/cma_endpointInterface';
 import { IJsonVariable } from 'src/app/interfaces/JsonEndpointsInterfaces/JsonEndpointI';
 import { IlineChartConfiguration, getParamsLineChart } from 'src/app/interfaces/Line_ChartInterfaces/line_chartInterface';
-import { IMemoryVar, IModbusVar } from 'src/app/interfaces/Modbus.interfaces/ModbusInterfaces';
+import { IBlobdata, IMemoryVar, IModbusVar } from 'src/app/interfaces/Modbus.interfaces/ModbusInterfaces';
 import { AllVar } from 'src/app/interfaces/interfaces';
 import { AlertService } from 'src/app/service/alert.service';
 import { AllService } from 'src/app/service/all.service';
 import { AuthService } from 'src/app/service/auth.service';
+import { BlobDataService } from 'src/app/service/blobdata_service';
 import { CMA_ENDPOINT_SERVICES } from 'src/app/service/cma_endpoints.service';
 import { ExitService } from 'src/app/service/exit.service';
 import { finalizeService } from 'src/app/service/finalize.service';
@@ -46,6 +47,7 @@ export class ConfigureLinearGraphComponent implements OnInit, OnChanges {
     private authService: AuthService,
     private endpointService: CMA_ENDPOINT_SERVICES,
     private router: Router,
+    private blobServices: BlobDataService,
     private intervals_service: IntervalsService
   ) {
   }
@@ -121,7 +123,7 @@ export class ConfigureLinearGraphComponent implements OnInit, OnChanges {
 
 
   public jsonVariables: IJsonVariable[] = [];
-  public modbusVariables: IModbusVar[] = [];
+  public blobdataVariables: IBlobdata[] = [];
   public memoryVariables: IMemoryVar[] = [];
   public endpointVariables: ICMA_ENDPOINT_DATABASE[] = [];
   public Vars_names: string[] = [];
@@ -141,11 +143,22 @@ export class ConfigureLinearGraphComponent implements OnInit, OnChanges {
       }, (err: HttpErrorResponse) => {
         console.log(err);
       })
-      this.varsService.getAllVarsModbus().subscribe((variables) => {
-        this.modbusVariables = variables;
+
+
+      this.blobServices.getAllBlobDataFromUser().subscribe((response) => {
+        console.log("Blobdata")
+        console.log(response);
+        this.blobdataVariables = response;
       }, (err: HttpErrorResponse) => {
         console.log(err);
       })
+
+
+      // this.varsService.getAllVarsModbus().subscribe((variables) => {
+      //   this.modbusVariables = variables;
+      // }, (err: HttpErrorResponse) => {
+      //   console.log(err);
+      // })
       this.varsService.getAllVarsMemory().subscribe((variables_memoria) => {
         if (variables_memoria.length > 0) {
           this.getNextResultMemoryVar(variables_memoria, 0, variables_memoria.length)
@@ -159,7 +172,6 @@ export class ConfigureLinearGraphComponent implements OnInit, OnChanges {
         this.endpointVariables = variables_endpoint;
       }, (err: HttpErrorResponse) => {
         this.alert.setMessageAlert(err.message);
-        console.log(err);
       })
     }
 
@@ -202,7 +214,7 @@ export class ConfigureLinearGraphComponent implements OnInit, OnChanges {
     }
     //IDVARIABLE
     if (!this.id_graph_selected || this.id_graph_selected == 0) {
-      if (!this.idJsonVariable && !this.idModbusVariable && !this.idMemoryVariable && !this.idEndpointVariable) {
+      if (!this.idJsonVariable && !this.idBlobdata && !this.idModbusVariable && !this.idMemoryVariable && !this.idEndpointVariable) {
         this.alert.setMessageAlert("No haz definido la variable");
         readyToSave = false;
       }
@@ -286,8 +298,8 @@ export class ConfigureLinearGraphComponent implements OnInit, OnChanges {
           idVariableEndpoint: this.idEndpointVariable,
           sampling_number: this.sampling_number,
           isArray: this.isArray,
-          issaveblobdata: this.isSaveBlobData,
-          idblobdata: null,
+          issaveblobdata: (!this.idBlobdata)?this.isSaveBlobData:false,
+          idblobdata: this.idBlobdata,
           polling: {
             time: this.polling_time,
             type: this.polling_type
@@ -339,6 +351,7 @@ export class ConfigureLinearGraphComponent implements OnInit, OnChanges {
    * @param idVariable 
    * @param type 
    */
+  public idBlobdata:any = null;
   selectVariableToGraph(idVariable: number, type: number) {
     //Json
     if (type == 1) {
@@ -346,25 +359,31 @@ export class ConfigureLinearGraphComponent implements OnInit, OnChanges {
       this.idModbusVariable = null;
       this.idMemoryVariable = null;
       this.idEndpointVariable = null;
+      this.idBlobdata = null;
     }
 
     //Modbus
     if (type == 2) {
-      this.idModbusVariable = idVariable;
+      this.idBlobdata = idVariable;
+      this.linear_chart_configuration.general.idblobdata = idVariable;
+      this.idModbusVariable = null;
       this.idJsonVariable = null;
       this.idMemoryVariable = null;
       this.idEndpointVariable = null;
+      
     }
     if (type == 3) {
       this.idModbusVariable = null;
       this.idJsonVariable = null;
       this.idMemoryVariable = idVariable;
       this.idEndpointVariable = null;
+      this.idBlobdata = null;
     }
     if (type == 4) {
       this.idModbusVariable = null;
       this.idJsonVariable = null;
       this.idMemoryVariable = null;
+      this.idBlobdata = null;
       this.idEndpointVariable = idVariable;
     }
     this.redefineOptions((this.linear_chart_configuration && this.linear_chart_configuration.general) ? this.linear_chart_configuration.general.idblobdata : null);
@@ -391,8 +410,8 @@ export class ConfigureLinearGraphComponent implements OnInit, OnChanges {
           idVariableEndpoint: this.idEndpointVariable,
           sampling_number: this.sampling_number,
           isArray: this.isArray,
-          idblobdata: null,
-          issaveblobdata: this.isSaveBlobData,
+          idblobdata: this.idBlobdata,
+          issaveblobdata: (this.idBlobdata)?false:this.isSaveBlobData,
           polling: {
             time: this.polling_time,
             type: this.polling_type
@@ -417,25 +436,17 @@ export class ConfigureLinearGraphComponent implements OnInit, OnChanges {
         this.grafica_linear.idBlobData = idblobdata;
         this.linear_chart_configuration.general.idblobdata = idblobdata;
         this.grafica_linear.enableBlobData = true;
-
-        this.grafica_linear.reloadData(this.linear_chart_configuration, this.vars, this.Vars_names);
+      }
+       
+        this.grafica_linear.reloadData(this.linear_chart_configuration, this.vars, this.Vars_names, false, true);
         this.grafica_linear.eventData.subscribe((graph_configuration) => {
-          this.linear1 = graph_configuration;
-          if (this.canvas_chart) {
-            this.canvas_chart.chart?.update()
-          }
-        });
-      } else {
-        this.grafica_linear.reloadData(this.linear_chart_configuration, this.vars, this.Vars_names);
-        this.grafica_linear.eventData.subscribe((graph_configuration) => {
-
           this.linear1 = graph_configuration;
           if (this.canvas_chart) {
             // this.canvas_chart.chart?.reset()
             this.canvas_chart.chart?.update()
           }
         });
-      }
+      
 
     } else {
       this.router.navigate(['/login']);
@@ -478,7 +489,7 @@ export class ConfigureLinearGraphComponent implements OnInit, OnChanges {
     this.idEndpointVariable = idEndpoint;
   }
 
-  private sampling_number: number = 2;
+  private sampling_number: number = 100;
   set setSampling_number(muestreo: string) {
     this.sampling_number = parseInt(muestreo);
     this.redefineOptions((this.linear_chart_configuration && this.linear_chart_configuration.general) ? this.linear_chart_configuration.general.idblobdata : null);
@@ -491,7 +502,7 @@ export class ConfigureLinearGraphComponent implements OnInit, OnChanges {
   private polling_time: number = 10;
   set setPolling_Time(time: string) {
     this.polling_time = parseInt(time);
-    if((this.polling_time < 10 && this.polling_type == "sg") || this.polling_time == 0){
+    if ((this.polling_time < 10 && this.polling_type == "sg") || this.polling_time == 0) {
       this.polling_time = 10;
     }
     this.redefineOptions((this.linear_chart_configuration && this.linear_chart_configuration.general) ? this.linear_chart_configuration.general.idblobdata : null);

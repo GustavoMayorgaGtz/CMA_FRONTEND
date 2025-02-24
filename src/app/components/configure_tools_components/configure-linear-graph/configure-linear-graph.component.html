@@ -48,7 +48,7 @@
                     <!-- En esta parte creamos las 2 opciones, disponibles y el contenedor -->
                     <div class="menu">
                         <div class="option">Json Endpoint</div>
-                        <div class="option">Modbus</div>
+                        <div class="option">Herramientas</div>
                         <div class="option">Memoria</div>
                         <div class="option">Endpoint</div>
                     </div>
@@ -57,7 +57,7 @@
                             <div class="name" *ngFor="let json of jsonVariables; let id = index" (click)="selectVariableToGraph(json.idjsonvar, 1)"> {{json.name}}</div>
                         </div>
                         <div class="modbus_variables_container">
-                            <div class="name" *ngFor="let modbus of modbusVariables" (click)="selectVariableToGraph(modbus.idmodbusvar, 2)"> {{modbus.name}}</div>
+                            <div class="name" *ngFor="let blobdata of blobdataVariables" (click)="selectVariableToGraph(blobdata.idblobdata, 2)"> {{blobdata.description}}</div>
                         </div>
                         <div class="memory_variables_container">
                             <div class="name" *ngFor="let memory of memoryVariables" (click)="selectVariableToGraph(memory.idmemoryvar, 3)"> {{memory.name}}</div>

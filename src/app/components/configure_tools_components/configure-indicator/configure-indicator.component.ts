@@ -108,6 +108,7 @@ export class ConfigureIndicatorComponent implements OnInit, OnChanges {
   }
   /*-----*/
   //-   -   -   -   -   -   -   -   -   -   SAVE IN BLOBDATA
+  public enableBlobData: boolean = false;
   private indicator_blobdata: boolean = false;
   public get get_indicator_blobdata() {
     return this.indicator_blobdata;
@@ -143,7 +144,7 @@ export class ConfigureIndicatorComponent implements OnInit, OnChanges {
             this.set_indicator_title = data.title;
             this.set_indicator_symbol = data.symbol;
             this.set_indicator_description = data.description;
-            
+            this.enableBlobData = data.issaveblobdata;
           })
         }
       }
@@ -218,7 +219,7 @@ export class ConfigureIndicatorComponent implements OnInit, OnChanges {
                       this.show_save_button = true;
                       window.location.reload();
                     }, (err: HttpErrorResponse) => {
-                      this.alertService.setMessageAlert("No se actualizo el indicador correctamente, vuelve a intentarlo mas tarde.");
+                      this.alertService.setMessageAlert(err.message+"No se actualizo el indicador correctamente, vuelve a intentarlo mas tarde."+ err.message);
                       this.show_save_button = true;
                     })
                   }

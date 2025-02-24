@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/service/auth.service';
   styleUrls: ['./cuenta.component.scss', './cuenta.component.mobile.scss']
 })
 export class CuentaComponent {
-  public menuCuenta: number = 1; //1 = mi cuenta, 2 = gestion de cuentas, 3 = accesos api
+  public menuCuenta: number = 3; //1 = mi cuenta, 2 = gestion de cuentas, 3 = accesos api
   public rango = "SECUNDARY";
   constructor(private router: Router, private authService: AuthService, private alert: AlertService) {
     const token = sessionStorage.getItem("token");

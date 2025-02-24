@@ -16,6 +16,7 @@ export interface IModbusVar_Test {
     type_date: string,
     unidId: string
 }
+
 export interface IModbusVar {
     idmodbusvar: number,
     name: string,
@@ -24,6 +25,14 @@ export interface IModbusVar {
     no_register: string
     value: number[]
 }
+
+
+export interface IBlobdata
+{
+    description: string,
+    idblobdata: number,
+}
+
 
 export interface IMemoryVar {
     idmemoryvar: number,

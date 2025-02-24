@@ -3,21 +3,19 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { server } from 'src/environments/environment';
+import { ISuscription } from '../interfaces/Suscription/suscription.interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PaymentServices {
+export class SuscriptionServices {
 
   constructor(private http: HttpClient, private router: Router) { }
 
   /**
-   * Crea un comprador con alguna suscripcion
-   * @param paymentMethodId 
-   * @param price_id 
-   * @returns 
-   */
-  createCustomer(paymentMethodId: any, price_id: string): Observable<string> {
+ * @returns Observable con la respuesta del servidor.
+ */
+  getCustomer(): Observable<ISuscription> {
     const token = this.getToken();
     var primary_user_str = this.getUser();
 
@@ -26,12 +24,13 @@ export class PaymentServices {
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${token}`
       });
-      return this.http.post<string>(`${server}payments/create-customer`, { paymentMethodId, price_id, userId: primary_user }, { headers });
+      return this.http.post<ISuscription>(`${server}payments/get-customer`, { userId: primary_user }, { headers });
     } else {
       this.router.navigate(['/login']);
-      return new Observable<string>();
+      return new Observable<ISuscription>();
     }
   }
+
 
   /**
    * Obtiene el token de autenticación almacenado en el sessionStorage.

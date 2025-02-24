@@ -68,7 +68,7 @@ const components = [NavComponent,
   BillingComponent,
   TicketComponent,
   ImageComponent,
-ConfigureImageComponent]  
+  ConfigureImageComponent]
 
 @NgModule({
   declarations: components,
