@@ -331,11 +331,17 @@
                 justify-content: center;
                 align-content: start;
                 overflow-y: scroll;
-
                 box-sizing: border-box;
                 gap: 20px;
                 width: 100%;
                 height: calc(100vh - 86px);
+
+                h3{
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
 
                 .box-graph {
                     width: 100px;
@@ -345,6 +351,7 @@
                     border-radius: 5px;
                     position: relative;
                     display: flex;
+                    flex-direction: row;
                     justify-content: center;
                     align-items: center;
 
@@ -371,15 +378,26 @@
                     .title-content {
                         position: absolute;
                         width: 100%;
+                        overflow: hidden;
+                        box-sizing: border-box;
                         height: min-content;
-                        bottom: 0px;
+                        bottom: 5px;
                         left: 0px;
+                        margin: 0px;
+                        padding: 0px;
+                        white-space: nowrap;
+                        font-size: 0.85em;
+                        text-align: center;
+                        color: rgb(127, 127, 127);
+                        font-weight: bold;
 
                         .title {
-                            margin: 5px;
-                            font-weight: normal;
-                            font-size: 0.85em;
-                        }
+                            display: flex;
+                            justify-content: center;
+                            width: 100%;
+                            padding: 5px;
+                            box-sizing: border-box;
+                        }   
                     }
                 }
 

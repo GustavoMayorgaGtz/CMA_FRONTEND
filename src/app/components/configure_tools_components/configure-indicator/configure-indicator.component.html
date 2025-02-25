@@ -4,32 +4,44 @@
             Configuracion de indicador
         </span>
         <span class="regresar" (click)="return()">
-            Regresar 
+            Regresar
         </span>
     </nav>
     <div class="left">
+
         <div class="chart-container">
+            <div class="info">
+                El indicador muestra el valor de un sensor conectado. Al crearlo, se generará un grupo en la sección de variables del menú, que podrás usar para vincularlo.
+            </div>
             <div class="content-button" #button>
-               <div class="left">
-                  <div class="container-icon"  [ngStyle]="{backgroundColor: backgroundColor}">
-                    <img src="./assets/lightbulb.svg"   style="filter: invert(0); opacity: 45%;" alt="Luz"  *ngIf="get_indicator_type_data_design === 'light'">
-                    <img src="./assets/engine.svg"    style="filter: invert(0); opacity: 45%;" alt="Motor"  *ngIf="get_indicator_type_data_design === 'motor'">
-                    <img src="./assets/machine.svg" style="filter: invert(1); opacity: 45%;" alt="Maquina" *ngIf="get_indicator_type_data_design === 'machine'">
-                    <img src="./assets/airwave.svg" alt="Aire"  style="filter: invert(1); opacity: 45%;" *ngIf="get_indicator_type_data_design === 'air'">
-                    <img src="./assets/thermostat.svg" alt="Temperatura" style="filter: invert(1);  opacity: 45%;" *ngIf="get_indicator_type_data_design === 'temperature'">
-                    <img src="./assets/humedad.svg" alt="Humedad"  style=" opacity: 65%;" *ngIf="get_indicator_type_data_design === 'wet'">
-                    <img src="./assets/check.svg" alt="warning" style="filter: invert(1); opacity: 45%;" *ngIf="get_indicator_type_data_design === 'status'">
-                    <img src="./assets/warning.svg" alt="warning" style="filter: invert(1); opacity: 45%;"  *ngIf="get_indicator_type_data_design === 'other'">
-                  </div>
-               </div>
-               <div class="right">
-               <div class="status_enabled">conectado</div>
-                
-                <div class="container-content" >
-                    <div class="title">{{get_indicator_title}}</div>
-                    <div class="content">48<span class="symbol">{{get_indicator_symbol}}</span></div>
+                <div class="left">
+                    <div class="container-icon" [ngStyle]="{backgroundColor: backgroundColor}">
+                        <img src="./assets/lightbulb.svg" style="filter: invert(0); opacity: 45%;" alt="Luz"
+                            *ngIf="get_indicator_type_data_design === 'light'">
+                        <img src="./assets/engine.svg" style="filter: invert(0); opacity: 45%;" alt="Motor"
+                            *ngIf="get_indicator_type_data_design === 'motor'">
+                        <img src="./assets/machine.svg" style="filter: invert(1); opacity: 45%;" alt="Maquina"
+                            *ngIf="get_indicator_type_data_design === 'machine'">
+                        <img src="./assets/airwave.svg" alt="Aire" style="filter: invert(1); opacity: 45%;"
+                            *ngIf="get_indicator_type_data_design === 'air'">
+                        <img src="./assets/thermostat.svg" alt="Temperatura" style="filter: invert(1);  opacity: 45%;"
+                            *ngIf="get_indicator_type_data_design === 'temperature'">
+                        <img src="./assets/humedad.svg" alt="Humedad" style=" opacity: 65%;"
+                            *ngIf="get_indicator_type_data_design === 'wet'">
+                        <img src="./assets/check.svg" alt="warning" style="filter: invert(1); opacity: 45%;"
+                            *ngIf="get_indicator_type_data_design === 'status'">
+                        <img src="./assets/warning.svg" alt="warning" style="filter: invert(1); opacity: 45%;"
+                            *ngIf="get_indicator_type_data_design === 'other'">
+                    </div>
                 </div>
-             </div>
+                <div class="right">
+                    <div class="status_enabled">conectado</div>
+
+                    <div class="container-content">
+                        <div class="title">{{get_indicator_title}}</div>
+                        <div class="content">48<span class="symbol">{{get_indicator_symbol}}</span></div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="description">
@@ -42,7 +54,7 @@
                     General
                 </div>
                 <div class="line">
- 
+
                 </div>
                 <div class="updown">
                     <img src="./assets/expand_more.png" class="open">
@@ -53,13 +65,15 @@
                     <div class="title">Titulo</div>
                     <div class="description">Asigna el texto al indicador.</div>
                     <input type="text" class="input-text" name="title" id="title" #title
-                        (change)="set_indicator_title = title.value" (keyup)="set_indicator_title = title.value" value={{get_indicator_title}}>
+                        (change)="set_indicator_title = title.value" (keyup)="set_indicator_title = title.value"
+                        value={{get_indicator_title}}>
                 </div>
                 <div class="campo">
                     <div class="title">Descripcion</div>
                     <div class="description">Describe el uso del indicador.</div>
                     <input type="text" class="input-text" name="description" id="description" #description
-                        (change)="set_indicator_description = description.value" (keyup)="set_indicator_description = description.value" value={{get_indicator_description}}>
+                        (change)="set_indicator_description = description.value"
+                        (keyup)="set_indicator_description = description.value" value={{get_indicator_description}}>
                 </div>
                 <!-- <div class="campo">
                     <div class="title">Tipo de dato</div>
@@ -74,26 +88,33 @@
                 </div> -->
                 <div class="campo">
                     <div class="title">Simbolo</div>
-                    <div class="description">Define el simbolo o texto que define el tipo de valor, ejemplo mts, in, °.</div>
+                    <div class="description">Define el simbolo o texto que define el tipo de valor, ejemplo mts, in, °.
+                    </div>
                     <input type="text" class="input-text" name="symbol" id="symbol" #symbol
-                    (change)="set_indicator_symbol = symbol.value" (keyup)="set_indicator_symbol = symbol.value" value={{get_indicator_symbol}}>
+                        (change)="set_indicator_symbol = symbol.value" (keyup)="set_indicator_symbol = symbol.value"
+                        value={{get_indicator_symbol}}>
                 </div>
                 <div class="campo">
                     <div class="title">Diseño</div>
                     <div class="description">Define el tipo de diseño que mas se acerca a tu indicador.</div>
-                    <select #type_data_design_select (change)="set_indicator_type_data_design = type_data_design_select.value">
-                        <option disabled >Selecciona estilo</option>
-                        <option  *ngIf="get_indicator_type_data_design == 'light'" value="light" selected>Luz</option>
-                        <option  *ngIf="get_indicator_type_data_design == 'temperature'" value="temperature" selected>Temperatura</option>
-                        <option  *ngIf="get_indicator_type_data_design == 'air'" value="air" selected>Aire</option>
-                        <option  *ngIf="get_indicator_type_data_design == 'wet'" value="wet" selected>Humedad</option>
-                        <option  *ngIf="get_indicator_type_data_design == 'motor'" value="motor" selected>Motor</option>
-                        <option  *ngIf="get_indicator_type_data_design == 'machine'" value="machine" selected>Maquina</option>
-                        <option  *ngIf="get_indicator_type_data_design == 'status'" value="status" selected>Status</option>
-                        <option  *ngIf="get_indicator_type_data_design == 'other'" value="other" selected>Otro</option>
+                    <select #type_data_design_select
+                        (change)="set_indicator_type_data_design = type_data_design_select.value">
+                        <option disabled>Selecciona estilo</option>
+                        <option *ngIf="get_indicator_type_data_design == 'light'" value="light" selected>Luz</option>
+                        <option *ngIf="get_indicator_type_data_design == 'temperature'" value="temperature" selected>
+                            Temperatura</option>
+                        <option *ngIf="get_indicator_type_data_design == 'air'" value="air" selected>Aire</option>
+                        <option *ngIf="get_indicator_type_data_design == 'wet'" value="wet" selected>Humedad</option>
+                        <option *ngIf="get_indicator_type_data_design == 'motor'" value="motor" selected>Motor</option>
+                        <option *ngIf="get_indicator_type_data_design == 'machine'" value="machine" selected>Maquina
+                        </option>
+                        <option *ngIf="get_indicator_type_data_design == 'status'" value="status" selected>Status
+                        </option>
+                        <option *ngIf="get_indicator_type_data_design == 'other'" value="other" selected>Otro</option>
 
                         <option *ngIf="get_indicator_type_data_design != 'light'" value="light">Luz</option>
-                        <option *ngIf="get_indicator_type_data_design != 'temperature'" value="temperature">Temperatura</option>
+                        <option *ngIf="get_indicator_type_data_design != 'temperature'" value="temperature">Temperatura
+                        </option>
                         <option *ngIf="get_indicator_type_data_design != 'air'" value="air">Aire</option>
                         <option *ngIf="get_indicator_type_data_design != 'wet'" value="wet">Humedad</option>
                         <option *ngIf="get_indicator_type_data_design != 'motor'" value="motor">Motor</option>
@@ -102,17 +123,20 @@
                         <option *ngIf="get_indicator_type_data_design != 'other'" value="other">Otro</option>
                     </select>
                 </div>
-                <div class="campo boolean-campo" *ngIf="(!id_indicator_selected || id_indicator_selected == 0) || ((id_indicator_selected || id_indicator_selected != 0) && !this.enableBlobData)">
-                    <div class="content-information"> 
+                <div class="campo boolean-campo"
+                    *ngIf="(!id_indicator_selected || id_indicator_selected == 0) || ((id_indicator_selected || id_indicator_selected != 0) && !this.enableBlobData)">
+                    <div class="content-information">
                         <div class="title">Crear espacio virtual</div>
-                        <div class="description">Los datos van a guardarse para posteriormente ser analizados o utilizados por alguna gráfica lineal.</div>
+                        <div class="description">Los datos van a guardarse para posteriormente ser analizados o
+                            utilizados por alguna gráfica lineal.</div>
                     </div>
-                    <input type="checkbox" class="input-text"  #blobdata  (change)="set_indicator_blobdata = blobdata.checked">
+                    <input type="checkbox" class="input-text" #blobdata
+                        (change)="set_indicator_blobdata = blobdata.checked">
                 </div>
                 <div class="btn-guardar" (click)="createIndicator()" *ngIf="show_save_button">
                     Guardar configuracion
                 </div>
-                <div class="btn-guardar"  *ngIf="!show_save_button">
+                <div class="btn-guardar" *ngIf="!show_save_button">
                     Espera un momento...
                 </div>
             </div>

@@ -36,6 +36,7 @@ import { TicketComponent } from './tickets/ticket.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ImageComponent } from './dashboard_tools/image/image.component';
 import { ConfigureImageComponent } from './configure_tools_components/configure-image/configure-image.component';
+import { ApiSmsComponent } from './api-sms/api-sms.component';
 
 const components = [NavComponent,
   MenuComponent,
@@ -68,7 +69,8 @@ const components = [NavComponent,
   BillingComponent,
   TicketComponent,
   ImageComponent,
-  ConfigureImageComponent]
+  ConfigureImageComponent,
+  ApiSmsComponent]
 
 @NgModule({
   declarations: components,

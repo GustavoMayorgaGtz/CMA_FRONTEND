@@ -8,7 +8,11 @@
         </span>
     </nav>
     <div class="left">
+        <div class="info">
+            El indicador muestra el valor de un sensor conectado. Al crearlo, se generará un grupo en la sección de variables del menú, que podrás usar para vincularlo.
+        </div>
         <div class="chart-container" *ngIf="isVisible">
+         
             <canvas baseChart #graph1 [ngStyle]="obtenerObjeto(graph1)" *ngIf="linear1" [type]="'line'" [data]="linear1.lineChartData" [options]="linear1.lineChartOptions"
                 [legend]="true">
             </canvas>
