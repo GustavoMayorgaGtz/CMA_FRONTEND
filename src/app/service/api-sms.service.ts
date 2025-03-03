@@ -13,17 +13,19 @@ export class ApiSmsService {
 
   getTokenAPI_SMS() {
     const token = this.getToken();
-    const id_usuario = this.getUser();
+    let id_usuario = this.getUser();
     if (!token && !id_usuario) {
       this.router.navigate(['/login']);
       return new Observable<string>();
     }
 
+    const id_usuario_number = parseInt(id_usuario!);
+
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.post<string>(`${server}images/create`, { id_usuario }, { headers });
+    return this.http.post<string>(`${server}api/sms/getToken`, { id_usuario: id_usuario_number }, { headers });
   }
 
   /**
